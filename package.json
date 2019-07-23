@@ -1,0 +1,27 @@
+{
+  "name": "@naturalclar/talks",
+  "version": "0.0.1",
+  "private": true,
+  "description": "MDX-Deck Slides in Monorepo",
+  "license": "MIT",
+  "author": "Jesse Katsumata <jesse.katsumta@gmail.com>",
+  "main": "index.js",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "prepare": "yarn bootstrap"
+  },
+  "devDependencies": {
+    "file-loader": "^4.1.0",
+    "lerna": "^3.16.2",
+    "mdx-code": "^1.1.3",
+    "mdx-deck": "2",
+    "raw-loader": "^3.1.0",
+    "typescript": "^3.5.3"
+  }
+}
