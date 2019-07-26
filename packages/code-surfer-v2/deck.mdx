@@ -1,0 +1,104 @@
+import Code from "mdx-code";
+import { Avatar } from "@naturalclar/slides-components";
+import {
+  CodeSurferLayout,
+  CodeSurferColumnLayout,
+} from "code-surfer";
+
+export { code as theme } from "mdx-deck/themes";
+
+# Code Surfer v2
+
+<Avatar />
+
+---
+
+## Code Surfer とは
+
+- [これ](https://github.com/pomber/code-surfer)
+- このスライドを作ってる`mdx-deck`と使えるライブラリ
+- コードを深堀りしたい時に便利
+
+---
+
+<CodeSurferLayout>
+
+```js title="タイトルつけれる"
+function hello(name) {
+  console.log("hello " + name);
+}
+
+hello("world");
+```
+
+```js 1:3 subtitle="字幕も今まで通りつけれる"
+function hello(name) {
+  console.log("hello " + name);
+}
+
+hello("world");
+```
+
+```js subtitle="前のページとのDiffを取って、新しく追加されたコードを挿入"
+function helloFactory() {
+  return name => {
+    console.log("hello " + name);
+  };
+}
+
+function hello(name) {
+  console.log("hello " + name);
+}
+
+hello("world");
+```
+
+```js subtitle="変更があった箇所は差し替えられる"
+function helloFactory() {
+  return name => {
+    console.log("こんにちは " + name);
+  };
+}
+
+function hello(name) {
+  console.log("こんにちは " + name);
+}
+
+hello("world");
+```
+
+```js 1:7 subtitle="削除されたところは消える"
+function helloFactory() {
+  return name => {
+    console.log("こんにちは " + name);
+  };
+}
+
+hello("world");
+```
+
+</CodeSurferLayout>
+
+---
+
+## Code-Surfer v2
+
+- versionはまだ `2.0.0-alpha.10` (7/26/2019 現在)
+- mdx-deck `v2` にて使える(`v3`は非対応)
+- 作者が一から作り直してるのでBreaking Changeしかない
+- Fusuma でも使える？未検証
+
+
+---
+
+これを使って`react-redux`の新APIの紹介をしていこうと思う
+
+- `useSelector`
+- `useDispatch`
+
+---
+
+## 近日公開予定
+
+<img src={require('file-loader!./reactjs-meetup.png')} width="50%" />
+

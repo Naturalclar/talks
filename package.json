@@ -17,6 +17,7 @@
     "prepare": "yarn bootstrap"
   },
   "dependencies": {
+    "code-surfer": "2.0.0-alpha.10",
     "puppeteer": "^1.19.0"
   },
   "devDependencies": {

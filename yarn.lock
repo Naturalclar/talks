@@ -3951,6 +3951,17 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
+code-surfer@2.0.0-alpha.10:
+  version "2.0.0-alpha.10"
+  resolved "https://registry.yarnpkg.com/code-surfer/-/code-surfer-2.0.0-alpha.10.tgz#c75601153484c8ff06b9051aa7af8a8f6cb130a1"
+  integrity sha512-djD5PJBtNjeYYw57xXUohUhn0gihQgNdwOQdseUCp5R0pOKdb3Rohj9qkprLuwSrdNjnL1OHs5R4w9b1x6Atvg==
+  dependencies:
+    array.prototype.flat "^1.2.1"
+    diff "^4.0.1"
+    prismjs "^1.16.0"
+    rebound "^0.1.0"
+    shell-quote "^1.6.1"
+
 collapse-white-space@^1.0.0, collapse-white-space@^1.0.2:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/collapse-white-space/-/collapse-white-space-1.0.5.tgz#c2495b699ab1ed380d29a1091e01063e75dbbe3a"
@@ -4698,6 +4709,11 @@ dezalgo@^1.0.0:
   dependencies:
     asap "^2.0.0"
     wrappy "1"
+
+diff@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.1.tgz#0c667cb467ebbb5cea7f14f135cc2dba7780a8ff"
+  integrity sha512-s2+XdvhPCOF01LRQBC8hf4vhbVmI2CGS5aZnxLJlT5FtdhPCDFq80q++zK2KlrVorVDdL5BOGZ/VfLrVtYNF+Q==
 
 diffie-hellman@^5.0.0:
   version "5.0.3"
@@ -8640,7 +8656,7 @@ pretty-time@^1.1.0:
   resolved "https://registry.yarnpkg.com/pretty-time/-/pretty-time-1.1.0.tgz#ffb7429afabb8535c346a34e41873adf3d74dd0e"
   integrity sha512-28iF6xPQrP8Oa6uxE6a1biz+lWeTOAPKggvjB8HAs6nVMKZwf5bG++632Dx614hIWgUPkgivRfG+a8uAXGTIbA==
 
-prismjs@^1.8.4, prismjs@~1.17.0:
+prismjs@^1.16.0, prismjs@^1.8.4, prismjs@~1.17.0:
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.17.1.tgz#e669fcbd4cdd873c35102881c33b14d0d68519be"
   integrity sha512-PrEDJAFdUGbOP6xK/UsfkC5ghJsPJviKgnQOoxaDbBjwc8op68Quupwt1DeAFoG8GImPhiKXAvvsH7wDSLsu1Q==
@@ -9258,6 +9274,11 @@ readdirp@^2.2.1:
     micromatch "^3.1.10"
     readable-stream "^2.0.2"
 
+rebound@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/rebound/-/rebound-0.1.0.tgz#0638c61a93666bb515a58a03e1cfb34021e88b72"
+  integrity sha1-BjjGGpNma7UVpYoD4c+zQCHoi3I=
+
 recast@^0.14.7:
   version "0.14.7"
   resolved "https://registry.yarnpkg.com/recast/-/recast-0.14.7.tgz#4f1497c2b5826d42a66e8e3c9d80c512983ff61d"
@@ -9828,7 +9849,7 @@ shebang-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
   integrity sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
 
-shell-quote@1.6.1:
+shell-quote@1.6.1, shell-quote@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.6.1.tgz#f4781949cce402697127430ea3b3c5476f481767"
   integrity sha1-9HgZSczkAmlxJ0MOo7PFR29IF2c=
