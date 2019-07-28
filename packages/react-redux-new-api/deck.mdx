@@ -1,6 +1,8 @@
 import Code from "mdx-code";
+import { Notes } from "mdx-deck";
+
 import { Avatar, Profile } from "@naturalclar/slides-components";
-import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+import { CodeSurferLayout } from "code-surfer";
 export { vsDark as theme } from "code-surfer";
 
 ## connect の要らない react-redux
@@ -8,12 +10,20 @@ export { vsDark as theme } from "code-surfer";
 [React.js Meetup #8](https://reactjs-meetup.connpass.com/event/138738/)
 @natural_clar
 
+<Notes>
+  それでは connect の要らない react-redux
+  というタイトルで発表させていただきますNaturalClar。よろしくおねがいします。
+</Notes>
+
 ---
 
 ## About Me
 
 <Avatar />
-<Profile/>
+
+<Profile />
+
+<Notes>まずは自己紹介</Notes>
 
 ---
 
@@ -42,6 +52,10 @@ useDispatch();
 
 ---
 
+# 実装例
+
+---
+
 <CodeSurferLayout>
 
 ```jsx 1:19
@@ -64,7 +78,9 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps,mapDispatchToProps)(Foo);
 ```
 
-```js subtitle="mapStateToProps を useSelector に変える"
+<Notes>１ページ目</Notes>
+
+```jsx subtitle="mapStateToProps を useSelector に変える"
 import React from "react";
 import { connect, useSelector } from "react-redux";
 import { someAction } from "../actions";
@@ -86,7 +102,9 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps,mapDispatchToProps)(Foo);
 ```
 
-```js subtitle="mapDispatchToProps を useDispatch に変更"
+<Notes>2ページ目</Notes>
+
+```jsx subtitle="mapDispatchToProps を useDispatch に変更"
 import React from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { someAction } from "../actions";
@@ -110,7 +128,9 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps,mapDispatchToProps)(Foo);
 ```
 
-```js 1:24 subtitle="これで・・・"
+<Notes>3ページ目</Notes>
+
+```jsx 1:24 subtitle="これで・・・"
 import React from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { someAction } from "../actions";
@@ -134,7 +154,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps,mapDispatchToProps)(Foo);
 ```
 
-```js subtitle="さらば connect !"
+```jsx subtitle="さらば connect !"
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { someAction } from "../actions";
@@ -150,7 +170,7 @@ const Foo = () => {
 export default Foo;
 ```
 
-```js subtitle="必要な箇所を取ってくるSelectorに変更したり"
+```jsx subtitle="必要な箇所を取ってくるSelectorに変更したり"
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { someAction } from "../actions";
@@ -167,7 +187,7 @@ const Foo = () => {
 export default Foo;
 ```
 
-```js subtitle="必要な箇所を custom hooks にしたり"
+```jsx subtitle="必要な箇所を custom hooks にしたり"
 import React from "react";
 import { useBar } from "../hooks";
 
@@ -183,4 +203,189 @@ export default Foo;
 
 ---
 
+<CodeSurferLayout>
+
+```jsx title="Presentational と Container に分けてる時"
+import React from "react";
+import { connect } from "react-redux";
+import Component from "./Component";
+
+const mapStateToProps = state => ({ foo: state.foo, bar: state.bar });
+const mapDispatchToProps = dispatch => ({
+  onFoo: () => dispatch(fooAction),
+  onBar: () => dispatch(barAction)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Component);
+```
+
+```js
+import React from "react";
+import { useState, useDispatch } from "react-redux";
+import Component from "./Component";
+
+const ConnectedComponent = () => {
+  const { foo, bar } = useState(getFooBar);
+  const dispatch = useDispatch();
+  const onFoo = () => dispatch(fooAction);
+  const onBar = () => dispatch(barAction);
+
+  return <Component foo={foo} bar={bar} onFoo={onFoo} onBar={onBar}>
+};
+
+export default ConnectedComponent;
+```
+
+</CodeSurferLayout>
+
+---
+
+<CodeSurferLayout>
+
+```jsx title="TypeScript での使用例"
+import React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux"; // from @types
+import { State, Actions } from "../types";
+
+type Props = {
+  foo: string
+  bar: string
+  onFoo: ()=>void
+  onBar: ()=>void
+}
+
+const Hoge = ({ foo, bar, onFoo, onBar }: Props) => (
+  <div>
+    <button onClick={onFoo}>{foo}</button>
+    <button onClick={onBar}>{bar}</button>
+  </div>
+);
+
+const mapStateToProps = (state: State) => ({ foo: state.foo, bar: state.bar });
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+  onFoo: () => dispatch(fooAction),
+  onBar: () => dispatch(barAction)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Hoge);
+```
+
+```jsx 20:29 title="こういう Connect の Component を使う時"
+import React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux"; // from @types
+import { State, Actions } from "../types";
+
+type Props = {
+  foo: string
+  bar: string
+  onFoo: ()=>void
+  onBar: ()=>void
+}
+
+const Hoge = ({ foo, bar, onFoo, onBar }: Props) => (
+  <div>
+    <button onClick={onFoo}>{foo}</button>
+    <button onClick={onBar}>{bar}</button>
+  </div>
+);
+
+const mapStateToProps = (state: State) => ({ foo: state.foo, bar: state.bar });
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
+  onFoo: () => dispatch(fooAction),
+  onBar: () => dispatch(barAction)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Hoge);
+```
+
+```js title="dispatchの結果が渡されていないと怒られる"
+import React from "react";
+import Hoge from "./Hoge";
+
+const Fuga = () => <Hoge />; // onFoo, onBar is Required but not provided
+```
+
+```js title="新しいAPIを使用していると"
+import React from "react";
+import { useState, useDispatch } from "react-redux";
+
+type Props = {
+  foo: string
+  bar: string
+  onFoo: ()=>void
+  onBar: ()=>void
+}
+
+const Hoge = ({ foo, bar, onFoo, onBar }: Props) => (
+  <div>
+    <button onClick={onFoo}>{foo}</button>
+    <button onClick={onBar}>{bar}</button>
+  </div>
+);
+
+const ConnectedHoge = () => {
+  const { foo, bar } from useState(getFooBar);
+  const dispatch = useDispatch();
+  onFoo: () => dispatch(fooAction);
+  onBar: () => dispatch(barAction);
+
+  return <Hoge foo={foo} bar={bar} onFoo={onFoo} onBar={onBar} />
+}
+
+export default ConnectedHoge;
+```
+
+```js 24 title="絶対に渡されているので怒られない！"
+import React from "react";
+import { useState, useDispatch } from "react-redux";
+
+type Props = {
+  foo: string
+  bar: string
+  onFoo: ()=>void
+  onBar: ()=>void
+}
+
+const Hoge = ({ foo, bar, onFoo, onBar }: Props) => (
+  <div>
+    <button onClick={onFoo}>{foo}</button>
+    <button onClick={onBar}>{bar}</button>
+  </div>
+);
+
+const ConnectedHoge = () => {
+  const { foo, bar } from useState(getFooBar);
+  const dispatch = useDispatch();
+  onFoo: () => dispatch(fooAction);
+  onBar: () => dispatch(barAction);
+
+  return <Hoge foo={foo} bar={bar} onFoo={onFoo} onBar={onBar} /> // No TS Error!
+}
+
+export default ConnectedHoge;
+```
+
+</CodeSurferLayout>
+
+---
+
+## 注意点
+
+---
+
 ## ありがとうございました
+
+```
+
+```
