@@ -1,6 +1,6 @@
 {
-  "name": "hello-world",
-  "description": "hello-world",
+  "name": "code-surfer-v2",
+  "description": "code-surfer-v2",
   "version": "1.0.0",
   "author": "Jesse Katsumata <jesse.katsumata@gmail.com",
   "keywords": [],
@@ -8,7 +8,8 @@
   "private": true,
   "scripts": {
     "build": "mdx-deck build ./deck.mdx",
-    "start": "mdx-deck ./deck.mdx"
+    "start": "mdx-deck ./deck.mdx",
+    "publish": "now"
   },
   "dependencies": {
     "@naturalclar/slides-components": "*"
