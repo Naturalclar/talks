@@ -6,15 +6,13 @@
   "license": "MIT",
   "author": "Jesse Katsumata <jesse.katsumta@gmail.com>",
   "main": "index.js",
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
-    "prepare": "yarn bootstrap"
+    "prepare": "yarn bootstrap && yarn build"
   },
   "dependencies": {
     "code-surfer": "2.0.0-alpha.10",
@@ -27,6 +25,7 @@
     "lerna": "^3.16.2",
     "mdx-code": "^1.1.3",
     "mdx-deck": "2",
+    "now": "^15.8.7",
     "raw-loader": "^3.1.0",
     "typescript": "^3.5.3"
   }
