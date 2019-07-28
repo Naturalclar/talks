@@ -10,6 +10,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc & cp -r ./src/assets ./dist",
+    "dev": "tsc -w",
     "storybook": "start-storybook -p 9001 -c .storybook -s ./src/assets",
     "storybook:build": "build-storybook -c .storybook -s ./src/assets"
   },
