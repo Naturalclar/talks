@@ -8,7 +8,8 @@
   "private": true,
   "scripts": {
     "build": "mdx-deck build ./deck.mdx",
-    "start": "mdx-deck ./deck.mdx"
+    "start": "mdx-deck ./deck.mdx",
+    "deploy": "now"
   },
   "dependencies": {
     "@naturalclar/slides-components": "*"
