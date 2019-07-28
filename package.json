@@ -12,7 +12,8 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
-    "prepare": "yarn bootstrap && yarn build"
+    "prepare": "yarn bootstrap && yarn build",
+    "deploy": "lerna run deploy"
   },
   "dependencies": {
     "code-surfer": "2.0.0-alpha.10",

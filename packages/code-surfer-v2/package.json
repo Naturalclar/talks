@@ -9,7 +9,7 @@
   "scripts": {
     "build": "mdx-deck build ./deck.mdx",
     "start": "mdx-deck ./deck.mdx",
-    "publish": "now"
+    "deploy": "now"
   },
   "dependencies": {
     "@naturalclar/slides-components": "*"
