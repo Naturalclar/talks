@@ -1,0 +1,17 @@
+{
+  "name": "react-redux-new-api",
+  "description": "react-redux-new-api",
+  "version": "1.0.0",
+  "author": "Jesse Katsumata <jesse.katsumata@gmail.com",
+  "keywords": [],
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "mdx-deck build ./deck.mdx",
+    "start": "mdx-deck ./deck.mdx",
+    "deploy": "now"
+  },
+  "dependencies": {
+    "@naturalclar/slides-components": "*"
+  }
+}

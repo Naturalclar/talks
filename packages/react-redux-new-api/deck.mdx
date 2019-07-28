@@ -1,8 +1,7 @@
 import Code from "mdx-code";
 import { Avatar, Profile } from "@naturalclar/slides-components";
 import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
-
-export { code as theme } from "mdx-deck/themes";
+export { vsDark as theme } from "code-surfer";
 
 ## connect の要らない react-redux
 
@@ -18,88 +17,170 @@ export { code as theme } from "mdx-deck/themes";
 
 ---
 
-## Code Surfer とは
+## react-redux v7
 
-- [これ](https://github.com/pomber/code-surfer)
-- このスライドを作ってる`mdx-deck`と使えるライブラリ
-- コードを深堀りしたい時に便利
+- [Hooks](https://react-redux.js.org/next/api/hooks)
+
+---
+
+## useSelector
+
+```js
+useSelector(selector, comparison);
+```
+
+---
+
+## useDispatch
+
+```js
+useDispatch();
+```
+
+- `dispatch` が返ってくる
+- `useCallback` などと組み合わせたら `mapDispatchToProps` のかわりになる
 
 ---
 
 <CodeSurferLayout>
 
-```js title="タイトルつけれる"
-function hello(name) {
-  console.log("hello " + name);
-}
+```jsx 1:19
+import React from "react";
+import { connect } from "react-redux";
+import { someAction } from "../actions";
 
-hello("world");
+const Foo = ({ title, onPressBar }) => {
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+const mapStateToProps = (state) => ({
+  title: state.title
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onPressBar = () => { dispatch(someAction) }
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Foo);
 ```
 
-```js 1:3 subtitle="字幕も今まで通りつけれる"
-function hello(name) {
-  console.log("hello " + name);
-}
+```js subtitle="mapStateToProps を useSelector に変える"
+import React from "react";
+import { connect, useSelector } from "react-redux";
+import { someAction } from "../actions";
 
-hello("world");
+const Foo = ({ title, onPressBar }) => {
+  const title = useSelector(state => state.title);
+
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+const mapStateToProps = (state) => ({
+  title: state.title
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onPressBar = () => { dispatch(someAction) }
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Foo);
 ```
 
-```js subtitle="前のページとのDiffを取って、新しく追加されたコードを挿入"
-function helloFactory() {
-  return name => {
-    console.log("hello " + name);
-  };
-}
+```js subtitle="mapDispatchToProps を useDispatch に変更"
+import React from "react";
+import { connect, useSelector, useDispatch } from "react-redux";
+import { someAction } from "../actions";
 
-function hello(name) {
-  console.log("hello " + name);
-}
+const Foo = ({ title, onPressBar }) => {
+  const title = useSelector(state => state.title);
+  const dispatch = useDispatch();
+  const onPressBar = dispatch(someAction);
 
-hello("world");
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+const mapStateToProps = (state) => ({
+  title: state.title
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onPressBar = () => { dispatch(someAction) }
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Foo);
 ```
 
-```js subtitle="変更があった箇所は差し替えられる"
-function helloFactory() {
-  return name => {
-    console.log("こんにちは " + name);
-  };
-}
+```js 1:24 subtitle="これで・・・"
+import React from "react";
+import { connect, useSelector, useDispatch } from "react-redux";
+import { someAction } from "../actions";
 
-function hello(name) {
-  console.log("こんにちは " + name);
-}
+const Foo = ({ title, onPressBar }) => {
+  const title = useSelector(state => state.title);
+  const dispatch = useDispatch();
+  const onPressBar = dispatch(someAction);
 
-hello("world");
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+const mapStateToProps = (state) => ({
+  title: state.title
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onPressBar = () => { dispatch(someAction) }
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Foo);
 ```
 
-```js 1:7 subtitle="削除されたところは消える"
-function helloFactory() {
-  return name => {
-    console.log("こんにちは " + name);
-  };
-}
+```js subtitle="さらば connect !"
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { someAction } from "../actions";
 
-hello("world");
+const Foo = () => {
+  const title = useSelector(state => state.title);
+  const dispatch = useDispatch();
+  const onPressBar = dispatch(someAction);
+
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+export default Foo;
+```
+
+```js subtitle="必要な箇所を取ってくるSelectorに変更したり"
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { someAction } from "../actions";
+import { getTitle } from "../selectors";
+
+const Foo = () => {
+  const title = useSelector(getTitle);
+  const dispatch = useDispatch();
+  const onPressBar = dispatch(someAction);
+
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+export default Foo;
+```
+
+```js subtitle="必要な箇所を custom hooks にしたり"
+import React from "react";
+import { useBar } from "../hooks";
+
+const Foo = () => {
+  const { title, onPressBar } = useBar();
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+export default Foo;
 ```
 
 </CodeSurferLayout>
 
 ---
 
-## Code-Surfer v2
-
-- version はまだ `2.0.0-alpha.10` (7/26/2019 現在)
-- mdx-deck `v2` にて使える(`v3`は非対応)
-- 作者が一から作り直してるので Breaking Change しかない
-- Fusuma でも使える？未検証
-
----
-
-これを使って`react-redux`の新 API の紹介をしていこうと思う
-
-- `useSelector`
-- `useDispatch`
-
----
-
-## 近日公開予定
+## ありがとうございました
