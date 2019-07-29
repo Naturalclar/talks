@@ -1,7 +1,7 @@
 import Code from "mdx-code";
 import { Notes, Head } from "mdx-deck";
 
-import { Avatar, Profile } from "@naturalclar/slides-components";
+import { Avatar, Profile, Meta } from "@naturalclar/slides-components";
 import { CodeSurferLayout } from "code-surfer";
 export { dracula as theme } from "code-surfer";
 
@@ -572,11 +572,11 @@ export default connect(
 
 ```js
 import React from "react";
-import { useState, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Component from "./Component";
 
 const ConnectedComponent = () => {
-  const { foo, bar } = useState(getFooBar);
+  const { foo, bar } = useSelector(getFooBar);
   const dispatch = useDispatch();
   const onFoo = () => dispatch(fooAction);
   const onBar = () => dispatch(barAction);
@@ -670,7 +670,7 @@ const Fuga = () => <Hoge />; // onFoo, onBar is Required but not provided
 
 ```js title="新しいAPIを使用していると"
 import React from "react";
-import { useState, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 type Props = {
   foo: string
@@ -687,7 +687,7 @@ const Hoge = ({ foo, bar, onFoo, onBar }: Props) => (
 );
 
 const ConnectedHoge = () => {
-  const { foo, bar } from useState(getFooBar);
+  const { foo, bar } from useSelector(getFooBar);
   const dispatch = useDispatch();
   onFoo: () => dispatch(fooAction);
   onBar: () => dispatch(barAction);
@@ -700,7 +700,7 @@ export default ConnectedHoge;
 
 ```js 24 title="絶対に渡されているので怒られない！"
 import React from "react";
-import { useState, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 type Props = {
   foo: string
@@ -717,7 +717,7 @@ const Hoge = ({ foo, bar, onFoo, onBar }: Props) => (
 );
 
 const ConnectedHoge = () => {
-  const { foo, bar } from useState(getFooBar);
+  const { foo, bar } from useSelector(getFooBar);
   const dispatch = useDispatch();
   onFoo: () => dispatch(fooAction);
   onBar: () => dispatch(barAction);
