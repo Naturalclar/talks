@@ -177,33 +177,83 @@ export default connect(
 
 ---
 
-## useSelector
+# useSelector
 
 - `useSelector(selector, equalityFn);`
+
+<Notes>
+  まずは useSelector
+  について説明します。その名の通り、特定のSelectorを使って、値を取ってくる Hooks
+  です。
+</Notes>
+
+---
+
+<CodeSurferLayout>
+
+```jsx 5 title="useSelector"
+import React from "react";
+import { useSelector } from "react-redux";
+
+const Foo = ({ title }) => {
+  const title = useSelector(state => state.title);
+
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+export default Foo;
+```
+
+<Notes>
+  使い方としてはこんな感じです。 store の state を引数として、必要な値を取り出します。
+  selector の返り値がそのまま値として使えます。
+  今まで mapStateToProps として定義していた関数を useSelector に入れるイメージですね。
+  mapStateToProps と違って、Object を返す必要は無いので、単一の値が必要な場合はこの例にあるように、それをそのまま定義できます。
+</Notes>
+</CodeSurferLayout>
+
+---
+
+## useSelector
+
 - `mapStateToProps` の代わり
 - selector の結果が変更されたら rerender される
 - 複数の値を Object として取ってくる場合：
 
-  - `equalityFn` に `shallowequal` を入れる
+  - 第二引数に `shallowequal` を入れる
   - `reselect` を使う
 
 <Notes>
-  第２引数の equalyFn には react-redux が提供している shallowequal を
+  useSelector は今までのmapStateToPropsの代わりに使えます。
+  ただ、一つ注意点があります。
+  useSelectorはselectorの戻り値の結果が変更される度に rerender されます。
+  　今までのmapStateToPropsのように、Objectを返り値として使用していた場合は、毎回新しいObjectが作成されるため、deepEqualにはなりません。
+  複数の値を取得する場合の解決策としては3種類あります。
+  1つ目：useSelectorの第二引数に react-redux が提供している shallowequal
+  を使って、shallowequal の時は Rerender しないようにする。 2つ目: reselect
+  を使って、selector の結果をメモ化することでも rerender を防ぐことができます。
+  3つ目：必要な値ごとに、useSelector を使って、全て単一の結果を返す。
 </Notes>
+
+---
+
+# useDispatch
+
+- `useDispatch();`
 
 ---
 
 ## useDispatch
 
-- `useDispatch();`
-
-* `dispatch` が返ってくる
-* `useCallback` などと組み合わせたら
-* `mapDispatchToProps` のかわりになる
+- `dispatch` が返ってくる
+- `mapDispatchToProps` のかわりになる
+- `useCallback` と組み合わせる
 
 ---
 
 # 実装例
+
+<Notes>今までの書き方から新APIに変更していく手順を軽く紹介していきます。</Notes>
 
 ---
 
@@ -234,7 +284,7 @@ export default connect(
 )(Foo);
 ```
 
-<Notes>１ページ目</Notes>
+<Notes>これが最初に見せた、従来の connect を使った書き方です</Notes>
 
 ```jsx subtitle="mapStateToProps を useSelector に変える"
 import React from "react";
@@ -263,7 +313,10 @@ export default connect(
 )(Foo);
 ```
 
-<Notes>2ページ目</Notes>
+<Notes>
+  まずは、 useSelector を使って、mapStateToPropsで取っていた Props を store
+  から取得します
+</Notes>
 
 ```jsx subtitle="mapDispatchToProps を useDispatch に変更"
 import React from "react";
@@ -349,6 +402,23 @@ import { getTitle } from "../selectors";
 
 const Foo = () => {
   const title = useSelector(getTitle);
+  const dispatch = useDispatch();
+  const onPressBar = dispatch(someAction);
+
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+export default Foo;
+```
+
+```jsx subtitle="複数の値を持ってくるSelectorにしたり"
+import React from "react";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { someAction } from "../actions";
+import { getTitle } from "../selectors";
+
+const Foo = () => {
+  const { title, bar } = useSelector(getTitle, shallowEqual);
   const dispatch = useDispatch();
   const onPressBar = dispatch(someAction);
 
