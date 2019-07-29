@@ -347,7 +347,10 @@ export default connect(
 )(Foo);
 ```
 
-<Notes>3ページ目</Notes>
+<Notes>
+  そして、 useDispatch を使って、dispatch を取得、指定の Action を dispatch
+  する変数を定義していきます。
+</Notes>
 
 ```jsx 1:27 subtitle="これで・・・"
 import React from "react";
@@ -378,6 +381,8 @@ export default connect(
 )(Foo);
 ```
 
+<Notes>これで, connect を削除する準備ができました。</Notes>
+
 ```jsx subtitle="さらば connect !"
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -393,6 +398,8 @@ const Foo = () => {
 
 export default Foo;
 ```
+
+<Notes>削除していきましょう。</Notes>
 
 ```jsx subtitle="必要な箇所を取ってくるSelectorに変更したり"
 import React from "react";
@@ -411,6 +418,11 @@ const Foo = () => {
 export default Foo;
 ```
 
+<Notes>
+  他に簡略化する手段として、selector
+  を関数として切り出して別の箇所から取ってきたり
+</Notes>
+
 ```jsx subtitle="複数の値を持ってくるSelectorにしたり"
 import React from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
@@ -428,6 +440,12 @@ const Foo = () => {
 export default Foo;
 ```
 
+<Notes>
+  state から複数の値を Object として返す Selector にしていったりできます。
+  先程言ったとおり、複数の値を取ってくる場合は shallowEqual を使いましょう。
+  reselect を使っている場合は、 selector の方に定義しているので必要無いです。
+</Notes>
+
 ```jsx subtitle="必要な箇所を custom hooks にしたり"
 import React from "react";
 import { useBar } from "../hooks";
@@ -442,11 +460,20 @@ export default Foo;
 
 </CodeSurferLayout>
 
+<Notes>
+  特定のComponent用に selector と dispatch を組み合わせたcustomHooks
+  を作るのも良いかもしれません。
+</Notes>
+
+---
+
+## Presentational と Container に分けている時
+
 ---
 
 <CodeSurferLayout>
 
-```jsx title="Presentational と Container に分けてる時"
+```jsx title="Presentational と Container に分けている時"
 import React from "react";
 import { connect } from "react-redux";
 import Component from "./Component";
@@ -481,6 +508,10 @@ export default ConnectedComponent;
 ```
 
 </CodeSurferLayout>
+
+---
+
+## TypeScript での使用例
 
 ---
 
@@ -618,10 +649,6 @@ export default ConnectedHoge;
 ```
 
 </CodeSurferLayout>
-
----
-
-## 注意点
 
 ---
 
