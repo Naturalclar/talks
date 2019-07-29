@@ -3,7 +3,7 @@ import { Notes } from "mdx-deck";
 
 import { Avatar, Profile } from "@naturalclar/slides-components";
 import { CodeSurferLayout } from "code-surfer";
-export { vsDark as theme } from "code-surfer";
+export { dracula as theme } from "code-surfer";
 
 ## connect の要らない react-redux
 
@@ -11,8 +11,9 @@ export { vsDark as theme } from "code-surfer";
 @natural_clar
 
 <Notes>
-  それでは connect の要らない react-redux
-  というタイトルで発表させていただきますNaturalClar。よろしくおねがいします。
+  connect の要らない react-redux というタイトルで発表させていただきます
+  NaturalClar です。よろしくおねがいします。この発表スライドは先程 Twitter に
+  HashTag をつけてつぶやいたので、そちらからも確認できます。
 </Notes>
 
 ---
@@ -23,32 +24,162 @@ export { vsDark as theme } from "code-surfer";
 
 <Profile />
 
-<Notes>まずは自己紹介</Notes>
+<Notes>
+  まずは自己紹介です。Jesseです。アメリカ人です。
+  去年の9月に日本に引っ越してきました。 CureAppという会社で主にReact Native と
+  TypeScript を扱った医療系のアプリを開発しています。
+</Notes>
 
 ---
 
-## react-redux v7
+# react-redux
 
-- [Hooks](https://react-redux.js.org/next/api/hooks)
+<Notes>
+  今回は react-redux について発表します。 react-redux はその名の通り、redux を
+  react で使えるようにするためのラッパーで、 connect とか提供しているやつです。
+</Notes>
+
+---
+
+<CodeSurferLayout>
+
+```jsx 1:19 title="今までの react-redux"
+import React from "react";
+import { connect } from "react-redux";
+import { someAction } from "../actions";
+
+const Foo = ({ title, onPressBar }) => {
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+const mapStateToProps = (state) => ({
+  title: state.title
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onPressBar = () => { dispatch(someAction) }
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+```
+
+<Notes>
+  まずは今までの react-redux
+  を使った書き方について、軽くおさらいします。これはあくまで実装の一例です。
+</Notes>
+
+```jsx 9:11 subtitle="mapStateToProps"
+import React from "react";
+import { connect } from "react-redux";
+import { someAction } from "../actions";
+
+const Foo = ({ title, onPressBar }) => {
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+const mapStateToProps = (state) => ({
+  title: state.title
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onPressBar = () => { dispatch(someAction) }
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+```
+
+<Notes>mapStateToProps で store から取ってきたい値を取得して</Notes>
+
+```jsx 13:15 subtitle="mapDispatchToProps"
+import React from "react";
+import { connect } from "react-redux";
+import { someAction } from "../actions";
+
+const Foo = ({ title, onPressBar }) => {
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+const mapStateToProps = (state) => ({
+  title: state.title
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onPressBar = () => { dispatch(someAction) }
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+```
+
+<Notes>
+  mapDispatchToProps で component 内で起動したい action を取ってきて
+</Notes>
+
+```jsx 17 subtitle="connect"
+import React from "react";
+import { connect } from "react-redux";
+import { someAction } from "../actions";
+
+const Foo = ({ title, onPressBar }) => {
+  return <button onClick={onPressBar}>{title}</button>;
+};
+
+const mapStateToProps = (state) => ({
+  title: state.title
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  onPressBar = () => { dispatch(someAction) }
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+```
+
+<Notes>connect で component にわたす。みたいな感じですね。</Notes>
+
+</CodeSurferLayout>
+
+---
+
+## react-redux v7.1
+
+- [Release Note](https://github.com/reduxjs/react-redux/releases)
+- [Hooks を用いた新 API](https://react-redux.js.org/next/api/hooks)
+  - useSelector
+  - useDispatch
+- いままでの書き方も引き続き使える
+
+<Notes>
+  二週間ほど前 (2019/07/11) に react-redux v7.1がリリースされました。 v7
+  で行われたパフォーマンス改善に加え、 Hooks を用いた新しい API、 useSelector と
+  useDispatch が追加されました。 今回はその使い方について軽く説明していきます。
+  後方互換性があるので、今までの書き方も引き続き使用できます。
+</Notes>
 
 ---
 
 ## useSelector
 
-```js
-useSelector(selector, comparison);
-```
+- `useSelector(selector, equalityFn);`
+- `mapStateToProps` の代わり
+- selector の結果が変更されたら rerender される
+- 複数の値を Object として取ってくる場合：
+
+  - `equalityFn` に `shallowequal` を入れる
+  - `reselect` を使う
+
+<Notes>
+  第２引数の equalyFn には react-redux が提供している shallowequal を
+</Notes>
 
 ---
 
 ## useDispatch
 
-```js
-useDispatch();
-```
+- `useDispatch();`
 
-- `dispatch` が返ってくる
-- `useCallback` などと組み合わせたら `mapDispatchToProps` のかわりになる
+* `dispatch` が返ってくる
+* `useCallback` などと組み合わせたら
+* `mapDispatchToProps` のかわりになる
 
 ---
 
@@ -385,7 +516,3 @@ export default ConnectedHoge;
 ---
 
 ## ありがとうございました
-
-```
-
-```
