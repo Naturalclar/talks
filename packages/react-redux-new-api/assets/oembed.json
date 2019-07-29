@@ -1,0 +1,10 @@
+{
+  "type": "rich",
+  "version": "1.0",
+  "provider_name": "react-redux-new-api.naturalclar.now.sh",
+  "provider_url": "https://react-redux-new-api.naturalclar.now.sh/",
+  "title": "react-redux-new-api",
+  "width": 658,
+  "height": 408,
+  "html": "<iframe style=\"width: 100%; overflow: hidden;\" src=\"https://react-redux-new-api.naturalclar.now.sh/\" width=\"658\" height=\"408\" frameborder=\"0\" scrolling=\"no\" ></iframe>"
+}

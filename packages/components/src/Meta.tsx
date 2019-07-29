@@ -31,6 +31,12 @@ const Meta = ({
     <meta name="twitter:title" content={title} />
     <meta name="twitter:image" content={`${host}/assets/card.png`} />
     <title>{title}</title>
+    <link
+      rel="alternate"
+      type="application/json+oembed"
+      href={`${host}/assets/oembed.json`}
+      title={title}
+    />
   </>
 );
 

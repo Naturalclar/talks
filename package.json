@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "lerna run build",
+    "build": "lerna run build && cpx ./assets ./dist",
     "prepare": "yarn bootstrap && yarn build",
     "deploy": "lerna run deploy"
   },
@@ -22,6 +22,7 @@
   "devDependencies": {
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
+    "cpx": "^1.5.0",
     "file-loader": "^4.1.0",
     "lerna": "^3.16.2",
     "mdx-code": "^1.1.3",
