@@ -179,7 +179,7 @@ export default connect(
 
 # useSelector
 
-- `useSelector(selector, equalityFn);`
+`useSelector(selector: Function, equalityFn?: Function);`
 
 <Notes>
   まずは useSelector
@@ -239,7 +239,78 @@ export default Foo;
 
 # useDispatch
 
-- `useDispatch();`
+`const dispatch = useDispatch();`
+
+<Notes>
+  つづいて useDispatch について説明します。useDispatch は dispatch です。 action
+  を実行するための dispatch を返します。
+</Notes>
+
+---
+
+<CodeSurferLayout>
+
+```jsx title="useDispatch"
+import React from "react";
+import { useDispatch } from "react-redux";
+
+export const CounterComponent = ({ value }) => {
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <span>{value}</span>
+      <button onClick={() => dispatch({ type: "increment-counter" })}>
+        Increment counter
+      </button>
+    </div>
+  );
+};
+```
+
+```jsx 5,10 subtitle="dispatchを定義して、それを使う"
+import React from "react";
+import { useDispatch } from "react-redux";
+
+export const CounterComponent = ({ value }) => {
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <span>{value}</span>
+      <button onClick={() => dispatch({ type: "increment-counter" })}>
+        Increment counter
+      </button>
+    </div>
+  );
+};
+```
+
+```jsx subtitle="dispatch する callback を 子 component にわたす場合"
+import React, { useCallback } from "react";
+import { useDispatch } from "react-redux";
+
+export const CounterComponent = ({ value }) => {
+  const dispatch = useDispatch();
+  const incrementCounter = useCallback(
+    () => dispatch({ type: "increment-counter" }),
+    [dispatch]
+  );
+
+  return (
+    <div>
+      <span>{value}</span>
+      <MyIncrementButton onIncrement={incrementCounter} />
+    </div>
+  );
+};
+
+export const MyIncrementButton = React.memo(({ onIncrement }) => (
+  <button onClick={onIncrement}>Increment counter</button>
+));
+```
+
+</CodeSurferLayout>
 
 ---
 
@@ -247,7 +318,7 @@ export default Foo;
 
 - `dispatch` が返ってくる
 - `mapDispatchToProps` のかわりになる
-- `useCallback` と組み合わせる
+- 子 Component にわたす場合は `useCallback` と組み合わせる
 
 ---
 
