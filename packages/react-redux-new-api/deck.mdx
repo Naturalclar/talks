@@ -43,7 +43,7 @@ export { dracula as theme } from "code-surfer";
 
 <CodeSurferLayout>
 
-```jsx 1:19 title="今までの react-redux"
+```jsx 1:24 title="今までの react-redux"
 import React from "react";
 import { connect } from "react-redux";
 import { someAction } from "../actions";
@@ -52,15 +52,20 @@ const Foo = ({ title, onPressBar }) => {
   return <button onClick={onPressBar}>{title}</button>;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   title: state.title
-})
+});
 
-const mapDispatchToProps = (dispatch) => ({
-  onPressBar = () => { dispatch(someAction) }
-})
+const mapDispatchToProps = dispatch => ({
+  onPressBar: () => {
+    dispatch(someAction);
+  }
+});
 
-export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Foo);
 ```
 
 <Notes>
@@ -77,20 +82,25 @@ const Foo = ({ title, onPressBar }) => {
   return <button onClick={onPressBar}>{title}</button>;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   title: state.title
-})
+});
 
-const mapDispatchToProps = (dispatch) => ({
-  onPressBar = () => { dispatch(someAction) }
-})
+const mapDispatchToProps = dispatch => ({
+  onPressBar: () => {
+    dispatch(someAction);
+  }
+});
 
-export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Foo);
 ```
 
 <Notes>mapStateToProps で store から取ってきたい値を取得して</Notes>
 
-```jsx 13:15 subtitle="mapDispatchToProps"
+```jsx 13:17 subtitle="mapDispatchToProps"
 import React from "react";
 import { connect } from "react-redux";
 import { someAction } from "../actions";
@@ -99,22 +109,27 @@ const Foo = ({ title, onPressBar }) => {
   return <button onClick={onPressBar}>{title}</button>;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   title: state.title
-})
+});
 
-const mapDispatchToProps = (dispatch) => ({
-  onPressBar = () => { dispatch(someAction) }
-})
+const mapDispatchToProps = dispatch => ({
+  onPressBar: () => {
+    dispatch(someAction);
+  }
+});
 
-export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Foo);
 ```
 
 <Notes>
   mapDispatchToProps で component 内で起動したい action を取ってきて
 </Notes>
 
-```jsx 17 subtitle="connect"
+```jsx 19:22 subtitle="connect"
 import React from "react";
 import { connect } from "react-redux";
 import { someAction } from "../actions";
@@ -123,15 +138,20 @@ const Foo = ({ title, onPressBar }) => {
   return <button onClick={onPressBar}>{title}</button>;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   title: state.title
-})
+});
 
-const mapDispatchToProps = (dispatch) => ({
-  onPressBar = () => { dispatch(someAction) }
-})
+const mapDispatchToProps = dispatch => ({
+  onPressBar: () => {
+    dispatch(someAction);
+  }
+});
 
-export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Foo);
 ```
 
 <Notes>connect で component にわたす。みたいな感じですね。</Notes>
@@ -189,7 +209,7 @@ export default connect(mapStateToProps,mapDispatchToProps)(Foo);
 
 <CodeSurferLayout>
 
-```jsx 1:19
+```jsx 1:24
 import React from "react";
 import { connect } from "react-redux";
 import { someAction } from "../actions";
@@ -198,15 +218,20 @@ const Foo = ({ title, onPressBar }) => {
   return <button onClick={onPressBar}>{title}</button>;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   title: state.title
-})
+});
 
-const mapDispatchToProps = (dispatch) => ({
-  onPressBar = () => { dispatch(someAction) }
-})
+const mapDispatchToProps = dispatch => ({
+  onPressBar: () => {
+    dispatch(someAction);
+  }
+});
 
-export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Foo);
 ```
 
 <Notes>１ページ目</Notes>
@@ -222,15 +247,20 @@ const Foo = ({ title, onPressBar }) => {
   return <button onClick={onPressBar}>{title}</button>;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   title: state.title
-})
+});
 
-const mapDispatchToProps = (dispatch) => ({
-  onPressBar = () => { dispatch(someAction) }
-})
+const mapDispatchToProps = dispatch => ({
+  onPressBar: () => {
+    dispatch(someAction);
+  }
+});
 
-export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Foo);
 ```
 
 <Notes>2ページ目</Notes>
@@ -248,20 +278,25 @@ const Foo = ({ title, onPressBar }) => {
   return <button onClick={onPressBar}>{title}</button>;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   title: state.title
-})
+});
 
-const mapDispatchToProps = (dispatch) => ({
-  onPressBar = () => { dispatch(someAction) }
-})
+const mapDispatchToProps = dispatch => ({
+  onPressBar: () => {
+    dispatch(someAction);
+  }
+});
 
-export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Foo);
 ```
 
 <Notes>3ページ目</Notes>
 
-```jsx 1:24 subtitle="これで・・・"
+```jsx 1:27 subtitle="これで・・・"
 import React from "react";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { someAction } from "../actions";
@@ -274,15 +309,20 @@ const Foo = ({ title, onPressBar }) => {
   return <button onClick={onPressBar}>{title}</button>;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   title: state.title
-})
+});
 
-const mapDispatchToProps = (dispatch) => ({
-  onPressBar = () => { dispatch(someAction) }
-})
+const mapDispatchToProps = dispatch => ({
+  onPressBar: () => {
+    dispatch(someAction);
+  }
+});
 
-export default connect(mapStateToProps,mapDispatchToProps)(Foo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Foo);
 ```
 
 ```jsx subtitle="さらば connect !"
