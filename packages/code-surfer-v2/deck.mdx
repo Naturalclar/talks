@@ -1,23 +1,71 @@
 import Code from "mdx-code";
+import { Notes, Head } from "mdx-deck";
 import { Avatar } from "@naturalclar/slides-components";
-import {
-  CodeSurferLayout,
-  CodeSurferColumnLayout,
-} from "code-surfer";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
 
-export { code as theme } from "mdx-deck/themes";
+<Head>
+  <Meta
+    title="mdx-deck-code-surfer-v3"
+    description="Showcase for mdx-deck and code-surfer v3"
+    publishedAt={new Date("2019-08-29").toISOString()}
+    host="https://code-surfer-v3.naturalclar.now.sh"
+  />
+</Head>
 
-# Code Surfer v2
+## Code Surfer v3
 
-<Avatar />
+[WEB エンジニア勉強会 #14](https://web-engineer-meetup.connpass.com/event/141700/)
+@naturalclar
+
+<Notes>
+  それでは、mdx-deckとcode-surfer v3
+  について登壇させていただきます。Naturalclarです。
+  この発表スライドは、先程、TwitterにHashtagをつけて投稿したので、そちらからも、確認できます。
+</Notes>
 
 ---
 
-## Code Surfer とは
+## About Me
 
-- [これ](https://github.com/pomber/code-surfer)
-- このスライドを作ってる`mdx-deck`と使えるライブラリ
-- コードを深堀りしたい時に便利
+<Avatar />
+
+<Profile />
+
+<Notes>
+  まずは自己紹介です。Jesseです。アメリカ人です。
+  去年の9月に日本に引っ越してきました。 CureAppという会社で主にReact Native と
+  TypeScript を扱った医療系のアプリを開発しています。
+</Notes>
+
+---
+
+## mdx-deck とは
+
+<img src={require("file-loader!./mdx-deck-slide.png")} width="50%" >
+
+[mdx-deck 紹介スライド](https://takumon.github.io/mdx-deck-sample/)
+
+<Notes>
+  mdx-deckは簡単に言えば、markdownで簡単にスライドが作れるものです。
+  このスライドもmdx-deckを使って作成しています。
+  以前、この勉強会でmdx-deckについて登壇している資料がわかりやすいので、おすすめです。
+  今回は、v3になって追加された機能について話します。
+</Notes>
+
+- 作者が一から作り直してるので Breaking Change しかない
+
+---
+
+## mdx-deck v3
+
+- hooks api
+
+---
+
+## code-surfer v3
+
+[code-surfer v3 PR](https://github.com/pomber/code-surfer/pull/58)
 
 ---
 
@@ -80,25 +128,3 @@ hello("world");
 </CodeSurferLayout>
 
 ---
-
-## Code-Surfer v2
-
-- versionはまだ `2.0.0-alpha.10` (7/26/2019 現在)
-- mdx-deck `v2` にて使える(`v3`は非対応)
-- 作者が一から作り直してるのでBreaking Changeしかない
-- Fusuma でも使える？未検証
-
-
----
-
-これを使って`react-redux`の新APIの紹介をしていこうと思う
-
-- `useSelector`
-- `useDispatch`
-
----
-
-## 近日公開予定
-
-<img src={require('file-loader!./reactjs-meetup.png')} width="50%" />
-
