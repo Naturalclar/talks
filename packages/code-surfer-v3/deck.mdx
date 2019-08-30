@@ -2,6 +2,7 @@ import Code from "mdx-code";
 import { Notes, Head } from "mdx-deck";
 import {
   Avatar,
+  Meta,
   Profile,
   StepsDemo,
   DeckState
@@ -18,7 +19,7 @@ export { dracula as theme } from "code-surfer";
   />
 </Head>
 
-## Code Surfer v3
+## mdx-deck v3 and code-surfer v3
 
 [WEB エンジニア勉強会 #14](https://web-engineer-meetup.connpass.com/event/141700/)
 @naturalclar
@@ -136,7 +137,7 @@ useSwipeはSwipeに対してActionを起こします。
 
 <CodeSurferLayout>
 
-```js subtitle="class component から function componentへ"
+```js subtitle="Code-surfer Example"
 import React from 'react'
 
 export class Counter extends React.Component {
@@ -164,10 +165,10 @@ export class Counter extends React.Component {
 ```
 
 <Notes>
-　ここにメモが表示されます。
+新しいCode-surferの新しいDiff機能でどのように表示されるかを紹介します。
 </Notes>
 
-```js 2:20
+```js 2:20 subtitle="class component から function componentへ"
 import React from 'react'
 
 export class Counter extends React.Component {
@@ -195,7 +196,8 @@ export class Counter extends React.Component {
 ```
 
 <Notes>
-　　これが次のページです。
+例として、ReactのClass ComponentをHooksに変更するコードを使用します。
+最近はHooksが出てかなりコードが短く出来るようになりましたね。
 </Notes>
 
 ```js 2:20 subtitle="classを外す"
@@ -224,7 +226,7 @@ export const Counter = () => {
 ```
 
 <Notes>
-  このように、Code Surferで表示されている部分に対してNoteを追加出来るようになりました。
+このように、変更した箇所がハイライトされます。
 </Notes>
 
 ```js subtitle="stateをuseStateに変更する"
@@ -248,10 +250,10 @@ export const Counter = () => {
 ```
 
 <Notes>
-なお、カンペを用意すると流動感がなくなりがちなので自分は苦手です。
+Diffに自動的にフォーカスがいくので、見せたいところを見せれるようになります。
 </Notes>
 
-```js subtitle="stateをuseStateに変更する"
+```js 1:20 subtitle="stateをuseStateに変更する"
 import React, {useState} from 'react'
 
 export const Counter = () => {
@@ -272,7 +274,7 @@ export const Counter = () => {
 ```
 
 <Notes>
-それにしてもおなかがすいたなぁ。
+それにしてもおなかがすいたなぁ
 </Notes>
 
 </CodeSurferLayout>
@@ -282,6 +284,10 @@ export const Counter = () => {
 ## Presentation Mode
 
 - 先程のCodeSurferの画面で `Option`(`Alt`) + `P`
+
+<Notes>
+お手元のPCでも確認できます。
+</Notes>
 
 ---
 
