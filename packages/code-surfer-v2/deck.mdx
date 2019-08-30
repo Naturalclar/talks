@@ -1,6 +1,6 @@
 import Code from "mdx-code";
 import { Notes, Head } from "mdx-deck";
-import { Avatar } from "@naturalclar/slides-components";
+import { Avatar, Profile, StepsDemo } from "@naturalclar/slides-components";
 import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
 export { dracula as theme } from "code-surfer";
 
@@ -19,8 +19,9 @@ export { dracula as theme } from "code-surfer";
 @naturalclar
 
 <Notes>
-  それでは、mdx-deckとcode-surfer v3
-  について登壇させていただきます。Naturalclarです。
+  どうも、CircleCIチョットデキル人です。 最近はGithub
+  Actionsも出てきてCircleCI要らなくなる疑惑もありますね。
+  今回はmdx-deckとcode-surfer v3について登壇させていただきます。
   この発表スライドは、先程、TwitterにHashtagをつけて投稿したので、そちらからも、確認できます。
 </Notes>
 
@@ -29,11 +30,10 @@ export { dracula as theme } from "code-surfer";
 ## About Me
 
 <Avatar />
-
 <Profile />
 
 <Notes>
-  まずは自己紹介です。Jesseです。アメリカ人です。
+  まずは自己紹介です。Jesseと申しますです。アメリカ人です。
   去年の9月に日本に引っ越してきました。 CureAppという会社で主にReact Native と
   TypeScript を扱った医療系のアプリを開発しています。
 </Notes>
@@ -42,9 +42,10 @@ export { dracula as theme } from "code-surfer";
 
 ## mdx-deck とは
 
-<img src={require("file-loader!./mdx-deck-slide.png")} width="50%" >
-
-[mdx-deck 紹介スライド](https://takumon.github.io/mdx-deck-sample/)
+<a href="https://takumon.github.io/mdx-deck-sample/">
+  <img src={require("file-loader!./mdx-deck-slide.png")} width="50%" />
+  <p>MDX-deck と Code-surfer でスライドを作ろう！</p>
+</a>
 
 <Notes>
   mdx-deckは簡単に言えば、markdownで簡単にスライドが作れるものです。
@@ -52,8 +53,6 @@ export { dracula as theme } from "code-surfer";
   以前、この勉強会でmdx-deckについて登壇している資料がわかりやすいので、おすすめです。
   今回は、v3になって追加された機能について話します。
 </Notes>
-
-- 作者が一から作り直してるので Breaking Change しかない
 
 ---
 
@@ -63,20 +62,95 @@ export { dracula as theme } from "code-surfer";
 
 ---
 
+## useSteps
+
+---
+
+```jsx
+// example
+import React from "react";
+import { useSteps } from "mdx-deck";
+
+export default props => {
+  const length = 4;
+  const step = useSteps(length);
+
+  return (
+    <h2>
+      The current step is {step}/{length}
+    </h2>
+  );
+};
+```
+
+---
+
+<StepsDemo />
+
+---
+
+## useDeck
+
+---
+
+```js
+// example
+import React from "react";
+import { useDeck } from "mdx-deck";
+
+export default props => {
+  const state = useDeck();
+
+  return (
+    <div>
+      {props.children}
+      <div>
+        Slide {state.index + 1}/{state.length}
+      </div>
+    </div>
+  );
+};
+```
+
+---
+
 ## code-surfer v3
 
 [code-surfer v3 PR](https://github.com/pomber/code-surfer/pull/58)
 
 ---
 
+## Diff 機能
+
+---
+
 <CodeSurferLayout>
 
-```js title="タイトルつけれる"
-function hello(name) {
-  console.log("hello " + name);
+```js title="class component から function componentへ"
+import React from 'react'
+
+class Counter extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      count: 0
+    }
+  }
+
+  increment () {
+    this.setState({this.state.count+1})
+  }
+
+  render() {
+    return (
+      <div>
+        <div>count: {this.state.count}</div>
+        <button onClick={()=> {this.increment()}}>Click Me!</button>
+      </div>
+    )
+  }
 }
 
-hello("world");
 ```
 
 ```js 1:3 subtitle="字幕も今まで通りつけれる"
@@ -128,3 +202,21 @@ hello("world");
 </CodeSurferLayout>
 
 ---
+
+## Presentation Mode
+
+---
+
+Foo
+
+---
+
+### 注意点
+
+- まだ Alpha 版 (2019/08/30 現在)
+- 3.0.0-alpha.1
+- 作者が一から作り直してるので, v1 を使っていた場合、 Breaking Change しかない
+
+---
+
+ありがとうございました。
