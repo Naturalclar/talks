@@ -1,6 +1,11 @@
 import Code from "mdx-code";
 import { Notes, Head } from "mdx-deck";
-import { Avatar, Profile, StepsDemo } from "@naturalclar/slides-components";
+import {
+  Avatar,
+  Profile,
+  StepsDemo,
+  DeckState
+} from "@naturalclar/slides-components";
 import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
 export { dracula as theme } from "code-surfer";
 
@@ -64,6 +69,12 @@ export { dracula as theme } from "code-surfer";
 
 ## useSteps
 
+<Notes>
+  追加されたAPIの一つ。
+  今までもAppearと言うComponentでスライドの要素を一つ一つ出していくことは可能でしたが、
+  一つのページ内でもっと動きをつけたい時に使用できます。
+</Notes>
+
 ---
 
 ```jsx
@@ -90,6 +101,11 @@ export default props => {
 ---
 
 ## useDeck
+
+<Notes>
+  useDeckは表示しているDeckの状態を管理します。
+  創ページ数や現在のページなどを取得することが出来るので、これを使って、現ページのおしゃれな表示をさせることができます。
+</Notes>
 
 ---
 
