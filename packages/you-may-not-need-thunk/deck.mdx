@@ -1,0 +1,705 @@
+import Code from "mdx-code";
+import { Notes, Head } from "mdx-deck";
+import {
+  Avatar,
+  Meta,
+  Profile,
+  StepsDemo,
+  DeckState
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+
+<Head>
+  <Meta
+    title="You may not need redux-thunk"
+    description="LT slide for Ginza.js #4"
+    publishedAt={new Date("2019-08-29").toISOString()}
+    host="https://you-may-not-need-thunk.naturalclar.now.sh"
+  />
+</Head>
+
+## You may not need redux-thunk
+
+[Ginza.js #4](https://ginzajs.connpass.com/event/141436/)
+@naturalclar
+
+<Notes>
+  この発表スライドは、先程、TwitterにHashtagをつけて投稿したので、そちらからも、確認できます。
+</Notes>
+
+---
+
+## About Me
+
+<Avatar />
+<Profile />
+
+<Notes>
+  まずは自己紹介です。Jesseと申します。アメリカ人です。
+  去年の9月に日本に引っ越してきました。 CureAppという会社で主にReact Native と
+  TypeScript を扱った医療系のアプリを開発しています。
+</Notes>
+
+---
+
+## redux と非同期処理
+
+<Notes>
+
+</Notes>
+
+---
+
+### たとえばこんなユースケース
+
+- ログインした時に API を叩いて、
+  - 返ってきた Auth 情報を store に保持する。
+- ページを開いた時に API を叩いて、
+  - 返ってきた Response を store に保持する。
+
+---
+
+### たとえばこんなユースケース
+
+- サーバのレスポンスを待つ必要がある
+- その間ユーザの行動をブロックしたくない
+- 非同期で行おう
+
+---
+
+### 解決策
+
+- redux-thunk
+- redux-saga
+
+---
+
+### redux-thunk
+
+- action として関数を受け取れる Middleware。
+- dispatch と getState を使って複数の処理が行える。
+- 非同期処理もモーマンタイ。
+
+---
+
+### redux-saga
+
+- † saga のとてもわかりやすい説明 †。
+- 心の目で感じて。
+- 複雑なビジネスロジックに対応可能。
+- 非同期処理ができる。
+
+---
+
+## redux-thunk 実装例
+
+---
+
+<CodeSurferLayout>
+
+```ts subtitle="fooReducer.ts"
+type FooState = {
+  loadng: boolean,
+  list: Item[],
+  error: string
+}
+
+const initialState:FooState  = {
+  loading: false,
+  list: [],
+  error: string
+}
+
+export const fooReducer = (state:FooState = initialState, action:FooAction) => {
+  switch(action.type) {
+    case: 'FOO_START':
+      return { ...state, loading: true}
+    case: 'FOO_SUCCESS':
+      return { ...state, loading: false, list: action.result}
+    case: 'FOO_FAILED':
+      return { ...state, loading: false, error: action.error}
+    default:
+      return state;
+  }
+}
+```
+
+```ts 1:5 subtitle="こんなStateが入ります"
+type FooState = {
+  loadng: boolean, // 読込中を表示するフラグ
+  list: Item[], // 非同期処理が終わったあと表示するアイテム
+  error: string // 取得中にエラーが起きたら表示する文言
+}
+
+const initialState:FooState  = {
+  loading: false,
+  list: [],
+  error: string
+}
+
+export const fooReducer = (state:FooState = initialState, action:FooAction) => {
+  switch(action.type) {
+    case: 'FOO_START':
+      return { ...state, loading: true}
+    case: 'FOO_SUCCESS':
+      return { ...state, loading: false, list: action.result}
+    case: 'FOO_FAILED':
+      return { ...state, loading: false, error: action.error}
+    default:
+      return state;
+  }
+}
+```
+
+```ts 13:25 subtitle="こういうActionを想定しています"
+type FooState = {
+  loadng: boolean, // 読込中を表示するフラグ
+  list: Item[], // 非同期処理が終わったあと表示するアイテム
+  error: string // 取得中にエラーが起きたら表示する文言
+}
+
+const initialState:FooState  = {
+  loading: false,
+  list: [],
+  error: string
+}
+
+export const fooReducer = (state:FooState = initialState, action:FooAction) => {
+  switch(action.type) {
+    case: 'FOO_START': // 非同期処理が始める時LoadingをTrueにする
+      return { ...state, loading: true}
+    case: 'FOO_SUCCESS': // 非同期処理が成功したら結果をStoreに入れる
+      return { ...state, loading: false, list: action.result}
+    case: 'FOO_FAILED': // 非同期処理が失敗したらエラーを表示させる
+      return { ...state, loading: false, error: action.error}
+    default:
+      return state;
+  }
+}
+```
+
+```ts subtitle="fooAction.ts"
+export const fooAction = (): ThunkAction => async (dispatch: Dispatch) => {
+  dispatch({ type: "FOO_START" });
+  try {
+    const result = await fetch("/getFoo");
+    dispatch({ type: "FOO_SUCCESS", result });
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: "FOO_FAILED", error: e.message });
+  }
+};
+```
+
+```ts 2:3 subtitle="Loading開始"
+export const fooAction = (): ThunkAction => async (dispatch: Dispatch) => {
+  // 非同期処理を開始するため、状態をLoadingにする
+  dispatch({ type: "FOO_START" });
+  try {
+    const result = await fetch("/getFoo");
+    dispatch({ type: "FOO_SUCCESS", result });
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: "FOO_FAILED", error: e.message });
+  }
+};
+```
+
+```ts 4:11 subtitle="非同期処理開始"
+export const fooAction = (): ThunkAction => async (dispatch: Dispatch) => {
+  // 非同期処理を開始するため、状態をLoadingにする
+  dispatch({ type: "FOO_START" });
+  // 非同期処理を行う
+  try {
+    const result = await fetch("/getFoo");
+    dispatch({ type: "FOO_SUCCESS", result });
+  } catch (e) {
+    console.error(e);
+    dispatch({ type: "FOO_FAILED", error: e.message });
+  }
+};
+```
+
+```ts 6:12 subtitle="非同期処理後処理"
+export const fooAction = (): ThunkAction => async (dispatch: Dispatch) => {
+  // 非同期処理を開始するため、状態をLoadingにする
+  dispatch({ type: "FOO_START" });
+  // 非同期処理を行う
+  try {
+    const result = await fetch("/getFoo");
+    // 成功したら結果をreduxに反映し、Loading状態を外す
+    dispatch({ type: "FOO_SUCCESS", result });
+  } catch (e) {
+    console.error(e);
+    // エラーが発生したらエラーメッセージを表示させ、Loading状態を外す
+    dispatch({ type: "FOO_FAILED", error: e.message });
+  }
+};
+```
+
+</CodeSurferLayout>
+
+---
+
+### `redux-thunk` のつらみ
+
+- Action が多すぎる。
+- Loading を reducer 持ちたくない。
+- 処理を共通化したい。
+
+<Notes>global stateに保持すべきはユーザが関心のある情報のみ</Notes>
+
+---
+
+### やりたいこと
+
+- Action の発火は必要な状態が変わる一回に済ませたい。
+- Loading は redux 外で管理したい。
+- 非同期処理の共通部分を使いまわしたい。
+
+<Notes></Notes>
+
+---
+
+## 解決策
+
+---
+
+### custom hooks
+
+- loading などは useState で持つ
+- react-redux hooks api を活用する
+- dispatch は非同期処理が終わった時のみ使う
+
+<Notes>react-redux v7.1 からhooks apiが導入された</Notes>
+
+---
+
+## 実装例
+
+---
+
+<CodeSurferLayout>
+
+```ts subtitle="useFoo.ts"
+import { useState, useCallback } form 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { State, FooAction } from './types'
+
+export const useFoo = () => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const items = useSelector((state:State)=> state.foo.items)
+  const dispatch = useDispatch<Dispatch<FooAction>>()
+
+  const getFoo = useCallback(async () => {
+    setLoading(true)
+    try {
+    const result = await fetch('/getFoo')
+        setLoading(false)
+        dispatch({type: 'FOO_SUCCESS', result})
+    } catch (e) {
+        setLoading(false)
+        setError(e.message)
+      }
+    },[loading, error, items])
+
+  return [items, getFoo, loading, error]
+}
+```
+
+```ts 6:7 subtitle="loading, errorはhooksのstateに持つ"
+import { useState, useCallback } form 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { State, FooAction } from './types'
+
+export const useFoo = () => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const items = useSelector((state:State)=> state.foo.items)
+  const dispatch = useDispatch<Dispatch<FooAction>>()
+
+  const getFoo = useCallback(async () => {
+    setLoading(true)
+    try {
+    const result = await fetch('/getFoo')
+        setLoading(false)
+        dispatch({type: 'FOO_SUCCESS', result})
+    } catch (e) {
+        setLoading(false)
+        setError(e.message)
+      }
+    },[loading, error, items])
+
+  return [items, getFoo, loading, error]
+}
+```
+
+```ts 8:9 subtitle="react-reduxのhooks apiで必要なものを持ってくる"
+import { useState, useCallback } form 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { State, FooAction } from './types'
+
+export const useFoo = () => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const items = useSelector((state:State)=> state.foo.items)
+  const dispatch = useDispatch<Dispatch<FooAction>>()
+
+  const getFoo = useCallback(async () => {
+    setLoading(true)
+    try {
+    const result = await fetch('/getFoo')
+        setLoading(false)
+        dispatch({type: 'FOO_SUCCESS', result})
+    } catch (e) {
+        setLoading(false)
+        setError(e.message)
+      }
+    },[loading, error, items])
+
+  return [items, getFoo, loading, error]
+}
+```
+
+```ts 11:21 subtitle="非同期処理をhooksの中に持つ"
+import { useState, useCallback } form 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { State, FooAction } from './types'
+
+export const useFoo = () => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const items = useSelector((state:State)=> state.foo.items)
+  const dispatch = useDispatch<Dispatch<FooAction>>()
+
+  const getFoo = useCallback(async () => {
+    setLoading(true)
+    try {
+    const result = await fetch('/getFoo')
+        setLoading(false)
+        dispatch({type: 'FOO_SUCCESS', result})
+    } catch (e) {
+        setLoading(false)
+        setError(e.message)
+      }
+    },[loading, error, items])
+
+  return [items, getFoo, loading, error]
+}
+```
+
+```ts subtitle="storeに保持する必要無い箇所はhooksで完結させる"
+import { useState, useCallback } form 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { State, FooAction } from './types'
+
+export const useFoo = () => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const items = useSelector((state:State)=> state.foo.items)
+  const dispatch = useDispatch<Dispatch<FooAction>>()
+
+  const getFoo = useCallback(async () => {
+    setLoading(true) // 非同期処理を開始する
+    try {
+    const result = await fetch('/getFoo')
+        setLoading(false) // 非同期処理が成功
+        dispatch({type: 'FOO_SUCCESS', result})
+    } catch (e) {
+        setLoading(false) // 非同期処理が失敗
+        setError(e.message) // エラーメッセージを表示する
+      }
+    },[loading, error, items])
+
+  return [items, getFoo, loading, error]
+}
+```
+
+```ts subtitle="storeに持たせるものだけdispatchする"
+import { useState, useCallback } form 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { State, FooAction } from './types'
+
+export const useFoo = () => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const items = useSelector((state:State)=> state.foo.items)
+  const dispatch = useDispatch<Dispatch<FooAction>>()
+
+  const getFoo = useCallback(async () => {
+    setLoading(true) // 非同期処理を開始する
+    try {
+    const result = await fetch('/getFoo')
+        setLoading(false) // 非同期処理が成功
+        dispatch({type: 'FOO_SUCCESS', result}) // 必要な情報だけdispatchする
+    } catch (e) {
+        setLoading(false) // 非同期処理が失敗
+        setError(e.message) // エラーメッセージを表示する
+      }
+    },[loading, error, items])
+
+  return [items, getFoo, loading, error]
+}
+```
+
+```ts 23 subtitle="componentが関心を持つものを返す"
+import { useState, useCallback } form 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { State, FooAction } from './types'
+
+export const useFoo = () => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const items = useSelector((state:State)=> state.foo.items)
+  const dispatch = useDispatch<Dispatch<FooAction>>()
+
+  const getFoo = useCallback(async () => {
+    setLoading(true) // 非同期処理を開始する
+    try {
+    const result = await fetch('/getFoo')
+        setLoading(false) // 非同期処理が成功
+        dispatch({type: 'FOO_SUCCESS', result}) // 必要な情報だけdispatchする
+    } catch (e) {
+        setLoading(false) // 非同期処理が失敗
+        setError(e.message) // エラーメッセージを表示する
+      }
+    },[loading, error, items])
+
+  return [items, getFoo, loading, error]
+}
+```
+
+```ts subtitle="reducerもかなりシンプルにできます"
+// fooReducer.ts
+type FooState = {
+  list: Item[],
+}
+
+const initialState:FooState  = {
+  list: [],
+}
+
+export const fooReducer = (state:FooState = initialState, action:FooAction) => {
+  switch(action.type) {
+    case: 'FOO_SUCCESS':
+      return { ...state, list: action.result}
+    default:
+      return state;
+  }
+}
+```
+
+```tsx subtitle="Componentでの使用例"
+// FooList.tsx
+import React, { useEffect } from "react";
+import { useFoo } from "./useFoo";
+
+export const FooList = () => {
+  const [items, getFoo, loading, error] = useFoo();
+  useEffect(() => {
+    getFoo();
+  }, []);
+
+  if (loading) {
+    return <p>読込中…</p>;
+  }
+
+  return (
+    <div>
+      {error ? <p>{error}</p> : null}
+      <ul>
+        {items.map(item => {
+          return <li>{item.contents}</li>;
+        })}
+      </ul>
+    </div>
+  );
+};
+```
+
+```tsx 6 subtitle="customHooksから必要な値を取得"
+// FooList.tsx
+import React, { useEffect } from "react";
+import { useFoo } from "./useFoo";
+
+export const FooList = () => {
+  const [items, getFoo, loading, error] = useFoo();
+  useEffect(() => {
+    getFoo();
+  }, []);
+
+  if (loading) {
+    return <p>読込中…</p>;
+  }
+
+  return (
+    <div>
+      {error ? <p>{error}</p> : null}
+      <ul>
+        {items.map(item => {
+          return <li>{item.contents}</li>;
+        })}
+      </ul>
+    </div>
+  );
+};
+```
+
+```tsx 7:9 subtitle="mount時に一覧を取得"
+// FooList.tsx
+import React, { useEffect } from "react";
+import { useFoo } from "./useFoo";
+
+export const FooList = () => {
+  const [items, getFoo, loading, error] = useFoo();
+  useEffect(() => {
+    getFoo();
+  }, []);
+
+  if (loading) {
+    return <p>読込中…</p>;
+  }
+
+  return (
+    <div>
+      {error ? <p>{error}</p> : null}
+      <ul>
+        {items.map(item => {
+          return <li>{item.contents}</li>;
+        })}
+      </ul>
+    </div>
+  );
+};
+```
+
+```tsx 11:13 subtitle="loading中ならその旨を表示"
+// FooList.tsx
+import React, { useEffect } from "react";
+import { useFoo } from "./useFoo";
+
+export const FooList = () => {
+  const [items, getFoo, loading, error] = useFoo();
+  useEffect(() => {
+    getFoo();
+  }, []);
+
+  if (loading) {
+    return <p>読込中…</p>;
+  }
+
+  return (
+    <div>
+      {error ? <p>{error}</p> : null}
+      <ul>
+        {items.map(item => {
+          return <li>{item.contents}</li>;
+        })}
+      </ul>
+    </div>
+  );
+};
+```
+
+```tsx 18:22 subtitle="fetchが終われば一覧を表示"
+// FooList.tsx
+import React, { useEffect } from "react";
+import { useFoo } from "./useFoo";
+
+export const FooList = () => {
+  const [items, getFoo, loading, error] = useFoo();
+  useEffect(() => {
+    getFoo();
+  }, []);
+
+  if (loading) {
+    return <p>読込中…</p>;
+  }
+
+  return (
+    <div>
+      {error ? <p>{error}</p> : null}
+      <ul>
+        {items.map(item => {
+          return <li>{item.contents}</li>;
+        })}
+      </ul>
+    </div>
+  );
+};
+```
+
+```tsx 17 subtitle="errorがあれば表示"
+// FooList.tsx
+import React, { useEffect } from "react";
+import { useFoo } from "./useFoo";
+
+export const FooList = () => {
+  const [items, getFoo, loading, error] = useFoo();
+  useEffect(() => {
+    getFoo();
+  }, []);
+
+  if (loading) {
+    return <p>読込中…</p>;
+  }
+
+  return (
+    <div>
+      {error ? <p>{error}</p> : null}
+      <ul>
+        {items.map(item => {
+          return <li>{item.contents}</li>;
+        })}
+      </ul>
+    </div>
+  );
+};
+```
+
+</CodeSurferLayout>
+
+---
+
+### まとめ
+
+#### customHooks を使うことで...
+
+- 不必要な情報を store に保持せずにすむ
+- ロジックと見た目を分離できる
+- thunk, saga を使う必要がなくなる！
+
+<Notes>
+  前の例では, useEffect の部分も customHooks
+  に寄せることで、完全にロジックと見た目を分離できます。
+</Notes>
+
+---
+
+# You may not need thunk
+
+---
+
+### タイトル回収
+
+---
+
+# may customHooks be with you
+
+---
+
+### スターウォーズ見たことない
+
+---
+
+### 知見募集
+
+- redux-thunk じゃないと XXX ができない
+- redux-saga じゃないと YYY ができない！
+- みたいなのがあったら教えてください。
+
+---
+
+ありがとうございました。
