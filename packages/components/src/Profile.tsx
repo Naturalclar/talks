@@ -2,7 +2,7 @@ import React from "react";
 
 const styles = {
   line: {
-    height: 1,
+    height: 2,
     width: "100%",
     backgroundColor: "white"
   },
