@@ -1,0 +1,489 @@
+import Code from "mdx-code";
+import { Notes, Head } from "mdx-deck";
+import { Avatar, Meta, Profile } from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+
+<Head>
+  <Meta
+    title="visual-regression-test-with-react-native"
+    description="Enter description here"
+    publishedAt={"2019-09-03T04:54:03.127Z"}
+    host="https://visual-regression-test-with-react-native.naturalclar.now.sh"
+  />
+</Head>
+
+## visual-regression test with react native
+
+[RNTokyo #6](https://r-n.connpass.com/event/141558/)
+@naturalclar
+
+---
+
+## About Me
+
+<Avatar />
+<Profile />
+
+<Notes>
+  まずは自己紹介です。Jesseと申します。アメリカ人です。
+  去年の9月に日本に引っ越してきました。 CureAppという会社で主にReact Native と
+  TypeScript を扱った医療系のアプリを開発しています。
+</Notes>
+
+---
+
+# visual-regression test
+
+<Notes>
+  今回の議題はvisual regression testについてです。
+  質問：この中で、Visual Regression Test
+  を聞いたことあると言う方はどれだけいますか？
+  つづけて質問：この中で、Visual Regression Test
+  を実施していると言う方はどれだけいますか？
+
+</Notes>
+
+---
+
+### visual-regression test とは
+
+- UI の差分検出の自動化
+
+---
+
+### why visual-regression test?
+
+- 意図しない UI の変更を防ぐ
+- 大量の Component を目視するのは現実的じゃない
+- レビューの簡略化
+
+---
+
+## 変更に自信が持てる！
+
+---
+
+## 前提知識
+
+- storybook と react-native-web を使った Component 一覧を作成しています
+
+<div>
+  <a
+    href="https://storybook-with-react-native.naturalclar.now.sh/"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      flexDirection: "column",
+      justifyContent: "center"
+    }}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <div style={{ border: "2px solid white", width: "30%" }}>
+      <img src={require("file-loader!./ref-slide.png")} />
+    </div>
+    <p>Storybook with react-native</p>
+  </a>
+</div>
+
+---
+
+### storybook だけでやっていくつらみ
+
+- Component が増えすぎた
+- 全部の Component をいちいち見ていくのは無理
+- 何が追加されたのかパッと見わからない
+
+---
+
+# 解決策
+
+---
+
+## reg-suit
+
+<a href="https://github.com/reg-viz/reg-suit" target="_blank"
+rel="noopener noreferrer">
+
+<img src={require("file-loader!./reg-suit.png")} />
+</a>
+
+---
+
+### reg-suit
+
+- 画像の diff を検知してレポートしてくれるツール
+- 新規追加、または変更がある箇所を一番上にもってくる
+- PR に対してコメントしてくれる
+
+<img src={require("file-loader!./reg-report.png")} width="50%" />
+
+---
+
+### how to use
+
+- storybook の screenshot を取得する
+- 選択肢は [zisui](https://github.com/Quramy/zisui)、 [storybook-chrome-screenshot](https://github.com/tsuyoshiwada/storybook-chrome-screenshot) など
+- `npx reg-suit init` に沿ってすすめる
+
+---
+
+### how to use
+
+- screenshots の保存先は aws s3 や circle ci artifact など
+- ci で起動するようにする
+- github actions でやろうとしたけど断念した
+
+---
+
+<CodeSurferLayout>
+
+```yml subtitle=".circleci/config.yml"
+version: 2.1
+
+commands:
+  install_fonts:
+    steps:
+      - run:
+          name: Prepare Japanese fonts
+          command: |
+            mkdir /tmp/fonts
+            cd /tmp/fonts
+            wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
+            unzip NotoSansCJKjp-hinted.zip
+            mkdir -p ~/.fonts
+            cp *otf ~/.fonts
+            fc-cache -f -v
+            fc-match --all
+  visreg_test:
+    steps:
+      - run:
+          name: "Run Visual-Regression test"
+          command: |
+            yarn zisui:all
+            yarn reg-suit
+
+  setup_and_test:
+    steps:
+      - checkout
+      - install_fonts
+      - yarn
+      - type_check
+      - lint
+      - build_storybook
+      - store_artifacts:
+          path: storybook-static
+      - run:
+          name: "Report storybook URL to Pull Request"
+          command: yarn klank
+      - visreg_test
+jobs:
+  test:
+    docker:
+      - image: circleci/node:dubnium-browsers
+    working_directory: ~/app
+    steps:
+      - setup_and_test
+
+workflows:
+  version: 2.1
+  test_workflow:
+    jobs:
+      - test
+```
+
+```yml 4:16 subtitle="日本語FontのInstallコマンド(文字化け対策)"
+version: 2.1
+
+commands:
+  install_fonts:
+    steps:
+      - run:
+          name: Prepare Japanese fonts
+          command: |
+            mkdir /tmp/fonts
+            cd /tmp/fonts
+            wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
+            unzip NotoSansCJKjp-hinted.zip
+            mkdir -p ~/.fonts
+            cp *otf ~/.fonts
+            fc-cache -f -v
+            fc-match --all
+  visreg_test:
+    steps:
+      - run:
+          name: "Run Visual-Regression test"
+          command: |
+            yarn zisui:all
+            yarn reg-suit
+
+  setup_and_test:
+    steps:
+      - checkout
+      - install_fonts
+      - yarn
+      - type_check
+      - lint
+      - build_storybook
+      - store_artifacts:
+          path: storybook-static
+      - run:
+          name: "Report storybook URL to Pull Request"
+          command: yarn klank
+      - visreg_test
+jobs:
+  test:
+    docker:
+      - image: circleci/node:dubnium-browsers
+    working_directory: ~/app
+    steps:
+      - setup_and_test
+
+workflows:
+  version: 2.1
+  test_workflow:
+    jobs:
+      - test
+```
+
+<Notes>説明の為、他のCommandは諸々端折ってます。</Notes>
+
+```yml 17:23 subtitle="zisui, reg-suitの実行コマンド"
+version: 2.1
+
+commands:
+  install_fonts:
+    steps:
+      - run:
+          name: Prepare Japanese fonts
+          command: |
+            mkdir /tmp/fonts
+            cd /tmp/fonts
+            wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
+            unzip NotoSansCJKjp-hinted.zip
+            mkdir -p ~/.fonts
+            cp *otf ~/.fonts
+            fc-cache -f -v
+            fc-match --all
+  visreg_test:
+    steps:
+      - run:
+          name: "Run Visual-Regression test"
+          command: |
+            yarn zisui:all
+            yarn reg-suit
+
+  setup_and_test:
+    steps:
+      - checkout
+      - install_fonts
+      - yarn
+      - type_check
+      - lint
+      - build_storybook
+      - store_artifacts:
+          path: storybook-static
+      - run:
+          name: "Report storybook URL to Pull Request"
+          command: yarn klank
+      - visreg_test
+jobs:
+  test:
+    docker:
+      - image: circleci/node:dubnium-browsers
+    working_directory: ~/app
+    steps:
+      - setup_and_test
+
+workflows:
+  version: 2.1
+  test_workflow:
+    jobs:
+      - test
+```
+
+```yml 25:38 subtitle="CIの実行"
+version: 2.1
+
+commands:
+  install_fonts:
+    steps:
+      - run:
+          name: Prepare Japanese fonts
+          command: |
+            mkdir /tmp/fonts
+            cd /tmp/fonts
+            wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
+            unzip NotoSansCJKjp-hinted.zip
+            mkdir -p ~/.fonts
+            cp *otf ~/.fonts
+            fc-cache -f -v
+            fc-match --all
+  visreg_test:
+    steps:
+      - run:
+          name: "Run Visual-Regression test"
+          command: |
+            yarn zisui:all
+            yarn reg-suit
+
+  setup_and_test:
+    steps:
+      - checkout
+      - install_fonts
+      - yarn
+      - type_check
+      - lint
+      - build_storybook
+      - store_artifacts:
+          path: storybook-static
+      - run:
+          name: "Report storybook URL to Pull Request"
+          command: yarn klank
+      - visreg_test
+jobs:
+  test:
+    docker:
+      - image: circleci/node:dubnium-browsers
+    working_directory: ~/app
+    steps:
+      - setup_and_test
+
+workflows:
+  version: 2.1
+  test_workflow:
+    jobs:
+      - test
+```
+
+```yml 25:38
+version: 2.1
+
+commands:
+  install_fonts:
+    steps:
+      - run:
+          name: Prepare Japanese fonts
+          command: |
+            mkdir /tmp/fonts
+            cd /tmp/fonts
+            wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
+            unzip NotoSansCJKjp-hinted.zip
+            mkdir -p ~/.fonts
+            cp *otf ~/.fonts
+            fc-cache -f -v
+            fc-match --all
+  visreg_test:
+    steps:
+      - run:
+          name: "Run Visual-Regression test"
+          command: |
+            yarn zisui:all
+            yarn reg-suit
+
+  setup_and_test:
+    steps:
+      - checkout
+      - install_fonts # FontのInstall
+      - yarn
+      - type_check
+      - lint
+      - build_storybook
+      - store_artifacts:
+          path: storybook-static
+      - run:
+          name: "Report storybook URL to Pull Request"
+          command: yarn klank
+      - visreg_test # Visual Regression の実行
+jobs:
+  test:
+    docker:
+      - image: circleci/node:dubnium-browsers
+    working_directory: ~/app
+    steps:
+      - setup_and_test
+
+workflows:
+  version: 2.1
+  test_workflow:
+    jobs:
+      - test
+```
+
+```yml 42 subtitle="imageはbrowserが入っているimageを使用"
+version: 2.1
+
+commands:
+  install_fonts:
+    steps:
+      - run:
+          name: Prepare Japanese fonts
+          command: |
+            mkdir /tmp/fonts
+            cd /tmp/fonts
+            wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
+            unzip NotoSansCJKjp-hinted.zip
+            mkdir -p ~/.fonts
+            cp *otf ~/.fonts
+            fc-cache -f -v
+            fc-match --all
+  visreg_test:
+    steps:
+      - run:
+          name: "Run Visual-Regression test"
+          command: |
+            yarn zisui:all
+            yarn reg-suit
+
+  setup_and_test:
+    steps:
+      - checkout
+      - install_fonts # FontのInstall
+      - yarn
+      - type_check
+      - lint
+      - build_storybook
+      - store_artifacts:
+          path: storybook-static
+      - run:
+          name: "Report storybook URL to Pull Request"
+          command: yarn klank
+      - visreg_test # Visual Regression の実行
+jobs:
+  test:
+    docker:
+      - image: circleci/node:dubnium-browsers
+    working_directory: ~/app
+    steps:
+      - setup_and_test
+
+workflows:
+  version: 2.1
+  test_workflow:
+    jobs:
+      - test
+```
+
+</CodeSurferLayout>
+
+---
+
+## Demo
+
+- [expo-typescript-starter](https://github.com/Naturalclar/expo-typescript-starter)
+
+---
+
+### 注意点
+
+- react-native-web で Render されたものなので、実機との差異は発生する。
+- modal など、react-native-web で動作がおかしい部分は確認できない。
+
+---
+
+# 快適な Visual Regression Test を！
+
+---
+
+# ありがとうございました。
