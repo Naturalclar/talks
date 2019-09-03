@@ -35,18 +35,21 @@ export { dracula as theme } from "code-surfer";
 
 ---
 
-## storybook とは :book:
+## storybook :book:
 
 ---
 
-- Component を表示して、見た目が期待通りであるかテストする為のツール
+## storybook とは
+
+- UI 用 のテストツール
+- Component を表示して、見た目が期待通りであるかテストする
 - React, React-Native, Vue 等いろんなライブラリで使える
 
 ---
 
 ### react-native 版の storybook
 
-- `@storybook/react-native`
+- [@storybook/react-native](https://storybook.js.org/docs/guides/guide-react-native/)
 
 ---
 
@@ -68,12 +71,14 @@ export { dracula as theme } from "code-surfer";
 
 ---
 
-## react-native-web
+## [react-native for web](https://github.com/necolas/react-native-web)
 
 ---
 
+### react-native for web
+
 - react-native 特有の`<View>`や`<Text>`等のコンポーネントを Web で表示させる
-- Twitter Lite で使用されている
+- Web 版 Twitter（旧 Twitter Lite) で採用されている
 
 ---
 
@@ -81,11 +86,22 @@ export { dracula as theme } from "code-surfer";
 
 ---
 
-- `.storybook`に`webpack.config.js`をいれる
-- alias を使って`react-native`を`import`してる箇所を`react-native-web`に変換する
-- `@storybook/react`の方を使用
+### storybook with react-native-web
+
+- [Example](https://expo-storybook-web-example.naturalclar.now.sh)
 
 ---
+
+### how it works
+
+- react-native-web を使う為に webpack.config の書き換えが必要
+- `.storybook`に`webpack.config.js`をいれる
+- alias を使って`react-native`を`import`してる箇所を`react-native-web`に変換する
+- `@storybook/react-native` ではなく、`@storybook/react`の方を使用
+
+---
+
+## how to set up
 
 <CodeSurferLayout>
 
