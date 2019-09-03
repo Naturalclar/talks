@@ -1,0 +1,228 @@
+import Code from "mdx-code";
+import { Notes, Head } from "mdx-deck";
+import { Avatar, Meta, Profile } from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+
+<Head>
+  <Meta
+    title="storybook-with-react-native"
+    description="Enter description here"
+    publishedAt={"2019-02-21T04:25:03.331Z"}
+    host="https://storybook-with-react-native.naturalclar.now.sh"
+  />
+</Head>
+
+## Storybook with react-native
+
+[RNStartup #2](https://r-n.connpass.com/event/117895/)
+@naturalclar
+
+<Notes></Notes>
+
+---
+
+## About Me
+
+<Avatar />
+<Profile />
+
+<Notes>
+  まずは自己紹介です。Jesseと申します。アメリカ人です。
+  去年の9月に日本に引っ越してきました。 CureAppという会社で主にReact Native と
+  TypeScript を扱った医療系のアプリを開発しています。
+</Notes>
+
+---
+
+## storybook とは :book:
+
+---
+
+- Component を表示して、見た目が期待通りであるかテストする為のツール
+- React, React-Native, Vue 等いろんなライブラリで使える
+
+---
+
+### react-native 版の storybook
+
+- `@storybook/react-native`
+
+---
+
+### RN 版 Storybook の利点 :tada:
+
+- 実機での見た目の確認が行える
+- Expo アプリとしてデザイナーチームに共有できる
+
+---
+
+### RN 版 Storybook の欠点 :rain_cloud:
+
+- エミュレータの立ち上げに時間がかかる
+- Port を取られるので実行中、アプリの方の動作確認が行えない
+
+---
+
+## もっと効率良く行えないか？ :thinking_face:
+
+---
+
+## react-native-web
+
+---
+
+- react-native 特有の`<View>`や`<Text>`等のコンポーネントを Web で表示させる
+- Twitter Lite で使用されている
+
+---
+
+### react-native の storybook を web で表示させる
+
+---
+
+- `.storybook`に`webpack.config.js`をいれる
+- alias を使って`react-native`を`import`してる箇所を`react-native-web`に変換する
+- `@storybook/react`の方を使用
+
+---
+
+<CodeSurferLayout>
+
+```js subtitle=".storybook/webpack.config.js"
+module.exports = ({ config }) => {
+  config.module.rules.push({
+    test: /\.tsx?$/,
+    exclude: /node_modules/,
+    use: [
+      {
+        loader: "ts-loader",
+        options: {
+          transpileOnly: true
+        }
+      }
+    ]
+  });
+  // react-native を import している箇所を react-native-web に変換
+  config.resolve.alias["react-native$"] = require.resolve("react-native-web");
+  // .ts, .tsx を含めるように追加
+  config.resolve.extensions.push(".ts", ".tsx");
+};
+```
+
+```js 14:15 subtitle="react-nativeをreact-native-webに変換"
+module.exports = ({ config }) => {
+  config.module.rules.push({
+    test: /\.tsx?$/,
+    exclude: /node_modules/,
+    use: [
+      {
+        loader: "ts-loader",
+        options: {
+          transpileOnly: true
+        }
+      }
+    ]
+  });
+  // react-native を import している箇所を react-native-web に変換
+  config.resolve.alias["react-native$"] = require.resolve("react-native-web");
+  // .ts, .tsx を含めるように追加
+  config.resolve.extensions.push(".ts", ".tsx");
+};
+```
+
+</CodeSurferLayout>
+
+---
+
+## RN-Web 版 Storybook の利点
+
+- エミュレータの起動を待つ必要が無い
+- アプリと Storybook を同時に開ける
+- 静的サイトとして楽に共有できる！
+
+---
+
+## CircleCi Artifacts
+
+---
+
+### Artifacts
+
+- CircleCI が持つ S3 に立てれるサイト
+- build-storybook でビルドした Storybook を格納させる
+- PR に自動的に URL を送るコメントを別途作成
+
+---
+
+### Klank
+
+- https://github.com/Naturalclar/klank
+- PR を送った時に、Artifact への Link をコメントする。
+- 改名予定
+
+---
+
+<CodeSurferLayout>
+
+```yml subtitle=".circleci/config.yml"
+- run:
+    name: "Build Storybook"
+    command: yarn storybook:build
+- store_artifacts:
+    path: storybook-static
+- run:
+    name: "Report storybook URL to Pull Request"
+    command: "klank storybook-static/index.html"
+```
+
+```yml 1:3 subtitle="storybookの作成"
+- run:
+    name: "Build Storybook"
+    command: yarn storybook:build
+- store_artifacts:
+    path: storybook-static
+- run:
+    name: "Report storybook URL to Pull Request"
+    command: "klank storybook-static/index.html"
+```
+
+```yml 4:5 subtitle="circleCIのArtifactに保存"
+- run:
+    name: "Build Storybook"
+    command: yarn storybook:build
+- store_artifacts:
+    path: storybook-static
+- run:
+    name: "Report storybook URL to Pull Request"
+    command: "klank storybook-static/index.html"
+```
+
+```yml 6:8 subtitle="Pull Requestにコメント作成"
+- run:
+    name: "Build Storybook"
+    command: yarn storybook:build
+- store_artifacts:
+    path: storybook-static
+- run:
+    name: "Report storybook URL to Pull Request"
+    command: "klank storybook-static/index.html"
+```
+
+</CodeSurferLayout>
+
+---
+
+## 利点
+
+---
+
+開発タスクを完全に分離できる
+
+- Component の実装
+- Domain 要件の実装
+- Action の実装
+
+---
+
+# ありがとうございました
