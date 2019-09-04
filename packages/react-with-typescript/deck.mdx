@@ -2,7 +2,8 @@ import Code from "mdx-code";
 import { Notes, Head } from "mdx-deck";
 import { Avatar, Meta, Profile } from "@naturalclar/slides-components";
 import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
-export { dracula as theme } from "code-surfer";
+export { vsDark as theme } from "code-surfer";
+import "prismjs/components/prism-tsx";
 
 <Head>
   <Meta
@@ -70,7 +71,7 @@ class Intro extends React.Component<Props, State> {}
 
 <CodeSurferLayout>
 
-```ts subtitle="Intro.tsx"
+```tsx subtitle="Intro.tsx"
 import React from "react";
 
 type Props = {
@@ -95,7 +96,36 @@ const Intro: React.FC<Props> = ({ name, age }: Props) => {
 
 ---
 
-## useEffect
+<CodeSurferLayout>
+
+```tsx subtitle="Intro.tsx"
+import React from "react";
+
+type Props = {
+  name: string;
+  age: number;
+};
+
+type;
+
+const Intro: React.FC<Props> = ({ name, age }: Props) => {
+  return (
+    <p>
+      Hello! My name is {name}, I'm {age} years old.
+    </p>
+  );
+};
+```
+
+</CodeSurferLayout>
+
+---
+
+## useMemo
+
+---
+
+## useContext
 
 ---
 
