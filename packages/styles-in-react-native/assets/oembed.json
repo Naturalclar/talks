@@ -1,0 +1,10 @@
+{
+  "type": "rich",
+  "version": "1.0",
+  "provider_name": "styles-in-react-native.naturalclar.now.sh",
+  "provider_url": "https://styles-in-react-native.naturalclar.now.sh/",
+  "title": "styles-in-react-native",
+  "width": 658,
+  "height": 408,
+  "html": "<iframe style=\"width: 100%; overflow: hidden;\" src=\"https://styles-in-react-native.naturalclar.now.sh/index.html\" width=\"658\" height=\"408\" frameborder=\"0\" scrolling=\"no\" ></iframe>"
+}
