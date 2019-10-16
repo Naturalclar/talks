@@ -1,0 +1,445 @@
+import Code from "mdx-code";
+import { Notes, Head } from "mdx-deck";
+import { Avatar, Meta, Profile } from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="creating-your-own-github-actions"
+    description="Enter description here"
+    publishedAt={"2019-10-16T06:57:59.496Z"}
+    host="https://creating-your-own-github-actions.naturalclar.now.sh"
+  />
+</Head>
+
+## Creating your own github actions
+
+[GitHub Actions Meetup Tokyo β](https://gaugt.connpass.com/event/147220/)
+@naturalclar
+
+<Notes></Notes>
+
+---
+
+## About Me
+
+<Avatar />
+<Profile />
+
+<Notes>
+  まずは自己紹介です。Jesseと申します。アメリカ人です。
+  去年の9月に日本に引っ越してきました。 CureAppという会社で主にReact Native と
+  TypeScript を扱った医療系のアプリを開発しています。
+</Notes>
+
+---
+
+### 今回の対象者
+
+<div style={{ display: "flex", justifyContent: "center" }}>
+  <img src={require("file-loader!./logo-js.png")} width="100" height="100" />
+  <img src={require("file-loader!./logo-ts.png")} width="100" height="100" />
+</div>
+
+- JavaScript, TypeScript を書く人向け
+- Docker を使って、Go, Ruby 等、他の言語でも Actions は作成可能
+
+---
+
+### What I Made
+
+[Issue Labeler](https://github.com/marketplace/actions/issue-labeler)
+
+- 自動的に Label、または Assignee を設定する Action
+- 指定した文字列が Issue タイトルや本文に含まれていたら反応
+
+---
+
+### Example
+
+<div
+  style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}
+>
+  <img src={require("file-loader!./set-label.png")} height="100" />
+  <div style={{ marginBottom: 8 }} />
+  <img src={require("file-loader!./set-assignee.png")} height="100" />
+</div>
+
+---
+
+### How I made it
+
+---
+
+## [actions-toolkit](https://github.com/actions/toolkit)
+
+<div>
+  <div style={{ display: "flex", justifyContent: "center" }}>
+    <img
+      src={require("file-loader!./logo-action-toolkit.png")}
+      widht="200"
+      height="200"
+    />
+  </div>
+</div>
+
+---
+
+<CodeSurferLayout>
+
+```md subtitle="actions-toolkit"
+Consists of
+
+- @actions/core
+- @actions/exec
+- @actions/io
+- @actions/github
+- @actions/tool-cache
+```
+
+```md 3,6 subtitle="Explaining"
+Consists of
+
+- @actions/core
+- @actions/exec
+- @actions/io
+- @actions/github
+- @actions/tool-cache
+```
+
+</CodeSurferLayout>
+
+---
+
+<CodeSurferLayout>
+
+```ts subtitle="@action/core"
+import * as core from "@actions/core";
+```
+
+```ts subtitle="getInput"
+import * as core from "@actions/core";
+
+const myInput = core.getInput("inputName");
+```
+
+```ts subtitle="getInput"
+import * as core from "@actions/core";
+
+const myInput = core.getInput("inputName", { required: true });
+// throws error if required input is not given
+```
+
+```ts subtitle="setOutput"
+import * as core from "@actions/core";
+
+const myInput = core.getInput("inputName", { required: true });
+// throws error if required input is not given
+
+core.setOutput("outputKey", "outputVal");
+// output can be used in other actions as input
+```
+
+```ts subtitle="setSecret"
+import * as core from "@actions/core";
+
+const myInput = core.getInput("inputName", { required: true });
+// throws error if required input is not given
+
+core.setOutput("outputKey", "outputVal");
+// output can be used in other actions as input
+
+core.setSecret("myPassword");
+// set secret variable that can be used with the runner
+```
+
+```ts subtitle="setFailed"
+import * as core from "@actions/core";
+
+const myInput = core.getInput("inputName", { required: true });
+// throws error if required input is not given
+
+core.setOutput("outputKey", "outputVal");
+// output can be used in other actions as input
+
+core.setSecret("myPassword");
+// set secret variable that can be used with the runner
+
+core.setFailed("Action failed with error");
+// end runner with fail status
+```
+
+```ts 1:2 subtitle="@actions/github"
+import * as github from "@actions/github";
+import * as core from "@actions/core";
+```
+
+```ts subtitle="@actions/github"
+import * as github from "@actions/github";
+import * as core from "@actions/core";
+
+async function run() {
+  try {
+    const myToken = core.getInput("myToken");
+
+    const octokit = new github.GitHub(myToken);
+
+    const { data: pullRequest } = await octokit.pulls.get({
+      owner: "octokit",
+      repo: "rest.js",
+      pull_number: 123,
+      mediaType: {
+        format: "diff"
+      }
+    });
+
+    console.log(pullRequest);
+  } catch (err) {
+    core.setFailed(`Action failed with error`);
+  }
+}
+
+run();
+```
+
+```ts 6 subtitle="set github auth token"
+import * as github from "@actions/github";
+import * as core from "@actions/core";
+
+async function run() {
+  try {
+    const myToken = core.getInput("myToken");
+
+    const octokit = new github.GitHub(myToken);
+
+    const { data: pullRequest } = await octokit.pulls.get({
+      owner: "octokit",
+      repo: "rest.js",
+      pull_number: 123,
+      mediaType: {
+        format: "diff"
+      }
+    });
+
+    console.log(pullRequest);
+  } catch (err) {
+    core.setFailed(`Action failed with error`);
+  }
+}
+
+run();
+```
+
+```ts 8 subtitle="initialize github"
+import * as github from "@actions/github";
+import * as core from "@actions/core";
+
+async function run() {
+  try {
+    const myToken = core.getInput("myToken");
+
+    const octokit = new github.GitHub(myToken);
+
+    const { data: pullRequest } = await octokit.pulls.get({
+      owner: "octokit",
+      repo: "rest.js",
+      pull_number: 123,
+      mediaType: {
+        format: "diff"
+      }
+    });
+
+    console.log(pullRequest);
+  } catch (err) {
+    core.setFailed(`Action failed with error`);
+  }
+}
+
+run();
+```
+
+```ts 10:17 subtitle="run github api"
+import * as github from "@actions/github";
+import * as core from "@actions/core";
+
+async function run() {
+  try {
+    const myToken = core.getInput("myToken");
+
+    const octokit = new github.GitHub(myToken);
+
+    const { data: pullRequest } = await octokit.pulls.get({
+      owner: "octokit",
+      repo: "rest.js",
+      pull_number: 123,
+      mediaType: {
+        format: "diff"
+      }
+    });
+
+    console.log(pullRequest);
+  } catch (err) {
+    core.setFailed(`Action failed with error`);
+  }
+}
+
+run();
+```
+
+```ts subtitle="can be used with graphql"
+import * as github from "@actions/github";
+import * as core from "@actions/core";
+
+async function run() {
+  try {
+    const myToken = core.getInput("myToken");
+
+    const octokit = new github.GitHub(myToken);
+
+    const { lastIssues } = await octokit.graphql(`query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
+    repository(owner:$owner, name:$repo) {
+      issues(last:$num) {
+        edges {
+          node {
+            title
+          }
+        }
+      }
+    }
+  }`, {
+    owner: 'octokit',
+    repo: 'graphql.js'
+  }
+})
+
+    console.log(pullRequest);
+  } catch (err) {
+    core.setFailed(`Action failed with error`);
+  }
+}
+
+run();
+```
+
+```ts subtitle="use context to get current repo"
+import * as github from "@actions/github";
+import * as core from "@actions/core";
+
+const context = github.context
+
+async function run() {
+  try {
+    const myToken = core.getInput("myToken");
+
+    const octokit = new github.GitHub(myToken);
+
+    const { lastIssues } = await octokit.graphql(`query lastIssues($owner: String!, $repo: String!, $num: Int = 3) {
+    repository(owner:$owner, name:$repo) {
+      issues(last:$num) {
+        edges {
+          node {
+            title
+          }
+        }
+      }
+    }
+  }`, {
+    ...context.repo,
+  }
+})
+
+    console.log(pullRequest);
+  } catch (err) {
+    core.setFailed(`Action failed with error`);
+  }
+}
+
+run();
+```
+
+</CodeSurferLayout>
+
+---
+
+### action templates
+
+- [JavaScript Template](https://github.com/actions/javascript-action)
+- [TypeScript Template](https://github.com/actions/typescript-action)
+
+<Notes>"Toolkit には必要なpackage, action.yml, testなどが含まれている"</Notes>
+
+---
+
+### action templates
+
+<div style={{ display: "flex", justifyContent: "center" }}>
+  <img src={require("file-loader!./use-this-template.png")} height="200" />
+</div>
+
+---
+
+<CodeSurferLayout>
+
+```yaml subtitle="公開するaction"
+name: "Test Issue Assign"
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: npm install
+      - run: npm run build
+      - uses: ./ #root上のaction.ymlを使用する
+```
+
+```yml subtitle="ローカルのみで使うaction"
+name: "Test Issue Assign"
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: npm install
+      - run: npm run build
+      - uses: Naturalclar/issue-action@v1.0.0 #root上のaction.ymlを使用する
+```
+
+```yml subtitle="ローカルのみで使うaction"
+name: "Test Issue Assign"
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: npm install
+      - run: npm run build
+      - uses: ./ #root上のaction.ymlを使用する
+```
+
+</CodeSurferLayout>
+
+---
+
+### publishing actions
+
+- publish されるものは node_modules も含まれている必要がある
+- typescript、babel で書いていたら、build されたものも必要
+- release branch を切って、`.gitignore`を編集して commit する
+
+---
+
+ありがとうございました。
