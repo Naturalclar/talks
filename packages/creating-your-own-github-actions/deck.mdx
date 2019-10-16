@@ -36,15 +36,23 @@ import "prismjs/components/prism-tsx";
 
 ---
 
-### 今回の対象者
+### How we use CI/CD
+
+- Visual Regression Test: CircleCI
+- Build/Deploy: Bitrise
+- Test/Lint/Typecheck: **Github Actions**
+
+---
+
+### Target Audience
 
 <div style={{ display: "flex", justifyContent: "center" }}>
   <img src={require("file-loader!./logo-js.png")} width="100" height="100" />
   <img src={require("file-loader!./logo-ts.png")} width="100" height="100" />
 </div>
 
-- JavaScript, TypeScript を書く人向け
-- Docker を使って、Go, Ruby 等、他の言語でも Actions は作成可能
+- JavaScript, TypeScript users
+- *Docker can also be used for other languages such as Go/Ruby
 
 ---
 
@@ -52,8 +60,8 @@ import "prismjs/components/prism-tsx";
 
 [Issue Labeler](https://github.com/marketplace/actions/issue-labeler)
 
-- 自動的に Label、または Assignee を設定する Action
-- 指定した文字列が Issue タイトルや本文に含まれていたら反応
+- Automatically set Label or Assignee an Issue
+- Looks for keyword in Issue body or title as a trigger
 
 ---
 
@@ -363,6 +371,10 @@ run();
 
 ---
 
+## So how do I start?
+
+---
+
 ### action templates
 
 - [JavaScript Template](https://github.com/actions/javascript-action)
@@ -380,66 +392,39 @@ run();
 
 ---
 
-<CodeSurferLayout>
+### action templates
 
-```yaml subtitle="公開するaction"
-name: "Test Issue Assign"
-on:
-  issues:
-    types: [opened]
+Contains
+- `action.yml`
+- `example`
+- `test`
+- `lint` (only in JS)
+- `publish instructions`
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - run: npm install
-      - run: npm run build
-      - uses: ./ #root上のaction.ymlを使用する
-```
-
-```yml subtitle="ローカルのみで使うaction"
-name: "Test Issue Assign"
-on:
-  issues:
-    types: [opened]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - run: npm install
-      - run: npm run build
-      - uses: Naturalclar/issue-action@v1.0.0 #root上のaction.ymlを使用する
-```
-
-```yml subtitle="ローカルのみで使うaction"
-name: "Test Issue Assign"
-on:
-  issues:
-    types: [opened]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - run: npm install
-      - run: npm run build
-      - uses: ./ #root上のaction.ymlを使用する
-```
-
-</CodeSurferLayout>
 
 ---
 
 ### publishing actions
 
-- publish されるものは node_modules も含まれている必要がある
-- typescript、babel で書いていたら、build されたものも必要
-- release branch を切って、`.gitignore`を編集して commit する
+- published action requires node_modules to be commited
+- built files using tsc/babel also needs to be commited
+- make a new release branch, comment out `.gitignore` and commit
 
 ---
 
-ありがとうございました。
+## Let's start making actions!
+
+---
+
+### Feature Request
+
+Hosting artifact
+- [upload artifact](https://github.com/actions/upload-artifact)
+  - only downloads zip file
+- Circle CI has it
+- can be used preview webpages
+- helpful for visual regression test
+
+---
+
+# THANK YOU
