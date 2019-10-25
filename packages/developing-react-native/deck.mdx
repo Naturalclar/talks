@@ -1,0 +1,151 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import { Avatar, Meta, Profile } from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="developing-react-native"
+    description="Enter description here"
+    publishedAt={"2019-10-25T10:34:31.152Z"}
+    host="https://developing-react-native.naturalclar.now.sh"
+  />
+</Head>
+
+<a href="https://www.meetup.com/Osaka-Web-Designers-and-Developers-Meetup/events/264050187/">
+  <img src={require("file-loader!./logo-osaka.png")} height="400" />
+</a>
+
+## Efficient react native development
+
+@naturalclar
+
+<Notes></Notes>
+
+---
+
+## About Me
+
+<Avatar />
+<Profile />
+
+<Notes></Notes>
+
+---
+
+### What We Use
+
+<div>
+  <div
+      style={{
+        display: "flex",
+        width: "50vw",
+        justifyContent: "space-around",
+        alignItems: "center"
+      }}
+  >
+    <Appear>
+      <div>
+        <p>Server</p>
+        <img
+          src={require("file-loader!./logo-node.png")}
+          width="200"
+          height="100"
+        />
+      </div>
+    <div>
+      <p>Web App</p>
+      <img
+        src={require("file-loader!./logo-react.png")}
+        width="100"
+        height="100"
+      />
+      <p style={{ margin: 0, fontSize: 24 }}>react</p>
+    </div>
+    <div>
+      <p>Mobile App</p>
+      <img
+        src={require("file-loader!./logo-react.png")}
+        width="100"
+        height="100"
+      />
+      <p style={{ margin: 0, fontSize: 24 }}>react native</p>
+    </div>
+  </Appear>
+</div>
+
+</div>
+
+---
+
+## Everything is JavaScript!
+
+<div>
+  <img src={require("file-loader!./logo-js.png")} width="200" height="200" />
+</div>
+
+---
+
+### ...Well, actually in TypeScript
+
+<div>
+  <img src={require("file-loader!./logo-ts.png")} width="200" height="200" />
+</div>
+
+---
+
+### Benefits
+
+<ul>
+  <Appear>
+    <li> reusable components</li>
+    <li> reusable types</li>
+    <li>
+      <strong>write once, use anywhere</strong>
+    </li>
+  </Appear>
+</ul>
+
+---
+
+## Automation test
+
+<div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+  <Appear>
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <img
+        src={require("file-loader!./logo-storybook.png")}
+        width="100"
+        height="100"
+      />
+      <p>Storybook</p>
+    </div>
+    <img
+      src={require("file-loader!./logo-circleci.png")}
+      width="300"
+      height="150"
+    />
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <img
+        src={require("file-loader!./logo-regsuit.png")}
+        width="100"
+        height="100"
+      />
+      <p>REG-SUIT</p>
+    </div>
+  </Appear>
+</div>
+
+---
+
+## Visual Regression Test
+
+---
+
+## Live Demo
+
+---
+
+THANK YOU
