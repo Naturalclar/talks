@@ -10,7 +10,7 @@ ignore: []
 
 ```markdown
 import Code from "mdx-code";
-import { Notes, Head } from "mdx-deck";
+import { Notes, Head, Appear } from "mdx-deck";
 import {
 Avatar,
 Meta,

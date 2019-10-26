@@ -1,0 +1,274 @@
+import Code from "mdx-code";
+import { Notes, Head } from "mdx-deck";
+import { Avatar, Meta, Profile } from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="style-in-react-native"
+    description="basics of styling in react-native"
+    publishedAt={"2019-10-03T08:04:48.271Z"}
+    host="https://styles-in-react-native.naturalclar.now.sh"
+  />
+</Head>
+
+## react-native における、Style との向き合いかた
+
+[meguro.css #7](https://megurocss.connpass.com/event/145780/)
+@naturalclar
+
+<Notes></Notes>
+
+---
+
+## About Me
+
+<Avatar />
+<Profile />
+
+<Notes>
+  まずは自己紹介です。Jesseと申します。アメリカ人です。
+  去年の9月に日本に引っ越してきました。 CureAppという会社で主にReact Native と
+  TypeScript を扱った医療系のアプリを開発しています。
+</Notes>
+
+---
+
+## [react-native](https://facebook.github.io/react-native/)
+
+---
+
+<img src={require("file-loader!./react-native.png")} />
+
+---
+
+### react-native
+
+- Cross Platform 開発が出来るフレームワーク
+  - iOS、Android 等
+- react を知っていれば似たような記法でかける。
+  - `<div>`や`<p>`などは使わない
+  - `<View>`や`<Text>`など独自のタグを使う
+
+---
+
+<CodeSurferLayout>
+
+```jsx subtitle="Hello World"
+import React from "react";
+import { View, Text } from "react-native";
+
+export const HelloWorld = () => (
+  <View>
+    <Text>Hello World!</Text>
+  </View>
+);
+```
+
+</CodeSurferLayout>
+
+---
+
+## react-native における Style
+
+---
+
+### react-native における Style
+
+- react-native は Web と書き方は似てる
+- CSS ファイルをそのまま使うことはできない
+
+---
+
+## StyleSheet
+
+---
+
+<CodeSurferLayout>
+
+```jsx subtitle="StyleSheet Example"
+import React from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+
+type Props = {
+  isActive: boolean
+};
+
+export const Title = ({ isActive }: Props) => (
+  <View style={styles.container}>
+    <Text style={[styles.title, isActive && styles.activeTitle]} />
+  </View>
+);
+
+const styles = StyleSheet.create({
+  container: {
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: "#d6d7da"
+  },
+  title: {
+    fontSize: 19,
+    fontWeight: "bold"
+  },
+  activeTitle: {
+    color: "red"
+  }
+});
+```
+
+```jsx 14:27 subtitle="StyleSheetを作成する"
+import React from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+
+type Props = {
+  isActive: boolean
+};
+
+export const Title = ({ isActive }: Props) => (
+  <View style={styles.container}>
+    <Text style={[styles.title, isActive && styles.activeTitle]} />
+  </View>
+);
+
+const styles = StyleSheet.create({
+  container: {
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: "#d6d7da"
+  },
+  title: {
+    fontSize: 19,
+    fontWeight: "bold"
+  },
+  activeTitle: {
+    color: "red"
+  }
+});
+```
+
+```jsx 9,15:19 subtitle="Styleをあてる"
+import React from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+
+type Props = {
+  isActive: boolean
+};
+
+export const Title = ({ isActive }: Props) => (
+  <View style={styles.container}>
+    <Text style={[styles.title, isActive && styles.activeTitle]} />
+  </View>
+);
+
+const styles = StyleSheet.create({
+  container: {
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: "#d6d7da"
+  },
+  title: {
+    fontSize: 19,
+    fontWeight: "bold"
+  },
+  activeTitle: {
+    color: "red"
+  }
+});
+```
+
+```jsx 10,20:26 subtitle="複数のStyleを配列で渡せる"
+import React from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+
+type Props = {
+  isActive: boolean
+};
+
+export const Title = ({ isActive }: Props) => (
+  <View style={styles.container}>
+    <Text style={[styles.title, isActive && styles.activeTitle]} />
+  </View>
+);
+
+const styles = StyleSheet.create({
+  container: {
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: "#d6d7da"
+  },
+  title: {
+    fontSize: 19,
+    fontWeight: "bold"
+  },
+  activeTitle: {
+    color: "red"
+  }
+});
+```
+
+</CodeSurferLayout>
+
+---
+
+## 要は CSS-in-JS
+
+---
+
+## react-native と Web の差
+
+---
+
+### react-native と Web の差
+
+- Display は基本 `flex`
+- flexDirection はデフォルトで`column`
+- ショートハンドは使えない
+- flex の微妙な差異
+
+---
+
+## Display は基本 `flex`
+
+- react-native は[yoga](https://github.com/facebook/yoga)を使って View を作成している
+- yoga は Cross Platform の FlexBox を実装するライブラリ
+
+---
+
+## flexDirection はデフォルトで`column`
+
+---
+
+## ショートハンドは使えない
+
+---
+
+## flex の微妙な差異
+
+---
+
+## Styling Tool
+
+- [styled-components](https://www.styled-components.com/)
+
+---
+
+## Component Libraries
+
+-　[react-native-paper](https://github.com/callstack/react-native-paper)
+
+- [react-native-ui-kitten](https://github.com/akveo/react-native-ui-kitten)
+
+- [react-native-elements](https://react-native-training.github.io/react-native-elements/)
+
+---
+
+## Debugging
+
+- [react-devtool](https://github.com/facebook/react-devtools/tree/v3)
+- [react-native-debugger](https://github.com/jhen0409/react-native-debugger)
+
+---
+
+ありがとうございました。
