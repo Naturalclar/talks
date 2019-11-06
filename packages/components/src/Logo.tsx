@@ -1,14 +1,15 @@
 import React from "react";
 
 type Logos =
-  | "typescript"
+  | "action-toolkit"
+  | "bucklescript"
+  | "flowtype"
   | "javascript"
   | "ocaml"
   | "react"
   | "reason"
   | "reason-long"
-  | "action-toolkit"
-  | "bucklescript";
+  | "typescript";
 
 type Props = { name: Logos; size?: number; style?: Record<string, string> };
 
@@ -18,6 +19,8 @@ const getLogo = (name: Logos) => {
       return require("file-loader!./assets/logo-action-toolkit.png");
     case "bucklescript":
       return require("file-loader!./assets/logo-bucklescript.svg");
+    case "flowtype":
+      return require("file-loader!./assets/logo-flowtype.png");
     case "javascript":
       return require("file-loader!./assets/logo-javascript.png");
     case "ocaml":

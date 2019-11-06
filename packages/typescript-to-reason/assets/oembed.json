@@ -1,0 +1,10 @@
+{
+  "type": "rich",
+  "version": "1.0",
+  "provider_name": "typescript-to-reason.naturalclar.now.sh",
+  "provider_url": "https://typescript-to-reason.naturalclar.now.sh/",
+  "title": "typescript-to-reason",
+  "width": 658,
+  "height": 408,
+  "html": "<iframe style=\"width: 100%; overflow: hidden;\" src=\"https://typescript-to-reason.naturalclar.now.sh/index.html\" width=\"658\" height=\"408\" frameborder=\"0\" scrolling=\"no\" ></iframe>"
+}
