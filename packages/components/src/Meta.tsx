@@ -10,7 +10,7 @@ type Props = {
   host: string;
 };
 
-const Meta = ({
+export const Meta = ({
   title,
   description = title,
   locale = "ja_JP",
@@ -40,5 +40,3 @@ const Meta = ({
     />
   </>
 );
-
-export default Meta;

@@ -21,7 +21,7 @@ const styles = {
   }
 };
 
-const Profile = () => (
+export const Profile = () => (
   <div>
     <div style={styles.line} />
     <ul style={styles.list}>
@@ -38,5 +38,3 @@ const Profile = () => (
     <div style={styles.line} />
   </div>
 );
-
-export default Profile;
