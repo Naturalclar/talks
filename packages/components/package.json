@@ -9,10 +9,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc & cp -r ./src/assets ./dist",
+    "assets": "cp -r ./src/assets ./dist",
+    "build": "tsc & yarn assets",
     "dev": "tsc -w",
-    "storybook": "start-storybook -p 9001 -c .storybook -s ./src/assets",
-    "storybook:build": "build-storybook -c .storybook -s ./src/assets"
+    "storybook": "start-storybook -p 9001 -c .storybook -s ./src",
+    "storybook:build": "build-storybook -c .storybook -s ./src"
   },
   "dependencies": {
     "react": "^16.8.6"

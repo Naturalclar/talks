@@ -13,6 +13,7 @@ import Code from "mdx-code";
 import { Notes, Head, Appear } from "mdx-deck";
 import {
 Avatar,
+Logo,
 Meta,
 Profile,
 } from "@naturalclar/slides-components";
@@ -34,8 +35,7 @@ import "prismjs/components/prism-tsx";
 [Venue](url)
 @naturalclar
 
-<Notes>
-</Notes>
+<Notes>Title</Notes>
 
 ---
 
@@ -44,15 +44,11 @@ import "prismjs/components/prism-tsx";
 <Avatar />
 <Profile />
 
-<Notes>
-  まずは自己紹介です。Jesseと申します。アメリカ人です。
-  去年の9月に日本に引っ越してきました。 CureAppという会社で主にReact Native と
-  TypeScript を扱った医療系のアプリを開発しています。
-</Notes>
+<Notes>Introduction</Notes>
 
 ---
 
-ありがとうございました。
+THANK YOU
 ```
 
 # {{ input }}/package.json`

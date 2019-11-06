@@ -1,0 +1,206 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import {
+  Avatar,
+  Center,
+  Meta,
+  Profile,
+  Logo,
+  Title
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="typescript-to-reason"
+    description="Enter description here"
+    publishedAt={"2019-11-05T00:44:29.715Z"}
+    host="https://typescript-to-reason.naturalclar.now.sh"
+  />
+</Head>
+
+## Reason と TypeScript を繋ぐ genType
+
+[ginzajs #6](https://ginzajs.connpass.com/event/150708/)
+@naturalclar
+
+<Notes>Title</Notes>
+
+---
+
+<Center>
+  <Title label="About Me" />
+  <Avatar />
+  <Profile />
+</Center>
+
+<Notes>About me</Notes>
+
+---
+
+<Logo name="reason-long" style={{ backgroundColor: "white" }} size={200} />
+
+<Notes>Have you used Reason</Notes>
+
+---
+
+<div style={{ display: "flex", justifyContent: "space-around" }}>
+  <Title label="How it works" />
+  <Appear>
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <Logo name="reason" />
+      <Logo name="ocaml" style={{ paddingRight: 10 }} /> →
+    </div>
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <Logo name="bucklescript" /> →
+    </div>
+    <div style={{ display: "flex" }}>
+      <Logo name="javascript" />
+    </div>
+  </Appear>
+</div>
+
+<Notes>Reason Overview</Notes>
+
+---
+
+<img src={require("file-loader!./reason-react.png")} />
+
+<Notes>
+  Since Reason is made by facebook, and React is also made by facebook, it's no
+  surprise that there is a support for using React in Reason.
+</Notes>
+
+---
+
+<img src={require("file-loader!./reason-react-native.png")} />
+
+<Notes>
+  There is also support for React Native. It currently has support for react
+  native 0.60, which is relatively new.
+</Notes>
+
+---
+
+<Center>
+  <Title label="Reasonの利点" />
+  <ul>
+    <Appear>
+      <li>高速ビルド</li>
+      <li>優しいエラーメッセージ</li>
+      <li>静的型言語</li>
+      <li>GraphQLサポート</li>
+    </Appear>
+  </ul>
+</Center>
+
+<Notes>Pros of Reason</Notes>
+
+---
+
+## 移行にはどうすれば？ :thinking_face:
+
+---
+
+# genType
+
+---
+
+<Center>
+  <Title label="genType" />
+  <h3>Reasonの型生成ツール</h3>
+  <div style={{ display: "flex" }}>
+    <Appear>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Logo name="reason" style={{ paddingRight: 10 }} /> ↔
+      </div>
+      <Logo name="javascript" style={{ paddingLeft: 10 }} />
+      <Logo name="flowtype" />
+      <Logo name="typescript" />
+    </Appear>
+  </div>
+</Center>
+
+---
+
+<CodeSurferLayout>
+
+```reason subtitle="Creating component in Reason"
+[@react.component]
+let make = () => <div>Hello World!</div>;
+```
+
+```reason 1 subtitle="Initialize React Component"
+[@react.component]
+let make = () => <div>Hello World!</div>;
+```
+
+```reason subtitle="you can add props"
+[@react.component]
+let make = (~label: string) => <div>{label}</div>;
+```
+
+```reason subtitle="you can add styles"
+[@react.component]
+let make = (~color: string, ~size: string) => {
+  let style =
+    ReactDOMRe.Style.make(~background=color, ~width=size, ~height=size, ());
+  <div style />};
+```
+
+```reason 3:4 subtitle="you can add styles"
+[@react.component]
+let make = (~color: string, ~size: string) => {
+  let style =
+    ReactDOMRe.Style.make(~background=color, ~width=size, ~height=size, ());
+  <div style />};
+```
+
+```reason subtitle="you can use hooks"
+[@react.component]
+let make = (~color: string, ~size: string) => {
+  let (count, setCount) = React.useState(() => 0);
+  let style =
+    ReactDOMRe.Style.make(~background=color, ~width=size, ~height=size, ());
+  <div style>
+    <button onClick={_ => setCount(_ => count + 1)}>
+      {React.string("You clicked " ++ string_of_int(count) ++ " times")}
+    </button>
+  </div>;
+};
+```
+
+```reason subtitle="export type by adding genType"
+[@react.component]
+let make = (~color: string, ~size: string) => {
+  let (count, setCount) = React.useState(() => 0);
+  let style =
+    ReactDOMRe.Style.make(~background=color, ~width=size, ~height=size, ());
+  <div style>
+    <button onClick={_ => setCount(_ => count + 1)}>
+      {React.string("You clicked " ++ string_of_int(count) ++ " times")}
+    </button>
+  </div>;
+};
+
+[@genType]
+let default = make;
+```
+
+</CodeSurferLayout>
+
+---
+
+<CodeSurferLayout>
+
+```reason  subtitle="using tsx component in Reason"
+[@bs.module "./Logo"] [@react.component]
+external make: (~name: string, 'a) => React.element = "Logo";
+```
+
+</CodeSurferLayout>
+
+---
+
+ありがとうございました。
