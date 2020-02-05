@@ -1,0 +1,364 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import { Avatar, Logo, Meta, Profile, Link } from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+
+<Head>
+  <Meta
+    title="introduction-to-reasonml"
+    description="Enter description here"
+    publishedAt={"2019-12-06T17:26:23.441Z"}
+    host="https://introduction-to-reasonml.naturalclar.now.sh"
+  />
+</Head>
+
+## Introduction to ReasonML
+
+[WeJS Festival!](https://wajs.connpass.com/event/151413/)
+@naturalclar
+
+<Notes>
+はい、では早速はじめましょう。
+Introduction to ReasonML で発表します。
+NaturalClarです。よろしくおねがいします。
+ちょっと風邪気味。
+</Notes>
+
+---
+
+# WeJS 3 周年:tada:
+
+<Notes>
+  まずはじめに、WeJS三周年おめでとうございます。
+  僕は去年アメリカから日本に引っ越してきて、エンジニアとして活動しはじめました。
+  外国からきて知り合いもほとんどいないため、勉強会に参加しようと思い、初めて参加したのがWe
+  are javascripterでした。なので、少し感慨深いところがあります。
+  初めて聞いた登壇はFlowTypeをTypeScriptにASTを駆使して変換するというものでした。
+  JSの勉強会って登壇する人がハイレベルな人ばっかりだな〜？と思いながら聞いていました。
+  最初はわからなくても、勉強会への参加を続けることで、だんだんと分かってくるようになり、自分でも登壇するようになったので。
+  継続は大事なんだなという学びがありました。
+  ポエムおわり。
+</Notes>
+
+---
+
+## About Me
+
+<Avatar />
+<Profile />
+<Notes>
+自己紹介です。Jesseと申します。見ての通りアメリカ人です。
+CureAppで治療アプリをReact NativeやTypeScriptを使って開発しています。
+</Notes>
+
+---
+
+<Logo name="reason-long" style={{ backgroundColor: "white" }} size={200} />
+
+<Notes>
+今日は最近自分が推しているReasonという言語について紹介します。
+この中で、Reasonを聞いたことがある人はどれくらいいますか？
+会場の○○割くらいですかね。
+では、この中でReasonを使ったことがあるという人はどれくらいいますか？
+大体これくらいですね。
+</Notes>
+
+---
+
+## State of JavaScript 2018
+
+<img
+  src={require("file-loader!./state-of-reason-2018.png")}
+  height="200"
+  width="50%"
+/>
+
+<Notes>
+これは、今年のJSConfJPでも発表があった去年のState of JSの結果です。
+Reasonは5割くらい聞いたこと無いといった結果でした。
+ここで面白いのは、薄いピンクの色、見えますか？
+これは「使ってみたけど二度と使わない」と答えた人で、全体の1%にも満たなかったです。
+人工がそもそも少ないというのはあると思いますが、使った人の満足度はなかなか高いみたいです。
+</Notes>
+
+---
+
+## What is <Logo name="reason" style={{ backgroundColor: "white" }} size={100} />?
+
+<ul>
+  <Appear>
+    <li>Reactの作者、<Link href="https://twitter.com/jordwalke">Jordan Walke</Link>氏が作成した新たな言語</li>
+    <li>Ocamlを別のSyntaxで書いたもの</li>
+    <li>Ocamlの協力な静的型システムが使える</li>
+  </Appear>
+</ul>
+
+<Notes>では、Reasonとは何なのか。
+ReasonはReactの作者でもあるJordan Walke氏が作成した新たな言語です。
+Ocamlを書きやすいSyntaxに変えたものであり、型付き言語なので安全性を保つことができます。
+</Notes>
+
+
+---
+
+# ?? <Logo name="ocaml" style={{ backgroundColor: "white" }} size={200} /> ??
+
+<Notes>
+いやお前、We Are ”Javascripter”だっつってんだろ。なんで別言語の話をするねん。
+と思うかもしれませんね。安心してください、ちゃんとJSに関連する話です。
+</Notes>
+
+---
+
+## <Logo name="reason" style={{ backgroundColor: "white" }} size={100} />
+
+<ul>
+  <Appear>
+    <li>JS(ES6)のように書ける</li>
+    <li>Reactを書ける人がすんなり入れる用な設計</li>
+    <li>BuckleScriptによりJSに変換される</li>
+  </Appear>
+</ul>
+
+<Notes>
+ReasonはJavaScriptのように書けることを目指した言語です。
+特に、Reactを書ける人はすんなりReasonを書ける様な設計になっています。
+作者が同じなので、当然といえば当然かもしれません。
+また、Reasonで書かれたコードはBuckeScriptというコンパイラによって、OCamlからJSへと変換されます。
+</Notes>
+
+---
+
+
+<CodeSurferLayout>
+
+```reason title="Function in Reason"
+let add = (x, y) => x + y;
+
+let result = add(2,3);
+```
+
+<Notes>
+例えば、Reasonでの関数はこう書きます。
+ほとんどJavaScriptと変わらないですよね。
+jsのconstではなくletになっていますが、
+Reasonでは基本的にすべての変数はimmutableです。
+明示的にmutableと書いて変更を許可することも可能です。
+</Notes>
+
+```reason title="Reason React Component"
+[@react.component]
+let make = (~style) => {
+  <div style> {React.string("This is a ReasonReact card")} </div>;
+};
+```
+
+<Notes>
+ReasonではJSXは最初からサポートしています。
+ReactでFunction Componentを普段書いていたら特に違和感は無いでしょう。
+文字列を使うところで、React.stringと定義しているところは普段のReactと違うところですね。
+Hooksも対応しています。
+</Notes>
+
+</CodeSurferLayout>
+
+
+---
+
+## <Logo name="reason" style={{ backgroundColor: "white" }} size={100} />　の利点
+
+<ul>
+  <Appear>
+    <li>高速ビルド</li>
+    <li>バンドルサイズが小さい</li>
+    <li>Prettier完備</li>
+    <li>型安全性</li>
+  </Appear>
+</ul>
+
+<Notes>
+Reasonの利点をいくつか上げると、まずビルドがとても早いです。
+あと、バンドルサイズが小さいです。
+Prettierが完備されています。
+今でこそJavaScript界隈ではみんなPrettierを使っていますが、
+あれはもともとReasonの自動フォーマットが優秀だったので、それをJavaScriptでも使えるようにしよう！と思った変態が作ったものです。
+今どきのJavaScriptで使っているBabelやEslint、PrettierやTypeが完備されている
+</Notes>
+
+---
+
+## Getting Started
+
+<Link href="https://reasonml.github.io/">ReasonML Website</Link>
+
+```
+yarn global add bs-platform
+bsb -init my-first-app -theme basic-reason
+```
+
+<Notes>
+それでは、実際に公式WebsiteのGetting Startedからやっていって、
+どういう形になるのかを実践していきます。
+</Notes>
+
+---
+
+
+
+<CodeSurferLayout>
+
+```reason title="Getting Started"
+Js.log("Hello, BuckleScript and Reason!");
+```
+
+<Notes>
+bsb -init で新しくプロジェクトを立ち上げたら、Js.logが書かれています。
+見た感じ console.log の代わりであろうといった感じ。
+yarn startすると、watchモードが始まります。
+</Notes>
+
+
+```reason title="Getting Started"
+let add = (x, y) => x + y;
+
+let result = add(6, 7);
+```
+
+```js 
+```
+
+<Notes>
+適当に関数を作ってみます。
+
+let add = (x, y) => x + y;
+
+let result = add(6, 7);
+
+=> build 結果を見る。
+ビルドされたJSファイルを見てみます。
+追加したAdd関数が書かれてることがわかります。
+また、Resultの方に注目してください。結果がすでに13になっています。
+このように、BuckleScriptは、毎回処理の結果が同じである箇所は、Compile時に省略します。
+これが小さいバンドルサイズとパフォーマンスが出る秘訣です。
+そして、exportを作成していることがわかります。
+</Notes>
+
+
+</CodeSurferLayout>
+
+
+
+
+---
+
+## Nice Error Message
+
+<Notes>
+Reasonの特徴の一つとして、エラーメッセージが非常に優秀なことが上げられます。
+
+let add = (x, y) => x + y;
+
+let result = add(6,"7")
+
+たとえば、このように、数字とStringをAddしようとしてみます。
+
+</Notes>
+
+---
+
+## Pattern Matching
+
+```reason
+let fizzbuzz = num =>
+  switch (num mod 3, num mod 5) {
+  | (0, 0) => "FizzBuzz"
+  | (0, _) => "Fizz"
+  | (_, 0) => "Buzz"
+  | _ => string_of_int(num)
+  };
+
+let array = Belt.Array.range(1, 100);
+
+Belt.Array.map(array, fizzbuzz) |> Js.log;
+```
+
+---
+
+## Pipeline Operator
+
+```reason
+let fizzbuzz = num =>
+  switch (num mod 3, num mod 5) {
+  | (0, 0) => "FizzBuzz"
+  | (0, _) => "Fizz"
+  | (_, 0) => "Buzz"
+  | _ => string_of_int(num)
+  };
+
+let array = Belt.Array.range(1, 100);
+
+Belt.Array.map(array, fizzbuzz) |> Js.log;
+```
+
+---
+
+## gentype
+
+```
+yarn add -D gentype
+```
+
+```bsconfig.json
+  "gentypeconfig": {
+    "language": "typescript",
+    "shims": {},
+    "debug": {
+      "all": false,
+      "basic": false
+    }
+  }
+```
+
+---
+
+## reason-react-native
+
+<Link href="https://reason-react-native.github.io/en/docs/">Reason React Native</Link>
+
+
+---
+
+## reason-native
+
+reasonを使ってcli tools等を作れる
+
+[fnm](https://github.com/Schniz/fnm)
+fast node version manager made with Reason React
+
+---
+
+## The Future
+
+https://www.youtube.com/watch?v=5fG_lyNuEAw
+
+ReasonConf 2019 の Jordan のエモいトーク
+数日前にアップされた
+
+
+
+---
+
+## Discord channel
+
+https://discordapp.com/invite/reasonml
+
+<Link href="https://discordapp.com/invite/reasonml">
+  <Logo name="reason" style={{ backgroundColor: "white" }} size={200} />
+</Link>
+
+---
+
+
+THANK YOU
