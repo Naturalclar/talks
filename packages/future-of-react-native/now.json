@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "project": "future-of-react-native",
+  "builds": [{ "src": "dist/**", "use": "@now/static" }],
+  "routes": [{ "src": "/(.*)", "dest": "dist/$1" }]
+}
