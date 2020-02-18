@@ -1,0 +1,130 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import {
+Avatar,
+Logo,
+Meta,
+Profile,
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="creating-your-own-extensions"
+    description="Enter description here"
+    publishedAt={'2020-02-18T17:53:01.710Z'}
+    host="https://creating-your-own-extensions.naturalclar.now.sh"
+  />
+</Head>
+
+## Creating your own extensions
+
+[VSCode Meetup #3](https://vscode.connpass.com/event/166047/)
+@naturalclar
+
+<Notes>Title</Notes>
+
+---
+
+## About Me
+
+<Profile />
+
+<Notes>Introduction</Notes>
+
+---
+
+React Native Windows
+
+---
+
+TypeScript Website
+
+---
+
+VSCode extensions
+
+---
+
+Doing OSS related to React Native
+
+---
+
+Flow and TypeScript
+
+---
+
+VS Code settings for Flow and TypeScript
+
+---
+
+Settings in JSON (becuase we are engineer)
+
+---
+
+There are No settings to open workspace settings in JSON
+
+---
+
+So I made it
+
+https://github.com/Naturalclar/workspace-settings.git
+
+---
+
+How to make extensions
+
+https://code.visualstudio.com/api/get-started/your-first-extension
+
+---
+
+using yeoman generetor and generator-code
+
+```
+yarn global add yo generator-code
+```
+
+---
+
+<CodeSurferLayout>
+
+```bash subtitle="Install Yeoman and Generator for VSC Exttension"
+yarn global add yo generator-code
+```
+
+```bash subtitle="Run Yeoman Generator"
+yo code
+```
+
+```bash subtitle="Answer Questions"
+yo code
+
+# ? What type of extension do you want to create? New Extension (TypeScript)
+# ? What's the name of your extension? HelloWorld
+### Press <Enter> to choose default for all options below ###
+
+# ? What's the identifier of your extension? helloworld
+# ? What's the description of your extension? LEAVE BLANK
+# ? Initialize a git repository? Yes
+# ? Which package manager to use? npm
+```
+
+</CodeSurferLayout>
+
+---
+
+Debug it
+
+---
+
+publish it
+vsce is a cli tool to help publish vs code extensions
+
+```
+yarn global add vsce
+```
+---
+
+THANK YOU
