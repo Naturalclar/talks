@@ -41,7 +41,6 @@ import "prismjs/components/prism-tsx";
 
 ## About Me
 
-<Avatar />
 <Profile />
 
 <Notes>Introduction</Notes>
