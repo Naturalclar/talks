@@ -1,0 +1,332 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import {
+Avatar,
+Logo,
+Meta,
+Profile,
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="whats-new-in-react-native-62"
+    description="Enter description here"
+    publishedAt={'2020-03-25T05:13:33.031Z'}
+    host="https://whats-new-in-react-native-62.naturalclar.now.sh"
+  />
+</Head>
+
+## What's new in React Native 0.62
+
+[React Native Tech Blog #2](https://ducklings.connpass.com/event/169637/)
+@naturalclar
+
+<Notes>Title</Notes>
+
+---
+
+## About Me
+
+<Profile />
+
+<Notes>Introduction</Notes>
+
+---
+
+## あなたは好きですか？
+
+---
+
+## あなたは赤い好きですか？
+
+--- 
+
+## あなたは赤い画面は好きですか？
+
+---
+
+<img
+  src={require("file-loader!./error-old.png")}
+  width="50%"
+/>
+
+---
+
+# :scream:
+
+---
+
+## LogBox
+
+<div style={{display:'flex',justifyContent:'space-around'}}>
+  <img
+    src={require("file-loader!./logbox-warning.jpeg")}
+    width="30%"
+  />
+  <img
+    src={require("file-loader!./logbox-error.jpeg")}
+    width="30%"
+  />
+</div>
+
+---
+
+<CodeSurferLayout>
+
+```js subtitle='Add code above to index.js'
+import { unstable_enableLogBox } from 'react-native';
+
+unstable_enableLogBox();
+```
+
+</CodeSurferLayout>
+
+---
+
+## Appearance API
+
+<div style={{display:'flex',justifyContent:'space-around'}}>
+  <img
+    src={require("file-loader!./light-theme.png")}
+    width="30%"
+  />
+  <img
+    src={require("file-loader!./dark-theme.png")}
+    width="30%"
+  />
+</div>
+
+
+---
+
+<CodeSurferLayout>
+
+```jsx subtitle='Appearance API'
+import { Appearance } from 'react-native';
+
+const LoginPage = () => {
+  const colorScheme = Appearance.getColorScheme();
+  if (colorScheme === 'dark') {
+    return <DarkContents/>
+  }
+
+  return <LightContents/>
+}
+```
+
+```jsx 4 subtitle='light, dark or no-preference'
+import { Appearance } from 'react-native';
+
+const LoginPage = () => {
+  const colorScheme = Appearance.getColorScheme();
+  if (colorScheme === 'dark') {
+    return <DarkContents/>
+  }
+
+  return <LightContents/>
+}
+```
+
+```jsx 5:7 subtitle='Set component based on theme'
+import { Appearance } from 'react-native';
+
+const LoginPage = () => {
+  const colorScheme = Appearance.getColorScheme();
+  if (colorScheme === 'dark') {
+    return <DarkContents/>
+  }
+
+  return <LightContents/>
+}
+```
+
+```jsx 9 subtitle='Set component based on theme'
+import { Appearance } from 'react-native';
+
+const LoginPage = () => {
+  const colorScheme = Appearance.getColorScheme();
+  if (colorScheme === 'dark') {
+    return <DarkContents/>
+  }
+
+  return <LightContents/>
+}
+```
+
+```jsx 1:10
+import { Appearance } from 'react-native';
+
+const LoginPage = () => {
+  const colorScheme = Appearance.getColorScheme();
+  if (colorScheme === 'dark') {
+    return <DarkContents/>
+  }
+
+  return <LightContents/>
+}
+```
+
+
+```jsx subtitle='There is also hooks'
+import { useColorScheme } from 'react-native';
+
+const LoginPage = () => {
+  const colorScheme = useColorScheme();
+  if (colorScheme === 'dark') {
+    return <DarkContents/>
+  }
+
+  return <LightContents/>
+}
+```
+
+```jsx subtitle='Custom Hooks for Colors'
+import { useColorScheme } from 'react-native';
+
+const defaultTheme = {
+  textColor: '#222',
+  backgroundColor: '#eee',
+  primaryColor: '#ff8800'
+  white: '#fff',
+  black: '#000'
+}
+
+const darkTheme = {
+  ...default,
+  textColor: '#eee',
+  backgroundColor: '#222',
+}
+
+const useColors = () => {
+  const colorScheme = useColorScheme()
+  const isDark = colorScheme === 'dark'
+  return isDark? darkTheme : defaultTheme
+}
+
+```
+
+</CodeSurferLayout>
+
+---
+
+## For Older versions
+
+- Polyfill Available
+- [react-native-appearance](https://github.com/expo/react-native-appearance)
+- Works with Expo too!
+
+---
+
+## React Devtools v4
+
+<img
+    src={require("file-loader!./react-devtools.gif")}
+    width="70%"
+  />
+
+
+---
+
+### React Devtools v4
+
+- [react-devtools](https://github.com/facebook/react/tree/master/packages/react-devtools)
+- v4 is finally supported in RN!
+- use standalone version for RN
+- `yarn global add react-devtools`
+
+---
+
+## Flipper
+
+<img
+    src={require("file-loader!./flipper-devtools.png")}
+    width="70%"
+  />
+
+---
+
+## Flipper
+
+<img
+    src={require("file-loader!./flipper-plugins.png")}
+    width="70%"
+  />
+
+---
+
+
+### Flipper
+
+- [facebook/flipper](https://github.com/facebook/flipper)
+- Enabled by default in RN 0.62
+- Display Native Logging
+- React Devtool v4 Included
+- Other Plugins such as Redux Inspector
+
+
+---
+
+## Catalyst Support
+
+<img
+    src={require("file-loader!./catalyst-support.png")}
+    width="70%"
+  />
+
+---
+
+### Catalyst Support
+
+- Flipper not yet supported
+- Comment out Flipper and build for MacOS
+- Also supports [react-native-webview](https://github.com/react-native-community/react-native-webview)!
+
+---
+
+## Deprecations/Other Changes
+
+---
+
+### Moving TVOS out
+
+- Removed from the core
+- Part of the Lean Core Effort
+- [react-native-tvos](https://github.com/react-native-community/react-native-tvos)
+
+---
+
+### Change in Animated components
+
+- `useNativeDriver` props is now required 
+
+<Notes>
+いままで、アニメーションを作成するための Animated Component では、useNativeDriver の props は optional でした。
+デフォルト値は false で、true にすれば Animation は Bridge を通してではなく、直接ネイティブメソッドを呼ぶようになり、アニメーションがスムーズになります。
+今後、Bridgeはなくなっていくものであり、デフォルト値も true になっていきます。
+この変更は未来の変更に対する準備となります。
+</Notes>
+
+---
+
+### Accessibility Improvements
+
+- add `accessibilityValue` props
+
+---
+
+### Remove PropTypes
+
+- `propTypes` will be removed from core
+- reduce size
+- libraries using `ViewPropTypes` should update
+
+---
+
+Coming Soon!
+
+---
+
+THANK YOU
