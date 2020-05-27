@@ -12,26 +12,26 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build && cpx ./assets ./dist",
-    "prepare": "yarn bootstrap && yarn build",
+    "prepare": "yarn bootstrap",
     "deploy": "lerna run deploy",
     "screenshot": "node screenshot.js",
     "new": "scaffdog generate"
   },
   "dependencies": {
     "code-surfer": "2.0.0-alpha.10",
-    "puppeteer": "^1.19.0"
+    "puppeteer": "^3.1.0"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "cpx": "^1.5.0",
     "file-loader": "^4.1.0",
-    "lerna": "^3.16.2",
+    "lerna": "^3.22.0",
     "mdx-code": "^1.1.3",
     "mdx-deck": "2",
-    "now": "^15.8.7",
+    "now": "^19.0.1",
     "raw-loader": "^3.1.0",
     "scaffdog": "^0.1.2",
-    "typescript": "^3.5.3"
+    "typescript": "^3.9.3"
   }
 }
