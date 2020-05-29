@@ -1,0 +1,286 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import {
+  Avatar,
+  Logo,
+  Meta,
+  Profile,
+  Link,
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="react-native-rearchitecture"
+    description="Enter description here"
+    publishedAt={"2020-02-06T03:28:46.842Z"}
+    host="https://react-native-rearchitecture.naturalclar.now.sh"
+  />
+</Head>
+
+## Rearchitecture - Future of React Native
+
+<img src={require("file-loader!./logo-react-native.png")} />
+
+[React Native Meetup #10](https://react-native-meetup.connpass.com/event/173190/)
+@naturalclar
+
+<Notes>Title</Notes>
+
+---
+
+## About Me
+
+<Profile />
+
+---
+
+## 話すこと
+
+- 今までの React Native のしくみ
+- これからどう変わっていくのか
+- 他企業の React Native に対する取り組み
+
+---
+
+<img src={require("file-loader!./react-native.png")} />
+
+### React Native とは
+
+- クロスプラットフォームフレームワーク
+- JS で書いたコードが iOS、Android のアプリで動く
+- 見た目の描画は React を使って書ける
+- カメラなど、ネイティブ側で持っている機能も JS で動かせる
+
+---
+
+### 現状の React Native の構成
+
+RN は以下の層に分けられている
+
+- React などを抱える JS 層
+- JS の実行を Native 側で実行する Native 層
+- JS 層と Native 層をつなぐ Bridge
+- JS 側で定めた Flex Layout を描画する Yoga
+
+---
+
+### 現状の React Native の構成
+
+<img src={require("file-loader!./react-native-architecture.png")} />
+
+<Notes>
+これまでの React Native が内部的にどう動いていたのかについて少し説明します。
+
+現在、React Native のアプリが実行されるとき、内部で３つのスレッドが立ち上がっています。
+一つが JS スレッド、一つがネイティブスレッド、最後の一つは shadow thread です。
+Java Script と Obj-C や Java といった Native 層の間には Bridge というものが存在しています。
+これは、JavaScript と Native 間で通信するためのもので、お互いに JSON で Encode されたメッセージを送りあいます。
+JavaScript と Native 層はお互いの存在を認知していないので、必然的に間で起こる通信はすべて非同期で行われます。
+
+View について。
+React Reconciller が UICommand を bridge 経由で UIManager Module に渡します。
+UIManager Module は shadow node を作成し、Yoga に渡して、レイアウトが作成されます。
+
+Module について。
+Bluetooth などの Native Modules は Bridge を通して非同期的に Java/ObjC のコードに渡り、そこから実行されます。
+
+</Notes>
+
+---
+
+### 現状の React Native の構成
+
+<img src={require("file-loader!./react-native-architecture-bridge.png")} />
+
+---
+
+### 現状の React Native の構成
+
+<img src={require("file-loader!./react-native-architecture-yoga.png")} />
+
+---
+
+### 現状の React Native の構成の問題点
+
+- Native 層の呼び出しがすべて非同期
+- Android のアニメーションが遅い
+- 最初の Bridge 作成で起動に時間がかかる
+
+---
+
+## React Native Re-architecture
+
+<img src={require("file-loader!./logo-react-native.png")} />
+
+<Notes>
+  これから起こる React Native の Re-architecture について説明します。 React
+  Native の Re-architecture は 2018年に最初に発表されたもの。
+</Notes>
+
+---
+
+### React Native Re-architecture
+
+[discussions-proposals](https://github.com/react-native-community/discussions-and-proposals)
+
+- JSI
+- Turbo Modules
+- Fabric
+- Initialization
+- CodeGen
+
+<Notes>Re-architecture</Notes>
+
+---
+
+### JSI
+
+- Java Script Interface
+- JavaScript Engine のラッパー
+- C++ のホストオブジェクトへの参照を持ち、JS から実行できる
+- [現在は react-native のリポジトリに存在](https://github.com/facebook/react-native/tree/master/ReactCommon/jsi)
+- [discussion](https://github.com/react-native-community/discussions-and-proposals/issues/91)
+
+<Notes>
+まず最初に、JSIについて説明します。
+JSI とは Java Script Interface の略で、JavaScript Engine のラッパーとして働きます。
+React Native では現在 JSC、JavaScriptCore というものが JavaScriptEngine として機能していますが、JSIの登場によって、
+Google の V8 など、 JavaScriptEngine を使用することも可能となってきます。
+実際、react-native-v8 というライブラリがあり、内部で JSC の代わりに v8 を使うためのライブラリとなっています。
+ですが、JSI の真の価値は JavaScript が C++ へのリファレンスを持つことができるようになるということです。
+つまり、C++ のメソッドを JavaScript から呼び出したり、C++ から JavaScript のメソッドを呼び出すことが可能となります。
+これは今までの Bridge と違い同期的に発生するものです。
+さらに、C++ は iOS, Android の両端末で動かすことができます。Objective-C は C の superclass のようなものですし、Java は JNI を通して C++ のコードを呼び出せます。
+
+現在、ReactNative のリポジトリの中にすでに実装があります。
+まだドキュメント化はされていませんが、だいぶ仕様は固まってきているみたいです。
+仕様が固まれば Hermes の様に独自のリポジトリとして提供されると思います。
+
+</Notes>
+
+---
+
+### JSI を活用しているパッケージ
+
+- [hermes](https://github.com/facebook/hermes)
+- [react-native-v8](https://github.com/Kudo/react-native-v8)
+
+---
+
+### Turbo Modules
+
+- Native Modules の新しい姿
+- ネイティブ層の同期的実行が可能となる
+- react-native 内部ではすでに使われている
+- OSS 化される予定
+- 他の Native Modules も使えるようになる
+- [discussion1](https://github.com/react-native-community/discussions-and-proposals/issues/40), [discussion2](https://github.com/react-native-community/discussions-and-proposals/issues/195)
+
+---
+
+### 外部の Turbo Modules の活用例
+
+- [react-native-reanimated v2-alpha](https://github.com/software-mansion/react-native-reanimated)
+
+---
+
+### Fabric
+
+- JSI を使った View の描画の高速化
+- 同じく c++ で書かれている Yoga と相性が良い
+- React Concurrent Mode に対応する予定
+- Turbo Modules の後に OSS 化予定
+- [discussion](https://github.com/react-native-community/discussions-and-proposals/issues/4)
+
+<Notes>これもまた、仕様が固まれば、OSSとして公開される予定です。</Notes>
+
+---
+
+### Initialization
+
+- Bridge を消す
+- 起動時間の削減
+- Planned Late 2020
+
+<Notes></Notes>
+
+---
+
+### CodeGen
+
+- C++ と連携して動かすには型が必須となる
+- JS の型定義から C++ の型定義を生成するツール
+- FlowType、TypeScript 共に対応
+
+---
+
+### CodeGen
+
+- [react-native-codegen]
+- [react-native-tscodegen](https://github.com/microsoft/react-native-tscodegen)
+
+---
+
+### React Native Re-architecture
+
+<img src={require("file-loader!./react-native-rearchitecture.png")} />
+
+---
+
+### 他企業の React Native に対する取り組み
+
+- Microsoft
+- Expo
+- Callstack
+- Software Mansion
+
+---
+
+### Microsoft
+
+- [react-native for Windows and Macos](https://microsoft.github.io/react-native-windows/)
+
+<img
+  src={require("file-loader!./react-native-windows-macos.png")}
+  width="800px"
+/>
+
+---
+
+### Expo
+
+- react-native-web を活用した Expo-Web
+- Module の Web 対応
+- [Next 連携](https://dev.to/evanbacon/next-js-expo-and-react-native-for-web-3kd9)
+- [Gatsby 連携](https://dev.to/evanbacon/gatsby-react-native-for-web-expo-2kgc)
+- Expo-Electron なども
+- [react-navigation](https://github.com/react-navigation/react-navigation) の共同開発
+
+---
+
+### CallStack
+
+- react-native の [cli](https://github.com/react-native-community/cli)
+- その他 react-native-community の modules
+- [react-native のリリース作業](https://github.com/react-native-community/releases/issues/186)
+- [react-native-paper](https://github.com/callstack/react-native-paper)
+- [haul](https://github.com/callstack/haul)
+
+---
+
+### Software Mansion
+
+- [react-navigation](https://github.com/react-navigation/react-navigation) の共同開発
+- [react-native-gesture-handler](https://github.com/software-mansion/react-native-gesture-handler)
+- [react-native-reanimated](https://github.com/software-mansion/react-native-reanimated)
+
+---
+
+### React Native はまだまだ伸びる！
+
+---
+
+THANK YOU
