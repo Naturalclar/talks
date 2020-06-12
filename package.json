@@ -18,10 +18,10 @@
     "new": "scaffdog generate"
   },
   "dependencies": {
-    "code-surfer": "2.0.0-alpha.10",
-    "puppeteer": "^3.1.0"
+    "code-surfer": "2.0.0-alpha.10"
   },
   "devDependencies": {
+    "playwright": "^1.1.1",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "cpx": "^1.5.0",
