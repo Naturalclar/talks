@@ -10,9 +10,7 @@
     "packages/*"
   ],
   "scripts": {
-    "bootstrap": "lerna bootstrap",
     "build": "lerna run build && cpx ./assets ./dist",
-    "prepare": "yarn bootstrap",
     "deploy": "lerna run deploy",
     "screenshot": "node screenshot.js",
     "new": "scaffdog generate"
