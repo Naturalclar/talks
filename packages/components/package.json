@@ -9,7 +9,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "assets": "cp -r ./src/assets ./dist",
+    "assets": "mkdir -p ./dist/assets && cp -r ./src/assets ./dist",
     "build": "tsc & yarn assets",
     "dev": "tsc -w",
     "storybook": "start-storybook -p 9001 -c .storybook -s ./src",
