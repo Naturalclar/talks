@@ -1,0 +1,145 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import { Avatar, Logo, Meta, Profile } from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="swiftui-with-react-native"
+    description="Enter description here"
+    publishedAt={"2020-10-15T06:55:34.152Z"}
+    host="https://swiftui-with-react-native.naturalclar.now.sh"
+  />
+</Head>
+
+## SwiftUI with React Native
+
+[React Native Tech Blog #5](https://ducklings.connpass.com/event/189206/)
+@naturalclar
+
+<Notes>Title</Notes>
+
+---
+
+## About Me
+
+<Profile />
+
+<Notes>Introduction</Notes>
+
+---
+
+## [SwiftUI](https://developer.apple.com/xcode/swiftui/)
+
+<Logo name="swiftui" />
+
+---
+
+## [SwiftUI](https://developer.apple.com/xcode/swiftui/)
+
+- 宣言的に View が書ける Framework
+- 要は React っぽく Swift 書ける
+
+---
+
+## 今日のお題
+
+Swift UI を
+React Native に載せよう！
+
+---
+
+## 事の発端
+
+iOS 14 の Color Picker かっこいい！
+React Native で使いたい！
+
+<Note>
+  事の発端 iOS 14 で追加された Color Picker かっこいいから React Native
+  で使いたいなー いらすとや、ColorPickerのイラスト
+</Note>
+
+---
+
+SwiftUI じゃん！※見てるページが間違ってます
+
+<Note>
+  ColorPicker、SwiftUIから提供されてるの？SwiftUIをReact Native
+  で動かさないと行けないじゃん。調べよ。
+  (見てるページが違う事に気づくのはこの数時間後) いらすとや、ColorPickerのページ
+</Note>
+
+---
+
+何事もチャレンジ
+
+<Note>いらすとや</Note>
+
+---
+
+## やること
+
+<Note>
+  まずはNativeUIを作成する準備。 @react-native-community/bob がおすすめ。
+</Note>
+
+---
+
+- [@react-native-community/bob](https://github.com/react-native-community/bob)
+
+<Note>
+  Bobの便利さを語る。 Bobはネイティブモジュールだけでなく、JSで書かれたReact
+  Native用のコンポーネント等も書きやすいようなテンプレートが揃っているので、React
+  Native のライブラリをこれから作りたいと言う方にはおすすめです。 Turbo Module
+  を C++ で直接書く事もできます。 CLIの画像
+</Note>
+
+---
+
+- NativeModule
+- Native Component
+
+<Note>
+  NativeModuleとNativeComponentの違いについて補足。 Native Module は
+  reqiureNativeModule Native Component は UIManager を使って描画します。
+  SwiftUIで書くComponentはViewに関するものなので、Native
+  Componentとして作成します。
+</Note>
+
+---
+
+<CodeSurferLayout>
+
+
+```js
+// example
+import React from "react";
+import { useSteps } from "mdx-deck";
+
+export default (props) => {
+  const length = 4;
+  const step = useSteps(length);
+
+  return (
+    <h2>
+      The current step is {step}/{length}
+    </h2>
+  );
+};
+```
+
+</CodeSurferLayout>
+
+
+---
+
+## Reference
+
+- [React Native Meets SwiftUI](https://medium.com/better-programming/react-native-meets-swiftui-d1606a8e1681)
+- [Swift in React Native](https://teabreak.e-spres-oh.com/swift-in-react-native-the-ultimate-guide-part-1-modules-9bb8d054db03)
+
+---
+
+THANK YOU

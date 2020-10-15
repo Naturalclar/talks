@@ -9,7 +9,8 @@ type Logos =
   | "react"
   | "reason"
   | "reason-long"
-  | "typescript";
+  | "typescript"
+  | "swiftui";
 
 type Props = { name: Logos; size?: number; style?: Record<string, string> };
 
@@ -33,6 +34,8 @@ const getLogo = (name: Logos) => {
       return require("file-loader!./assets/logo-reason-long.svg");
     case "typescript":
       return require("file-loader!./assets/logo-typescript.png");
+    case "swiftui":
+      return require("file-loader!./assets/logo-swiftui.png");
   }
 };
 
