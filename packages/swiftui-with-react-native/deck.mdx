@@ -135,10 +135,34 @@ export default (props) => {
 
 ---
 
+- `RCT_EXTERN_MODULE(ComponentName, NSObject)`
+- `RCT_EXTERN_METHOD(method)`
+
+---
+
+```swift
+// CounterViewManager.swift
+// ref: https://teabreak.e-spres-oh.com/swift-in-react-native-the-ultimate-guide-part-2-ui-components-907767123d9e
+
+@objc(CounterViewManager)
+class CounterViewManager: RCTViewManager {
+  override func view() -> UIView! {
+    let label = UILabel()
+    label.text = "Swift Counter"
+    label.textAlignment = .center
+    return label
+  }
+}
+
+```
+
+---
+
 ## Reference
 
 - [React Native Meets SwiftUI](https://medium.com/better-programming/react-native-meets-swiftui-d1606a8e1681)
-- [Swift in React Native](https://teabreak.e-spres-oh.com/swift-in-react-native-the-ultimate-guide-part-1-modules-9bb8d054db03)
+- [Swift in React Native: Native Modules](https://teabreak.e-spres-oh.com/swift-in-react-native-the-ultimate-guide-part-1-modules-9bb8d054db03)
+- [Swift in React Native: UI Components](https://teabreak.e-spres-oh.com/swift-in-react-native-the-ultimate-guide-part-2-ui-components-907767123d9e)
 
 ---
 
