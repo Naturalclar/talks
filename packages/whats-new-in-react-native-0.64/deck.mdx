@@ -1,0 +1,148 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import { Avatar, Logo, Meta, Profile } from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="whats-new-in-react-native-0.64"
+    description="Enter description here"
+    publishedAt={"2021-03-04T08:08:00.424Z"}
+    host="https://whats-new-in-react-native-0.64.naturalclar.now.sh"
+  />
+</Head>
+
+## What's new in React Native 0.64
+
+[React Native Meetup #11](https://react-native-meetup.connpass.com/event/204535/)
+@naturalclar
+
+<Notes>Title</Notes>
+
+---
+
+## About Me
+
+<Profile />
+
+<Notes>Introduction</Notes>
+
+---
+
+## Hermes support for iOS
+
+<img width={"30%"} src={require("file-loader!./HermesLogo.svg")} />
+
+---
+
+### Hermes support for iOS
+
+- facebook 製の JS Engine
+- js を bytecode に変換する
+- スペックの低い端末でも快適に動く
+- iOS アプリも hermes でビルド可能に
+
+---
+
+## `profile-hermes` cli
+
+<img width={"50%"} src={require("file-loader!./hermes-profile.png")} />
+
+---
+
+### `profile-hermes` cli
+
+- [hermes-profile-transformer](https://github.com/react-native-community/hermes-profile-transformer)
+- hermes のパフォーマンス測定が可能
+- Chrome の Profiler が認識可能な json を吐き出す
+
+---
+
+## Hermes with Proxy support
+
+---
+
+### Hermes with Proxy support
+
+- Proxy を使ってるパッケージが hermes 下でも動作するように
+  - MobX
+  - React Native Firebase
+
+---
+
+## Inline Requires
+
+---
+
+### Inline Requires
+
+- js module を必要になった取得するように変更する
+- 以前から機能としてあったのがデフォルトで使われるように
+- metro bundler の中で babel を使って変換するのでコードの変更は不要
+
+---
+
+<CodeSurferLayout>
+
+```jsx title="Before"
+import {MyFunction} from 'my-module';
+
+function MyComponent(props) {
+    const result = myFunction();
+
+    render <Text>{result}</Text>;
+}
+```
+
+```jsx subtitle="After"
+function MyComponent(props) {
+    const result = require('my-module').MyFunction;
+
+    render <Text>{result}</Text>;
+}
+
+```
+
+</CodeSurferLayout>
+
+---
+
+## React 17
+
+---
+
+### React 17
+
+- [React v17.0](https://reactjs.org/blog/2020/10/20/react-v17.html)
+- [New JSX Transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)
+- `import * as React from 'react'` が不要に
+- Event handling が react で完結する用に
+
+---
+
+## M1 support for Flipper
+
+---
+
+## CodeGen について
+
+---
+
+### CodeGen について
+
+- New Architecture の一部
+- C++ to JS を繋ぐ JSI に必要
+- Flow/TS から C++ の型情報を生成
+- 外部パッケージが Turbo Modules や Fabric を使える用に OSS 化
+- 0.64 ではまだ外部パッケージの為に最適化されていない
+
+---
+
+- [0.64 Discussion](https://github.com/react-native-community/releases/issues/214)
+- [0.64 Changelog](https://github.com/react-native-community/releases/pull/216)
+
+---
+
+THANK YOU
