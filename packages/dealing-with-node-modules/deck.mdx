@@ -1,0 +1,339 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import {
+  Avatar,
+  Logo,
+  Meta,
+  Profile,
+  Title,
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="dealing-with-node-modules"
+    description="Enter description here"
+    publishedAt={"2021-06-27T23:07:55.474Z"}
+    host="https://dealing-with-node-modules.vercel.app"
+  />
+</Head>
+
+## node_modules のブラックホールとの向き合い方
+
+<img
+  src={require("file-loader!./black_hole.jpg")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.1 }}
+  width="700"
+/>
+
+<footer style={{position:'absolute', bottom: 20, right: 20}}>
+
+[node 学園 #36](https://nodejs.connpass.com/event/215218/)
+@naturalclar
+
+</footer>
+
+<Notes>
+  node_modules
+  のブラックホールとの向き合い方について発表致します。Jesseです。よろしくお願い致します。
+</Notes>
+
+---
+
+<h3 style={{ position: "absolute", top: 20, left: 20 }}>About Me</h3>
+
+<Profile />
+
+<Notes>
+
+</Notes>
+
+---
+
+## node_modules black hole
+
+<img src={require("file-loader!./black_hole.jpg")} width="700" />
+
+---
+
+## 話すこと
+
+- npm や yarn 等をそのまま使っていても解決しないこと
+
+- node_modules を削減することのメリット
+
+- node_modules を削減する方法
+
+<Notes>この発表では、node_modules</Notes>
+
+---
+
+## npm, yarn
+
+- dependency manager
+- npm install (yarn install) で必要な外部モジュールを install できる
+
+---
+
+## npm, yarn install がやってくれること
+
+- 指定 module を semver に沿って install する
+- install した module のバージョンを lock ファイルに保管してくれる
+
+---
+
+## npm, yarn install がしてくれないこと
+
+- 使用していないパッケージの削除
+- 同じパッケージの重複バージョンの削除
+- publish されているパッケージの不要物の削除
+
+---
+
+プロジェクトを進めていくと必然的に重くなる
+
+<img src={require("file-loader!./black_hole.jpg")} width="700" />
+
+---
+
+## node_modules が重くなる原因
+
+- 使用していないパッケージが node_modules に含まれている
+- 同じパッケージの複数のバージョンが含まれてしまっている
+- package 自体が不必要なファイルを含めて publish してしまっている
+- (monorepo の場合) 共通で使えるパッケージが hoist されていない
+
+---
+
+## 同じパッケージの複数のバージョンが含まれてしまっている
+
+- 例:
+- package A が `lodash 4.17.20` に依存している
+- package B が `lodash 4.17.21` に依存している状態
+- lodash 一つにつき 4.7MB
+
+```
+node_modules
+├── lodash
+├── A
+│   └──node_modules
+│      └── lodash
+├── B
+```
+
+<!-- - @babel や @jest 等の monorepo ベースのパッケージの場合、古いプラグインから別の古いプラグインへの依存が連鎖したりする -->
+
+---
+
+## package 自体が不必要なファイルが含まれている
+
+- `npm publish` した時に以下に沿って publish される
+- `.npmignore` に含まれているファイル/ディレクトリは排除される
+- `package.json` の `files` param に沿って publish される
+- example や docs 等が適切に ignore されていないケースがある
+
+---
+
+## 共通で使えるパッケージが hoist されていない
+
+- monorepo 構成での話
+- `typescript` など、monorepo 全体で使いたい module は hoist したい
+
+---
+
+## node_modules が削減されていると何が嬉しいの？
+
+---
+
+## メリット
+
+- インストール時間の削減
+
+- CI 時間の短縮
+
+- monorepo でのバージョンズレによるエラー防止
+
+- コードの負債防止
+
+<Notes>
+  node_modules の削減に力を入れることにはいくつかメリットがあります。
+  まず、当たり前な話ですが、インストール時間が削減できます。
+
+GitHub Actions のような従量制課金の CI サービスを使っている場合、GitHub Actions が走るたびに node_modules がインストールされることになるので
+
+</Notes>
+
+---
+
+## インストール時間の削減
+
+- 依存モジュールが増えればインストール時間も増える
+- yarn install に 10 分程かかっていた時もあった
+- clone からの yarn install を 2 分に短縮した
+
+---
+
+## CI 時間の短縮
+
+- GitHub Actions 等、従量課金制の CI サービスを使っている場合、CI の時間はできるだけ抑えたい
+
+---
+
+## monorepo でのバージョンズレによるエラー防止
+
+- 子パッケージでのバージョンが混合してしまうとエラーが発生してしまうケースがある
+- react v16 系や、react-native、webpack 等
+
+---
+
+## コード負債防止
+
+- 意識的に node_modules のアップデートを繰り返すことにより、最新のバージョンを保つ意識がつく
+- react-native、storybook、 webpack 等、アップデートの追従を怠ると後ほど大変になる
+
+---
+
+## node_modules の削減方法
+
+---
+
+## node_modules の削減方法
+
+- どの依存モジュールが容量を食っているかを把握する
+- 使用されていない依存モジュールを削除する
+- 複数バージョン入っているパッケージのバージョンを統一する
+- package 上で必要ないファイルを削除する
+
+---
+
+## どの依存モジュールが容量を食っているかを把握する
+
+- 容量を可視化するツールを導入する
+- 自分の場合[ncdu](https://dev.yorhel.nl/ncdu)というツールを使っている
+- 4GB 近くあった node_modules を 1.4GB に削減
+
+<img src={require("file-loader!./ncdu.png")} width="900" />
+
+<Notes>
+  自分はnode_modulesの使用容量を見るためにncduというツールを使っています。
+  画像はとあるプロジェクトで使っているmonorepoの使用容量です。
+  このmonorepoではreact-nativeによるモバイルアプリ、react製のwebアプリ、node.js製のサーバーやaws-cdkを使ったインフラ構成が含まれているプロジェクトでnode_modulesの容量が1.4GBまで抑えられています。
+  packagesに含まれているのはmonorepoの子パッケージでこの中にnode_modulesは含まれておらず、容量を食っているのはiOSとAndroidのビルド成果物です。
+  このプロジェクトは元からこうだったわけではなく、もともとは 4GB 近い
+  node_modules だったものを削減していきました。 CI
+  も毎回５分かかっていたところが１分半で済むようになりました。
+</Notes>
+
+---
+
+## 複数バージョン入っているパッケージを把握する
+
+- `yarn.lock` や `package-lock.json` にて、semver 上は同じバージョンを指しているが
+- lock file は複数バージョンが入っているケース
+
+- 以下の例は `yarn.lock` で lodash が複数入っているパターンです
+
+```yarn.lock
+"lodash@>=3.5 <5", lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.15, lodash@^4.17.19:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+
+lodash@^4.17.21, lodash@^4.3.0:
+version "4.17.21"
+resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+
+```
+
+<Notes>
+
+</Notes>
+
+---
+
+## 複数バージョン入っているパッケージを把握する
+
+- [`yarn why`](https://classic.yarnpkg.com/en/docs/cli/why/)
+
+- [`npm explain`](https://docs.npmjs.com/cli/v7/commands/npm-explain) (npm 7+)
+
+- 特定のパッケージがどのパッケージから依存されているのかを判別できるコマンド
+
+---
+
+## 複数バージョン入っているパッケージを把握する
+
+- [`yarn-deduplicate`](https://github.com/atlassian/yarn-deduplicate)
+
+- atlassian 製の CLI ツール
+
+- yarn v1 プロジェクトにおいて、複数バージョン入っているパッケージを検出して、統一する
+
+---
+
+## 複数バージョン入っているパッケージを把握する
+
+- `@babel` や `@jest` など、monorepo ベースのパッケージの場合:
+- 古いプラグインが別の古いプラグインを呼び出していて、上記ツール群でも対処しづらい
+- `yarn.lock`, `package-lock.json` に含まれている `@babel` で始まるパッケージを全て消して、再度 install する
+
+---
+
+## 複数バージョン入っているパッケージを把握する
+
+- semver が一致しないパッケージの場合:
+- `core-js` v2 系と v3 系が混合している場合など、deduplicate では対処されない
+- `package.json` の `resolutions` field を使って install するバージョンを固定できる
+- breaking change が含まれているので基本的には非推奨
+
+---
+
+## package 上で必要ないファイルを削除する
+
+- [yarn autoclean](https://classic.yarnpkg.com/en/docs/cli/autoclean/)
+- `.yarnclean` ファイルを参照して、node_modules 内の該当ディレクトリを node_modules から排除する
+
+- 下記コマンドで `.yarnclean` ファイルが生成できる
+
+```
+yarn autoclean --init
+```
+
+<Notes>
+  node_modulesの中には、`.npmignore` や package.json の files
+  が適切に設定されておらず、docsやexample等が残ったままpublishされているパッケージがいくつかあります。これらは自分が開発している時にnode_modules内から使うことはほぼ無いので、容量の無駄になっています。
+  yarn を使っている場合、yarn autoclean
+  というコマンドがあり、node_modulesに含まれる指定のフォルダを削除することができます。
+  .yarnclean 内に記載されているフォルダは消去されます。 node_modules の中の
+  .gitignore の様なものです。
+</Notes>
+
+---
+
+## 継続的に node_modules のサイズをチェックする
+
+- CI 上で `du -sh node_modules` を呼んで、PR と master のサイズの比較をする等
+- PR が node_modules の容量を劇的に増やしていたらしっかりレビューしたい
+
+- PR で 1000 行の diff があったらしっかりレビューするところを package.json の変更だと diff が 1 行しかしかない
+- だが、diff の量的には変わらないはずなのでしっかりレビューをしたい
+
+---
+
+## まとめ
+
+- npm / yarn install は JS を触る上で逃れられないので、最適化したい
+- エンジニアの DX や、CI の時間短縮による経費削減が見込める
+- `package-lock.json`, `yarn.lock` はレビューできる
+
+---
+
+## 参考
+
+[cpojer.net - Dependency Managers Don’t Manage Your Dependencies](https://cpojer.net/posts/dependency-managers-dont-manage-your-dependencies)
+
+---
+
+THANK YOU

@@ -11,11 +11,12 @@ const styles = {
     listStyleType: "none",
   },
   name: {
-    fontSize: 30,
+    fontSize: 36,
+    fontWeight: 700,
   },
   company: {
-    fontSize: 24,
-    marginBottom: "8px",
+    fontSize: 30,
+    marginBottom: "24px",
   },
 
   listItemSub: {
@@ -26,7 +27,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
   },
-};
+} as const;
 
 export const Profile = () => (
   <div>
@@ -35,11 +36,12 @@ export const Profile = () => (
       <Avatar />
       <ul style={styles.list}>
         <li style={styles.name}>Jesse Katsumata</li>
-        <li style={styles.company}>Engineer at CureApp, Inc.</li>
+        <li style={styles.company}>Engineer at stand.fm</li>
         <li style={styles.listItemSub}>Member of:</li>
         <li style={styles.listItemSub}>- React Native Community</li>
-        <li style={styles.listItemSub}>- Reason React Native</li>
-        <li style={styles.listItemSub}>- React Native JP</li>
+        <li style={{ ...styles.listItemSub, marginBottom: 24 }}>
+          - React Native JP
+        </li>
 
         <li style={styles.listItemSub}>
           <a href="https://twitter.com/natural_clar">Twitter: @natural_clar</a>
