@@ -64,7 +64,7 @@ THANK YOU
   "scripts": {
     "build": "mdx-deck build ./deck.mdx",
     "start": "mdx-deck ./deck.mdx",
-    "deploy": "now"
+    "deploy": "vercel"
   },
   "dependencies": {
     "@naturalclar/slides-components": "*"
@@ -72,7 +72,7 @@ THANK YOU
 }
 ```
 
-# {{ input }}/now.json`
+# {{ input }}/vercel.json`
 
 ```json
 {
