@@ -26,7 +26,7 @@ import "prismjs/components/prism-tsx";
     title="{{ input }}"
     description="Enter description here"
     publishedAt={'{{ 'new Date().toISOString()' | eval }}'}
-    host="https://{{input}}.naturalclar.now.sh"
+    host="https://{{input}}.vercel.app"
   />
 </Head>
 
@@ -89,11 +89,11 @@ THANK YOU
 {
   "type": "rich",
   "version": "1.0",
-  "provider_name": "{{ input }}.naturalclar.now.sh",
-  "provider_url": "https://{{ input }}.naturalclar.now.sh/",
+  "provider_name": "{{ input }}.vercel.app",
+  "provider_url": "https://{{ input }}.vercel.app/",
   "title": "{{ input }}",
   "width": 658,
   "height": 408,
-  "html": "<iframe style=\"width: 100%; overflow: hidden;\" src=\"https://{{ input }}.naturalclar.now.sh/index.html\" width=\"658\" height=\"408\" frameborder=\"0\" scrolling=\"no\" ></iframe>"
+  "html": "<iframe style=\"width: 100%; overflow: hidden;\" src=\"https://{{ input }}.vercel.app/index.html\" width=\"658\" height=\"408\" frameborder=\"0\" scrolling=\"no\" ></iframe>"
 }
 ```

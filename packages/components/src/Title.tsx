@@ -4,9 +4,8 @@ const styles = {
   container: {
     position: "absolute" as const,
     top: 20,
-    left: 0,
-    right: 0
-  }
+    left: 20,
+  },
 };
 
 type Props = {
@@ -16,6 +15,6 @@ type Props = {
 
 export const Title = ({ label, color = "black" }: Props) => (
   <div style={styles.container}>
-    <h2 style={{ color, textAlign: "center" }}>{label}</h2>
+    <h2 style={{ color }}>{label}</h2>
   </div>
 );

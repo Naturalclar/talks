@@ -1,12 +1,12 @@
 name: Build
-on: pull_request
+on: push
 
 jobs:
-  build: 
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10,12,14]
+        node-version: [12, 14]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -23,4 +23,3 @@ jobs:
         run: yarn
       - name: Build Packages
         run: yarn build
-
