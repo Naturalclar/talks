@@ -1,0 +1,226 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import {
+  Avatar,
+  Logo,
+  Meta,
+  Profile,
+  Title,
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="jsi-in-a-nutshell"
+    description="Enter description here"
+    publishedAt={"2021-07-27T13:13:07.542Z"}
+    host="https://jsi-in-a-nutshell.vercel.app"
+  />
+</Head>
+
+## JSI in a nutshell
+
+<footer style={{position:'absolute', bottom: 20, right: 20}}>
+
+[TECH STAND #5](https://standfm.connpass.com/event/218812/)
+@naturalclar
+
+</footer>
+
+<Notes>
+  JSI in a Nutshell というタイトルで登壇させていただきます。Naturalclarです。
+</Notes>
+
+---
+
+<Title>About Me</Title>
+
+<Profile />
+
+<Notes>Introduction</Notes>
+
+---
+
+## JSI とは? 🤔
+
+---
+
+## JSI
+
+- JavaScript Interface
+- JavaScripe Engine のラッパー
+- C++ への参照を持つ
+- Part of New Architecture
+
+---
+
+## 概要
+
+- JSI の利点
+- JSI の使い方
+- JSI を使ったライブラリ紹介
+
+---
+
+## JSI の利点
+
+- TurboModules - Native Module の同期的呼び出し
+- Fabric - Yoga に直接 ShadowDOM をレンダリングすることによる描画の高速化
+
+---
+
+## Example Code
+
+```tsx
+
+import { NativeModules } from 'react-native';
+
+type AwesomeModuleType = {
+  myAwesomeMethod(a: number, b: number): Promise<number>;
+};
+
+const { AwesomeModule } = NativeModules;
+
+export default AwesomeModule as AwesomeModuleType;
+
+
+```
+
+```cpp
+#import "my-awesome-module.h"
+
+using namespace facebook;
+
+void installAwesomeMethod(jsi::Runtime& runtime) {
+  auto myAwesomeMethod = jsi::Function::createFromHostFunction(
+    runtime, // 引数から渡される jsi の runtime をそのまま渡す
+    jsi::PropNameID::forAscii(runtime, "myAwesomeMethod"), // JavaScript側に紐付けるための名前
+    2, // 関数に渡す引数の数
+    [](jsi::Runtime& rt, const jsi::Value& thisVal, const jsi::Value* args, size_t count) -> jsi::Value {
+      // c++ の処理をここで行う
+      // jsi::Value を返すか、Exception を投げることができる
+    }
+  );
+
+  // JavaScript の global に method を追加する
+  runtime.global().setProperty(runtime, "myAwesomeMethod", std::move(myAwesomeMethod));
+}
+
+```
+
+---
+
+## jsi::Function
+
+JavaScript の Function 型を表すクラス
+
+- `createFromHostFunction(Runtime& runtime, const jsi::PropNameID& name, unsigned int paramCount, jsi::HostFunctionType func)`
+
+JavaScript 側から呼ばれたら c++を実行する関数を生成する関数。
+
+---
+
+## jsi::HostFunctionType
+
+```cpp
+using HostFunctionType = std::function<
+    Value(Runtime& rt, const Value& thisVal, const Value* args, size_t count)>;
+```
+
+JavaScript から呼びだされたときに実行される関数の型。
+値を返すか、Exeption を投げることができる。
+もし、C++ Exeption が投げられたらそれを JS Error に変換して JS 側に投げる。
+
+---
+
+## jsi::Runtime
+
+- `runtime.global().setProperty(runtime, propertyName)`
+- `runtime.global().getProperty(runtime, propertyName)`
+- `runtime.global().getPropertyAsObject(runtime, propertyName)`
+- `runtime.global().getPropertyAsFunction(runtime, propertyName)`
+
+---
+
+## jsi::Object
+
+JavaScript の Object 型を表すクラス
+
+- `setProperty`
+- `getProperty`
+- `asArray`
+- `asFunction`
+
+他にも weak ref を表す `WeakObject` が存在する
+
+---
+
+## jsi::Value
+
+JavaScript の Primitive 型を表すクラス
+
+- `isUndefined()`
+- `isNull()`
+- `isBool()`
+- `isNumber()`
+- `isString()`
+- `getBool()`
+- `getString()`
+  ...
+
+---
+
+## jsi::Array
+
+JavaScript の Array を表すクラス
+
+## jsi:PropNameID
+
+JavaScript の Property Key になり得る型
+
+---
+
+その他詳細
+
+- [jsi.h](https://github.com/facebook/react-native/blob/HEAD/ReactCommon/jsi/jsi/jsi.h)
+
+---
+
+## JSI を使っているライブラリ
+
+- [react-native-reanimated (v2)](https://github.com/software-mansion/react-native-reanimated)
+- [react-native-vision-camera](https://github.com/mrousavy/react-native-vision-camera)
+- [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv)
+- [react-native-multithreading](https://github.com/mrousavy/react-native-multithreading)
+- [CommE2E](https://github.com/CommE2E/comm)
+- [react-native-quick-base64](https://github.com/craftzdog/react-native-quick-base64)
+
+---
+
+## react-native-reanimated
+
+- Animation をネイティブ側で実装するためのライブラリ
+- JSI を使うにあたっていくつかヘルパー関数を提供している
+- 後述の`react-native-vision-camera`や`react-native-multithreading`で使用
+
+---
+
+## react-native-vision-camera
+
+- 同期的に Snapchat のフィルターなど
+
+---
+
+## react-native-mmkv
+
+- AsyncStorage の５０倍早い Key Value Pair
+- MMKV を使ってる
+
+---
+
+## react-native-multithreading
+
+- 処理をマルチスレッド化するためのライブラリ
+- JSI が同期的に実行するため、それを別スレッドに逃がすのに使用
+- JSI 関係なく重い処理を multithread 側に逃がす
