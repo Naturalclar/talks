@@ -42,6 +42,15 @@ import "prismjs/components/prism-tsx";
 
 ---
 
+## 概要
+
+- JSI とは
+- JSI の利点
+- JSI の使い方
+- JSI を使ったライブラリ紹介
+
+---
+
 ## JSI とは? 🤔
 
 ---
@@ -51,15 +60,15 @@ import "prismjs/components/prism-tsx";
 - JavaScript Interface
 - JavaScripe Engine のラッパー
 - C++ への参照を持つ
-- Part of New Architecture
+- New Architecture の一環
 
 ---
 
-## 概要
+## New Architecture
 
-- JSI の利点
-- JSI の使い方
-- JSI を使ったライブラリ紹介
+現状の Native Module と UI Renderer、そして New Architecture 後の状態について話す
+
+New Architecture の中核となるのがこの JSI
 
 ---
 
@@ -68,13 +77,16 @@ import "prismjs/components/prism-tsx";
 - TurboModules - Native Module の同期的呼び出し
 - Fabric - Yoga に直接 ShadowDOM をレンダリングすることによる描画の高速化
 
+<Notes>
+  今回はJSIを使って、JavaScriptからC++の関数呼び出しを行うモジュールの作り方を解説します
+</Notes>
+
 ---
 
 ## Example Code
 
 ```tsx
-
-import { NativeModules } from 'react-native';
+import { NativeModules } from "react-native";
 
 type AwesomeModuleType = {
   myAwesomeMethod(a: number, b: number): Promise<number>;
@@ -83,8 +95,6 @@ type AwesomeModuleType = {
 const { AwesomeModule } = NativeModules;
 
 export default AwesomeModule as AwesomeModuleType;
-
-
 ```
 
 ```cpp
@@ -108,6 +118,16 @@ void installAwesomeMethod(jsi::Runtime& runtime) {
 }
 
 ```
+
+---
+
+## iOS からの呼び出し方
+
+`.mm` ファイルが Objective-c のコードを見つつ、c++のメソッドを呼べます
+
+---
+
+## Android からの呼び出し方
 
 ---
 
@@ -187,6 +207,18 @@ JavaScript の Property Key になり得る型
 
 ---
 
+## react-native-codegen
+
+C++ は型が必須な言語なので、 JavaScript と C++ を繋ぐ為の型ファイルが必要となります。
+
+手で書くことも可能ですが、Flow や TypeScript のメソッドから型を生成する為の CodeGen を、FlowType 用は Facebook、TypeScript 用は Microsoft が作成しています。
+
+---
+
+## codegen の使い方と出力例
+
+---
+
 ## JSI を使っているライブラリ
 
 - [react-native-reanimated (v2)](https://github.com/software-mansion/react-native-reanimated)
@@ -195,6 +227,7 @@ JavaScript の Property Key になり得る型
 - [react-native-multithreading](https://github.com/mrousavy/react-native-multithreading)
 - [CommE2E](https://github.com/CommE2E/comm)
 - [react-native-quick-base64](https://github.com/craftzdog/react-native-quick-base64)
+- [react-native-sqlite]()
 
 ---
 
