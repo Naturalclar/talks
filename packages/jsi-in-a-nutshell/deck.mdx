@@ -57,10 +57,11 @@ import "prismjs/components/prism-tsx";
 
 ## JSI
 
-- JavaScript Interface
 - JavaScripe Engine のラッパー
 - C++ への参照を持つ
 - New Architecture の一環
+
+---
 
 ---
 
@@ -86,35 +87,36 @@ New Architecture の中核となるのがこの JSI
 ## Example Code
 
 ```tsx
-import { NativeModules } from "react-native";
 
-type AwesomeModuleType = {
-  myAwesomeMethod(a: number, b: number): Promise<number>;
-};
-
-const { AwesomeModule } = NativeModules;
-
-export default AwesomeModule as AwesomeModuleType;
 ```
 
 ```cpp
-#import "my-awesome-module.h"
+// MyAwesomeModule.cpp
+#import "MyAwesomeModule.h"
 
 using namespace facebook;
 
-void installAwesomeMethod(jsi::Runtime& runtime) {
-  auto myAwesomeMethod = jsi::Function::createFromHostFunction(
-    runtime, // 引数から渡される jsi の runtime をそのまま渡す
-    jsi::PropNameID::forAscii(runtime, "myAwesomeMethod"), // JavaScript側に紐付けるための名前
-    2, // 関数に渡す引数の数
-    [](jsi::Runtime& rt, const jsi::Value& thisVal, const jsi::Value* args, size_t count) -> jsi::Value {
-      // c++ の処理をここで行う
-      // jsi::Value を返すか、Exception を投げることができる
-    }
-  );
+namespace naturalclar {
+  namespace awesomeModule {
 
-  // JavaScript の global に method を追加する
-  runtime.global().setProperty(runtime, "myAwesomeMethod", std::move(myAwesomeMethod));
+    void install(jsi::Runtime& runtime) {
+      auto myAwesomeMethod = jsi::Function::createFromHostFunction(
+        runtime, // 引数から渡される jsi の runtime をそのまま渡す
+        jsi::PropNameID::forAscii(runtime, "myAwesomeMethod"), // JavaScript側に紐付けるための名前
+        2, // 関数に渡す引数の数
+        [](jsi::Runtime& rt, const jsi::Value& thisVal, const jsi::Value* args, size_t count) -> jsi::Value {
+          // c++ の処理をここで行う
+          // jsi::Value を返すか、Exception を投げることができる
+
+          return jsi::Value(-42);
+        }
+      );
+
+      // JavaScript の global に method を追加する
+      runtime.global().setProperty(runtime, "myAwesomeMethod", std::move(myAwesomeMethod));
+    }
+
+  }
 }
 
 ```
@@ -125,9 +127,48 @@ void installAwesomeMethod(jsi::Runtime& runtime) {
 
 `.mm` ファイルが Objective-c のコードを見つつ、c++のメソッドを呼べます
 
+```Objective-c
+// RNMyModule.mm
+#import "MyAwesomeModule.h"
+
+@implementation RNMultithreading
+@synthesize bridge = _bridge;
+@synthesize methodQueue = _methodQueue;
+
+RCT_EXPORT_MODULE()
+
+// Main Queue が立ち上がってから起動する
++ (BOOL)requiresMainQueueSetup {
+  return YES;
+}
+
+- (void)setBridge:(RCTBridge *)bridge
+{
+  _bridge = bridge;
+
+  // JS と c++ の繋ぎ目を作成する。
+  RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
+  if (!cxxBridge.runtime) {
+    return;
+  }
+
+  naturalclar::awesomeModule::install(*(jsi::Runtime *)cxxBridge.runtime);
+}
+
+@end
+
+
+
+
+
+
+```
+
 ---
 
 ## Android からの呼び出し方
+
+Android の場合、`fbjni` という Java から c++ を呼び出せる ffi を使用します。
 
 ---
 
