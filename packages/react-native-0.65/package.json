@@ -1,0 +1,17 @@
+{
+  "name": "react-native-0.65",
+  "description": "Enter description here",
+  "version": "1.0.0",
+  "author": "Jesse Katsumata <jesse.katsumata@gmail.com>",
+  "keywords": [],
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "mdx-deck build ./deck.mdx",
+    "start": "mdx-deck ./deck.mdx",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "@naturalclar/slides-components": "*"
+  }
+}

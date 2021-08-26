@@ -1,0 +1,109 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import {
+Avatar,
+Logo,
+Meta,
+Profile,
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+export { dracula as theme } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="react-native-0.65"
+    description="Enter description here"
+    publishedAt={'2021-08-26T08:30:56.326Z'}
+    host="https://react-native-0.65.vercel.app"
+  />
+</Head>
+
+## React Native 0.65 変更点
+
+[React Native Meetup #13 LT大会!](https://react-native-meetup.connpass.com/event/221225/)
+@naturalclar
+
+<Notes>Title</Notes>
+
+---
+
+## About Me
+
+<Profile />
+
+<Notes>Introduction</Notes>
+
+---
+
+## Hermes Update
+
+---
+
+### Hermes Update
+
+- 一部の `Intl` API が hermes でも使用可能に
+- `Function.prototype.toString` が使用可能に
+- GCのパフォーマンス改善、名を `Hades`
+
+---
+
+## Hades
+
+---
+
+### Hades
+
+- GenGC
+- concurrent mode
+- incremental mode
+- pause time の削減
+- garbage collection を別スレッドで実行
+- gengc は single thread
+
+---
+
+## react-native-codegen
+
+---
+
+### react-native-codegen
+
+- FlowType から JSI 用の型を生成する
+- devDependencies に入れておくだけでOk
+- 今後のアップデートでサードパーティのTurbo Module 化等にも適用できるようになる。
+
+---
+
+jcenter から脱却
+
+---
+
+## Accessibility 強化
+
+---
+
+### Accessibility 強化
+
+[Accessibility Project](https://github.com/facebook/react-native/projects/15)
+
+---
+
+### Deprecation
+
+- Animated の `getNode()` が削除された
+- react-native-scrollable-tabview とか使っていたら注意
+- `NativeEventEmitter` の仕様が若干変更された
+- `AppState` が `addEventListner` をなくした
+---
+
+## 参考
+
+- [CHANGELOG](https://github.com/react-native-community/releases/blob/master/CHANGELOG.md)
+- [Annoucing React Native 0.65](https://reactnative.dev/blog/2021/08/17/version-065)
+- [React Native in H2 2021](https://reactnative.dev/blog/2021/08/19/h2-2021)
+- [The Hades Garbage Collector](https://hermesengine.dev/docs/hades/)
+
+---
+
+THANK YOU

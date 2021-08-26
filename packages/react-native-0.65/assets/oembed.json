@@ -1,0 +1,10 @@
+{
+  "type": "rich",
+  "version": "1.0",
+  "provider_name": "react-native-0.65.vercel.app",
+  "provider_url": "https://react-native-0.65.vercel.app/",
+  "title": "react-native-0.65",
+  "width": 658,
+  "height": 408,
+  "html": "<iframe style=\"width: 100%; overflow: hidden;\" src=\"https://react-native-0.65.vercel.app/index.html\" width=\"658\" height=\"408\" frameborder=\"0\" scrolling=\"no\" ></iframe>"
+}
