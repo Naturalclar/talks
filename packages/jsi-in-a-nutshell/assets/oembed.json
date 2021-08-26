@@ -1,0 +1,10 @@
+{
+  "type": "rich",
+  "version": "1.0",
+  "provider_name": "jsi-in-a-nutshell.vercel.app",
+  "provider_url": "https://jsi-in-a-nutshell.vercel.app/",
+  "title": "jsi-in-a-nutshell",
+  "width": 658,
+  "height": 408,
+  "html": "<iframe style=\"width: 100%; overflow: hidden;\" src=\"https://jsi-in-a-nutshell.vercel.app/index.html\" width=\"658\" height=\"408\" frameborder=\"0\" scrolling=\"no\" ></iframe>"
+}

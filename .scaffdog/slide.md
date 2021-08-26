@@ -16,9 +16,9 @@ Avatar,
 Logo,
 Meta,
 Profile,
+Title
 } from "@naturalclar/slides-components";
 import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
-export { dracula as theme } from "code-surfer";
 import "prismjs/components/prism-tsx";
 
 <Head>
