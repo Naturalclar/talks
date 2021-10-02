@@ -16,7 +16,9 @@ Avatar,
 Logo,
 Meta,
 Profile,
-Title
+Title,
+AlignLeft,
+Header
 } from "@naturalclar/slides-components";
 import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
 import "prismjs/components/prism-tsx";
@@ -39,11 +41,15 @@ import "prismjs/components/prism-tsx";
 
 ---
 
-## About Me
+<AlignLeft>
+
+<Header>About Me</Header>
 
 <Profile />
 
 <Notes>Introduction</Notes>
+
+</AlignLeft>
 
 ---
 

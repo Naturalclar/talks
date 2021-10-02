@@ -1,0 +1,392 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import {
+  Avatar,
+  Logo,
+  Meta,
+  Profile,
+  Title,
+  AlignLeft,
+  Header,
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="react-native-rearchitecture-2021"
+    description="Enter description here"
+    publishedAt={"2021-10-01T16:49:19.140Z"}
+    host="https://react-native-rearchitecture-2021.vercel.app"
+  />
+</Head>
+
+## React Native Rearchitecture 2021
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+[React Native Matsuri](https://reactnative-matsuri.com/)
+@naturalclar
+
+<Notes>
+  ご紹介ありがとうございます。React Native Rearchitecture 2021
+  というタイトルで登壇させていただきます。Jesse です。
+</Notes>
+
+---
+
+<AlignLeft>
+
+<Header>About Me</Header>
+
+<Profile />
+
+<Notes>Introduction</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>概要</Header>
+
+- 以前の React Native のアーキテクチャについて
+- React Native の Rearchitecture について
+- Rearchitecture の現状と今後について
+
+</AlignLeft>
+
+<Notes>Rearchitecture は2018年のReact Confにて発表された</Notes>
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## 以前の React Native のアーキテクチャ
+
+---
+
+<Header>以前の React Native のアーキテクチャ</Header>
+
+<img
+  style={{ backgroundColor: "gray", borderRadius: 5 }}
+  src={require("file-loader!./react-native-architecture-yoga.png")}
+/>
+
+---
+
+<Header>以前の React Native のアーキテクチャ</Header>
+
+<img
+  src={require("file-loader!./react-native-architecture-yoga.png")}
+  style={{ position: "absolute", top: 100, left: 20, opacity: 0.2 }}
+  width="600"
+/>
+
+- React - JS で見た目の定義を行う
+- NativeModule - JS から Native の関数を非同期で呼び出す
+- Bridge - JS 層と Native 層を繋ぐ
+- Yoga - Flexbox を実現するレイアウトエンジン
+
+---
+
+<Header>以前のアーキテクチャの問題点</Header>
+
+<img
+  src={require("file-loader!./react-native-architecture-yoga.png")}
+  style={{ position: "absolute", top: 100, left: 20, opacity: 0.2 }}
+  width="600"
+/>
+
+- JS と Native の通信は **JSON** を通して**非同期**で行われる
+- UI の描画には **JS** → **Native** → **Yoga** → **Native UI** とステップを踏む必要がある
+- Bridge の処理はすべてアプリ起動時に予め読み込む必要があるので**起動速度が遅い**
+- JavaScript と Native は疎結合であり、互いに無関心(悪いことではない)
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## React Native New Architecture
+
+---
+
+<AlignLeft>
+
+<Header>React Native Re-architecture</Header>
+
+<img src={require("file-loader!./react-native-rearchitecture.png")} />
+
+<Notes>Re-architecture</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>React Native Re-architecture</Header>
+
+<img
+  src={require("file-loader!./react-native-rearchitecture.png")}
+  style={{ position: "absolute", top: 100, left: 20, opacity: 0.2 }}
+  width="600"
+/>
+
+- **TurboModules** - **JSI** を通して Native Module の**同期的**呼び出しが可能に
+- **Fabric** - **JSI** を通して **Yoga** を直接呼べるため、**UI の描画**がより効率的に
+- **CodeGen** を使って **Flow/TypeScript** と C++ を繋ぐ型情報を自動生成
+- JavaScript と Native 部分が **JSI** を通して互いを感知できる
+- JavaScript で行うには重い**暗号化**等の処理を **C++** 側で実行して結果を返せる
+
+<Notes>Re-architecture</Notes>
+
+</AlignLeft>
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## JSI
+
+---
+
+<AlignLeft>
+
+<Header>JSI</Header>
+
+- **hermes**, **jsc** などの **JavaScript Engine** のラッパー
+- **React Native New Architecture** の一環
+- **C++** への参照を持ち、**JS** から**同期的**に呼び出せる
+
+</AlignLeft>
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## Turbo Modules
+
+---
+
+<AlignLeft>
+
+<Header>Turbo Modules</Header>
+
+- **JSI** を通して OS 固有の機能 (Camera, Bluetooth 等) を呼び出す仕組み
+- **C++** と **Objective-C (iOS)**、及び **Java (Android)** の抽象レイヤー
+- Objective-C は **Objective-C++** を通して C++ の実行が可能
+- Java は **JNI** を通して C++ の実行が可能
+- **Swift** , **Kotlin** でも JSI の呼び出しは可能 (使用例:[react-native-vision-camera](https://github.com/mrousavy/react-native-vision-camera))
+
+</AlignLeft>
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## Fabric Renderer
+
+---
+
+<AlignLeft>
+
+<Header>Fabric Renderer</Header>
+
+- **JSI** を用いたより効率的な**UI 描画**の手法
+- 同期的に UI を生成する仕組み
+- React Native で Flexbox を実装している **Yoga** が c++ 製のため、**JSI** から直接呼べる
+- **FlatList**等の Virtualized List の描画が途切れなくなる
+- [RN 0.65 から試験的に enable できる](https://github.com/terrysahaidak/FabricExample/commit/9e14f91755a352a173249a43f92a80fe65d81184)
+
+</AlignLeft>
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## Codegen
+
+---
+
+<AlignLeft>
+
+<Header>Codegen</Header>
+
+- **C++** の型情報を生成するためのツール
+- **Flow** の型情報から生成される
+- Microsoft が **TypeScript** 用の Codegen も作成している
+
+</AlignLeft>
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## Rearchitecture の現状と今後について
+
+---
+
+<AlignLeft>
+
+<Header>Rearchitecture の現状と今後について</Header>
+
+- 現状、React Native のリポジトリでは新しい architecture が反映されている
+- しかし、サードパーティモジュールだとその恩恵を受けづらい状態
+- Facebook の方針として、Facebook アプリ内で architecture の移行が済んだら、OSS 化も進められる
+- Facebook 内部では **1000 画面以上**の React Native 製の画面が Fabric に移行済み
+- RN Community 内で主要なモジュールを New Architecture に向けて改善してく動きがある
+
+</AlignLeft>
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## Bridge の削除
+
+---
+
+<AlignLeft>
+
+<Header>Bridge の削除</Header>
+
+- New Architecture への移行が終わったら、Bridge の役割がなくなる
+- Bridge がなくなる事により、アプリの起動速度の向上が見込める
+
+</AlignLeft>
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## アプリ起動時に実行されてること
+
+---
+
+<AlignLeft>
+
+<Header>アプリの起動時に発生する事</Header>
+
+- 使用するクラスの読み込み
+- NativeModules の Initialize
+- View Manager の Initialize
+- Bridge のセットアップ
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>アプリの起動時に発生する事</Header>
+
+- 使用するクラスの読み込み
+- NativeModules の Initialize -> TurboModules により lazy initialization
+- View Manager の Initialize -> Fabric による lazy initialization
+- Bridge のセットアップ
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>アプリの起動時に発生する事</Header>
+
+- 使用するクラスの読み込み
+- Bridge のセットアップ
+
+</AlignLeft>
+
+---
+
+<CodeSurferLayout>
+
+```js
+// InitializeCore.js
+import NativeTimingModule from "NativeTimingModule";
+global.setTimeout = (timer) => {
+  NativeTimingModule.createTimer(timer);
+};
+
+// MyBundle.js
+require("InitializeCore");
+setTimeout(() => {}, 100);
+```
+
+```js
+// C++
+runtime.global().setProperty(runtime, "setTimeout", createTimer);
+
+// MyBundle.js
+require("InitializeCore");
+setTimeout(() => {}, 100);
+```
+
+```js
+// C++
+runtime.global().setProperty(runtime, "setTimeout", createTimer);
+
+// MyBundle.js
+setTimeout(() => {}, 100);
+```
+
+</CodeSurferLayout>
+
+---
+
+<AlignLeft>
+
+<Header>参考</Header>
+
+- [The New Architecture](https://www.youtube.com/watch?v=52El0EUI6D0)
+- [React Native EU 2021 day 1](https://www.youtube.com/watch?v=xKOkILSLs0Q)
+- [discussions-proposals](https://github.com/react-native-community/discussions-and-proposals)
+
+</AlignLeft>
+
+---
+
+THANK YOU
