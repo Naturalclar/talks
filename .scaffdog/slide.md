@@ -86,7 +86,7 @@ THANK YOU
 {
   "version": 2,
   "project": "{{ inputs.value }}",
-  "builds": [{ "src": "dist/**", "use": "@now/static" }],
+  "builds": [{ "src": "dist/**", "use": "@vercel/static" }],
   "routes": [{ "src": "/(.*)", "dest": "dist/$1" }]
 }
 ```

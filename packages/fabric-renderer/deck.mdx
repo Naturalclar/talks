@@ -1,0 +1,221 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import {
+  Avatar,
+  Logo,
+  Meta,
+  Profile,
+  Title,
+  AlignLeft,
+  Header,
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="fabric-renderer"
+    description="Enter description here"
+    publishedAt={"2022-06-02T21:28:53.660Z"}
+    host="https://fabric-renderer.vercel.app"
+  />
+</Head>
+
+## Fabric Renderer について
+
+[TECH STAND #8](https://standfm.connpass.com/event/248111/)
+@naturalclar
+
+<Notes>Title</Notes>
+
+---
+
+<AlignLeft>
+
+<Header>About Me</Header>
+
+<Profile />
+
+<Notes>Introduction</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>話すこと</Header>
+
+- Fabric Renderer の概要
+- Fabric Renderer の利点
+- Fabric Renderer の仕組み
+- Fabric Renderer を使う上での注意点
+
+<Notes>Introduction</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>Fabric Renderer とは</Header>
+
+- React Native New Architecture の画面描画部分
+- JSI を使って画面描画を行っている
+- React Native 0.68 から opt-in 可能
+
+<Notes>
+  New Architecture について簡単な説明
+  Meta社が4年ほど前から行っているプロジェクト。 去年、FacebookアプリではReact
+  Nativeが使われているページが全てFabricになったと発表された React Native 0.68.1
+  からオープンソースとして使えるようになった
+</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>Fabric Renderer の特徴</Header>
+
+- 同期的な描画を行うことができる
+- React Native で Suspense が使えるようになる
+- React Native で Concurrent Feature が使えるようになる
+- React Native で SSR の実装が容易となる
+
+<Notes>
+  Concurrent Feature は React 18
+  で使えるようになったstartTransitionやuseDeferrerdValue
+</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>Fabric Renderer の特徴</Header>
+
+- JSI を介することによる型の安全性
+- パフォーマンスの向上
+- アプリの起動時間の短縮
+- アプリサイズの減少
+
+<Notes>
+  Fabric は JSI を介すので、Flow での型付けが必須となる。そのため型安全性を担保できる
+  同期的に
+  Android でのみ行えていたView Flatteningが
+
+</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>Fabric Renderer の仕組み</Header>
+
+1. JavaScript から React Element Tree を生成
+2. C++ で対応する React Shadow Tree を生成
+3. Shadow Tree が next tree として Commit される
+4. HostViewTree として画面に描画される
+
+<Notes>
+  Shadow Tree の生成をトリガーとして、Commit が行われる
+
+Commit された Shadow Tree が next tree として扱われる。
+このタイミングで Layout の高さなどの計算が行われる。
+View の onLayout は Commit のタイミングで行われる
+onChange などの Event は Mount のタイミングで行われる
+
+この一連の流れは Yoga という Flexbox の描画エンジンで行われている。
+Yoga は C++ で実装されている。
+Shadow Node をもとに Yoga が描画する内容を決定する。
+今までは Yoga の呼び出しが一度 JavaScript を Native 側に寄せないと行えなかったのが、JSI の導入により JavaScript から直接 C++ を呼び出せるようになった。
+
+</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>View Flattening</Header>
+
+- Fabric によって行われる optimization の一つ
+- レイアウトのみに影響するコンポーネントを一つにマージする
+- `margin`, `padding`, `backgroundColor`, `opacity` などを持つ Component が対象
+
+<Notes></Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>View Flattening</Header>
+
+```js
+function MyComponent() {
+  return (
+    <View>
+      <View style={{margin: 10}} />
+        <View style={{margin: 10}}>
+          <Image {...} />
+          <Text {...}>This is a title</Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+```
+
+<Notes></Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>Fabric の注意点</Header>
+
+- Fabric を使うにはアプリ内の全ての Component が Fabric 対応されている必要がある
+- React Native が提供している Component は全て Fabric 対応されている
+- react-native-screens など、一部の Third Party ライブラリも Fabric 対応されている
+- 対応されていない Third Party Library もまだ沢山ある
+- [Fabric 移行に関する公式 Doc](https://reactnative.dev/docs/new-architecture-intro)
+- [react-native-screens が fabric 対応した時のブログ](https://blog.swmansion.com/introducing-fabric-to-react-native-screens-fd17bf18858e)
+- [react-native-svg の fabric 対応の PR](https://github.com/react-native-svg/react-native-svg/pull/1754)
+- [Fabric 対応させるための Sample Library](https://github.com/reactwg/react-native-new-architecture/discussions/26)
+
+<Notes></Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>参考資料</Header>
+
+- [React Native doc: Fabric](https://reactnative.dev/architecture/fabric-renderer)
+- [React Native doc: View Flattening](https://reactnative.dev/architecture/view-flattening)
+- [Adopting the New Architecture](https://reactnative.dev/docs/new-architecture-intro)
+- [Introducint React 18](https://github.com/reactwg/react-18/discussions/4)
+- [Discussions and Proposals: Fabric](https://github.com/react-native-community/discussions-and-proposals/issues/4)
+- [Fabric in RN Screens](https://blog.swmansion.com/introducing-fabric-to-react-native-screens-fd17bf18858e)
+- [Sample App and Sample Libraries Repos](https://github.com/reactwg/react-native-new-architecture/discussions/26)
+
+<Notes>Introduction</Notes>
+
+</AlignLeft>
+
+---
+
+THANK YOU

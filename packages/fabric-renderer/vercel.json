@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "project": "fabric-renderer",
+  "builds": [{ "src": "dist/**", "use": "@vercel/static" }],
+  "routes": [{ "src": "/(.*)", "dest": "dist/$1" }]
+}
