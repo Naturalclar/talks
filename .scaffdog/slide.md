@@ -4,9 +4,11 @@ message: "Enter Title of your slide (no space)"
 root: "./packages"
 output: "./packages"
 ignore: []
+questions:
+  value: 'Please enter title of the slide.'
 ---
 
-# {{ input }}/deck.mdx`
+# {{ inputs.value }}/deck.mdx
 
 ```markdown
 import Code from "mdx-code";
@@ -25,14 +27,14 @@ import "prismjs/components/prism-tsx";
 
 <Head>
   <Meta
-    title="{{ input }}"
+    title="{{ inputs.value }}"
     description="Enter description here"
     publishedAt={'{{ 'new Date().toISOString()' | eval }}'}
-    host="https://{{input}}.vercel.app"
+    host="https://{{inputs.value}}.vercel.app"
   />
 </Head>
 
-## {{ input }}
+## {{ inputs.value }}
 
 [Venue](url)
 @naturalclar
@@ -56,11 +58,11 @@ import "prismjs/components/prism-tsx";
 THANK YOU
 ```
 
-# {{ input }}/package.json`
+# {{ inputs.value }}/package.json
 
 ```json
 {
-  "name": "{{ input }}",
+  "name": "{{ inputs.value }}",
   "description": "Enter description here",
   "version": "1.0.0",
   "author": "Jesse Katsumata <jesse.katsumata@gmail.com>",
@@ -78,28 +80,28 @@ THANK YOU
 }
 ```
 
-# {{ input }}/vercel.json`
+# {{ inputs.value }}/vercel.json
 
 ```json
 {
   "version": 2,
-  "project": "{{ input }}",
+  "project": "{{ inputs.value }}",
   "builds": [{ "src": "dist/**", "use": "@now/static" }],
   "routes": [{ "src": "/(.*)", "dest": "dist/$1" }]
 }
 ```
 
-# {{ input }}/assets/oembed.json`
+# {{ inputs.value }}/assets/oembed.json
 
 ```json
 {
   "type": "rich",
   "version": "1.0",
-  "provider_name": "{{ input }}.vercel.app",
-  "provider_url": "https://{{ input }}.vercel.app/",
-  "title": "{{ input }}",
+  "provider_name": "{{ inputs.value }}.vercel.app",
+  "provider_url": "https://{{ inputs.value }}.vercel.app/",
+  "title": "{{ inputs.value }}",
   "width": 658,
   "height": 408,
-  "html": "<iframe style=\"width: 100%; overflow: hidden;\" src=\"https://{{ input }}.vercel.app/index.html\" width=\"658\" height=\"408\" frameborder=\"0\" scrolling=\"no\" ></iframe>"
+  "html": "<iframe style=\"width: 100%; overflow: hidden;\" src=\"https://{{ inputs.value }}.vercel.app/index.html\" width=\"658\" height=\"408\" frameborder=\"0\" scrolling=\"no\" ></iframe>"
 }
 ```
