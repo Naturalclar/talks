@@ -1,0 +1,215 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import {
+Avatar,
+Logo,
+Meta,
+Profile,
+Title,
+AlignLeft,
+Header
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="release-automation"
+    description="Enter description here"
+    publishedAt={'2022-08-30T15:33:51.137Z'}
+    host="https://release-automation.vercel.app"
+  />
+</Head>
+
+## Release Flow Automation
+
+[TECH STAND #9](https://standfm.connpass.com/event/256786/)
+@naturalclar
+
+<Notes>
+  Release Flow Automation というタイトルで発表させていただきます。
+</Notes>
+
+---
+
+<AlignLeft>
+
+<Header>About Me</Header>
+
+<Profile />
+
+<Notes>
+  まずは簡単に自己紹介します。
+  Stand.fm のエンジニアの Naturalclar です。
+  React Native Community にも所属しており、周辺モジュールのメンテナンス等を行っています。
+</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>Stand.fmでの自動化の取り組み</Header>
+
+- GitHub Actions
+- GitHub discussions
+- GitHub Projects
+
+<Notes>
+  弊社では、毎週リリースオーナーを交代制にしています。
+  GitHubの機能をフル活用しています。
+</Notes>
+
+</AlignLeft>
+
+---
+
+
+<AlignLeft>
+
+<Header>Stand.fmでの自動化の取り組み</Header>
+
+- GitHub Actions
+- GitHub discussions
+- GitHub Projects
+
+<Notes>
+  18 共有Actions
+  26 automation scripts
+  39 workflows
+</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>リリースフロー：開始</Header>
+
+- リリース用Issueの作成
+- 内部テスト用の GitHub Discussions の作成
+- QA用のGitHub Project の作成
+- リリースノートの Draft 作成
+
+<Notes>
+  リリースサイクルが始まると、以下の事が自動的に行われます。
+  - リリース用Issueの作成
+  - 内部 GitHub Discussions の作成
+  - リリース用のGitHub Project の作成
+  - Release Note の Draft 
+
+  memo: createGitHubReleaseProject
+
+GitHub Discussion には、そのリリースで行われた変更点が記載されており、それらをベースに内部のPMやエンジニアがアプリを触って
+実際に触ってみて感じた違和感や不具合等を Discussion に書き込んでいきます。
+Discussion に書き込まれた内容はボタン一つで Issue にできるので時間の短縮になります。
+
+
+
+同時に QA チーム
+
+QA チームが新しく作成した Issue はそのリリースサイクルの GitHub Project に自動的に追加されます。
+PM が追加された Issue を確認して、そのリリースサイクル中に修正するべきかどうかを振り分けていきます。
+最終的に Blocker の Issue 
+</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>リリースフロー：終わり</Header>
+
+- Release Note の作成
+- GitHub discussions
+- GitHub Projects
+
+<Notes>
+  QAで出たバグ修正も終わり、デプロイの
+  - そのバージョンの最終的なRelease Note の作成
+  - GitHub Discussions の作成
+  - QA用のGitHub Project の作成
+</Notes>
+
+</AlignLeft>
+
+---
+
+<CodeSurferLayout>
+
+```yml
+name: Start release
+
+on:
+  schedule:
+    - cron: '0 5 * * 1'
+
+jobs:
+  start-release:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
+```
+
+</CodeSurferLayout>
+
+---
+
+<AlignLeft>
+
+<Header>Issue 上で Cherry-pick</Header>
+
+<Notes>
+  release branch が切られた後も、QAが発見したバグの修正等の変更を release branch に対して加えたい場合があります。
+  その際は修正の Commit を main branch から release branch に cherry-pick するわけですが、
+  そこは cherry-pick したい Pull Request を指定してリリース Issue にコメントする事でその Pull Request の内容が release branch に cherry-pick されます。
+</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>コメントの内容による操作</Header>
+
+  - GitHub Actions で用意されている Expressions 
+  - https://docs.github.com/en/actions/learn-github-actions/expressions
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>その他 GitHub Actions の活用法</Header>
+
+- 特定 folder に追加されたファイルを自動的に Approve する
+- Cherry-pick 漏れがないかの確認
+
+<Notes>
+  release branch が切られた後も、QAが発見したバグの修正等の変更を release branch に対して加えたい場合があります。
+  その際は修正の Commit を main branch から release branch に cherry-pick するわけですが、
+  そこは cherry-pick したい Pull Request を指定してリリース Issue にコメントする事でその Pull Request の内容が release branch に cherry-pick されます。
+</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>まとめ</Header>
+
+<Notes>
+  余談ですが、このスライドを用意している中 GitHub Copilot を試していたのですが、サジェストされる文章が小泉構文みたいになっていて面白かったです。
+</Notes>
+
+</AlignLeft>
+
+---
+
+
+THANK YOU

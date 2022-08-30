@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "project": "release-automation",
+  "builds": [{ "src": "dist/**", "use": "@vercel/static" }],
+  "routes": [{ "src": "/(.*)", "dest": "dist/$1" }]
+}
