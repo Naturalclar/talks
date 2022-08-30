@@ -16,10 +16,10 @@
     "storybook:build": "build-storybook -c .storybook -s ./src"
   },
   "dependencies": {
-    "react": "^16.13.1"
+    "react": "^16"
   },
   "devDependencies": {
-    "@storybook/react": "^6.0.26",
+    "@storybook/react": "^6.5.10",
     "@types/react": "^16.9.52"
   }
 }
