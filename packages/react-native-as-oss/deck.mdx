@@ -1,0 +1,373 @@
+import Code from "mdx-code";
+import { Notes, Head, Appear } from "mdx-deck";
+import {
+  Avatar,
+  Logo,
+  Meta,
+  Profile,
+  Title,
+  AlignLeft,
+  Header,
+} from "@naturalclar/slides-components";
+import { CodeSurferLayout, CodeSurferColumnLayout } from "code-surfer";
+import "prismjs/components/prism-tsx";
+
+<Head>
+  <Meta
+    title="react-native-as-oss"
+    description="Enter description here"
+    publishedAt={"2022-10-07T01:31:10.928Z"}
+    host="https://react-native-as-oss.vercel.app"
+  />
+</Head>
+
+## React Native as OSS
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+[React Native Matsuri 2022](https://reactnative-matsuri.com/)
+@naturalclar
+
+<Notes>
+  React Native as OSS
+  というタイトルで登壇させていただきます。よろしくおねがいします。
+</Notes>
+
+---
+
+<AlignLeft>
+
+<Header>About Me</Header>
+
+<Profile />
+
+<Notes>
+  まずは軽く自己紹介をします。Jesseと申します。アメリカ人です。現在、株式会社Stand.fm
+  で React Native のエンジニアをしています。 また、OSS 活動も行っており、React
+  Native Community という GitHub Organization で React Native
+  の改善や、周辺モジュールのメンテナンス等を行っています。
+</Notes>
+
+</AlignLeft>
+
+---
+
+<AlignLeft>
+
+<Header>概要</Header>
+
+- React Native Community に入った経緯
+- React Native Community での活動
+- React Native Community に携わる協力会社
+
+</AlignLeft>
+
+<Notes>
+  今回の発表では、自分のOSS活動について深堀りしていこうと思います。 React Native
+  Community に入った経緯や、React Native Community
+  でどういう活動を行っているか。 また、React Native Community
+  に携わってる様々な企業について自分が知っている範囲で紹介していきます。
+  自分の経験が React Native に貢献したいと思っている方の参考になれば幸いです。
+</Notes>
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## React Native Community に入った経緯
+
+---
+
+<Header>きっかけ</Header>
+
+- 海外転職の為に本職以外の活動(OSS)がしたかった
+- 前職の Tech Lead (Node JS Collaborator)が辞めた
+- 新しく技術部の柱になるチャンス
+- 社内で React Native を使っていた
+
+<Notes>
+  そもそも自分がなぜ React Native Community に入ろうと思ったかについて話します。
+  自分は今日本でエンジニアとして活動しているのですが、そもそも日本に来た理由が日本の方が未経験エンジニアとして採用されやすいと感じたから。
+  いつかは海外に戻りたいと思っていたので、日本で活動しつつ、海外でもアピールポイントになりそうなOSS活動に興味を持っていました。
+  そんな中、前職でOSS活動を行っていたTech
+  Leadが辞めるというイベントが発生しました。 その辞めたTech LeadがNode
+  JSのコラボレーターでもあり、社内の技術勉強会が彼中心に回っていました。
+  これはチャンスだなと思い、自分がその代わりになって何かしら技術の柱になろうと思いました。
+  そして、社内でReact Nativeを使っていたので、React
+  NativeにContributeしようと思ったのがきっかけです。
+</Notes>
+
+---
+
+<Header>Good First Issue</Header>
+
+- TODO: なんかあるかな
+
+---
+
+<AlignLeft>
+<Header>Lean Core</Header>
+
+- React Native を軽量化する為に必須の機能以外を外部に切り出す取り組み
+
+<img src={require("file-loader!./lean-core.png")} style={{
+  margin: 'auto'
+}} width="900" />
+</AlignLeft>
+
+---
+
+<Header>放置されるライブラリ</Header>
+
+- Lean Core として、ライブラリが切り出されたが、メンテナンスされていない
+- Picker
+- ProgressView / ProgressbarAndroid
+- SegmentedControlIOS
+- PushNotificationIOS
+- Clipboard
+
+---
+
+<Header>放置されているライブラリの整理</Header>
+
+- Example を最新の React Native に対応させる
+- eslint や prettier を導入する
+- CI を導入する
+
+---
+
+<Header>メンテナーになる</Header>
+
+- 自分「メンテナンスされてなさそうなのがいくつかあるけどどれかのメンテナーになっても良いか？」
+
+---
+
+<Header>メンテナーになる</Header>
+
+- 旧 facebook 社員「いいよ！全部の publish 権限渡すね」
+
+---
+
+<Header>メンテナーになる</Header>
+
+- 自分「全部！？」
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## React Native Community での自分の活動
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## とりあえずメンテ
+
+---
+
+<Header>ProgressView / ProgressbarAndroid </Header>
+
+- iOS/Android で分割されていたリポジトリを統一
+
+---
+
+<Header>Clipboard </Header>
+
+- 使いやすい用に hooks を追加
+- 画像の Copy/Paste をサポート
+
+---
+
+<Header>PushNotificationIOS</Header>
+
+- Deprecated method を一新
+- 画像付き通知の実装
+- 通知の定期送信機能の実装
+
+---
+
+<Header>Picker</Header>
+
+- 主にレビュー
+- React Native Windows/macOS 対応 PR の動作確認
+
+---
+
+<Header>SegmentedControlIOS</Header>
+
+- Android, Web 対応
+- Native Component ではなく、同じ見た目を JS で実装
+
+---
+
+<Header>React Native Menu(新規)</Header>
+
+- iOS 14 で追加された UIMenu を React Native 対応
+- Android も有志が対応 PR 出してくれた
+- 500 Star
+
+<Notes></Notes>
+
+---
+
+<Header>今後やりたい</Header>
+
+- New Architecture 対応
+- 誰か一緒にやりませんか？
+
+<Notes>現状プロジェクトで使ってないので着手できていない</Notes>
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## React Native Community での活動
+
+---
+
+<Header>Discord</Header>
+
+- React Native Community のコミュニティ用の Discord
+- Meta 社や協力会社の方々が参加している
+- 他のライブラリメンテナーとの交流
+
+---
+
+<Header>React Native のリリース</Header>
+
+- Open Source としての React Native のリリースは Community が行っている
+
+---
+
+<Header>React Native のドキュメント整備</Header>
+
+- ドキュメント
+- リリース毎のブログ記事も Community が書いている
+
+---
+
+<img
+  src={require("file-loader!./matsuri-logo.png")}
+  style={{ position: "absolute", top: 20, left: 20, opacity: 0.2 }}
+  width="900"
+/>
+
+## React Native Community に携わる協力会社
+
+---
+
+<Header>Expo</Header>
+
+- React Native の開発用フレームワーク
+- Native の実装を気にせずに JS で開発できる
+
+---
+
+<Header>CallStack</Header>
+
+- React、React Native のコンサルティング会社
+- React Native のリリース対応も行っている
+- React Native CLI のメンテ
+- React Native EU 等のカンファレンスを開催
+
+<Notes></Notes>
+
+---
+
+<Header>Microsoft</Header>
+
+- React Native for Windows
+- React Native for macOS
+- react-native-test-app
+
+---
+
+<Header>Shopify</Header>
+
+- [FlashList](https://shopify.github.io/flash-list/)
+- [React Native Skia](https://github.com/Shopify/react-native-skia)
+
+<Notes>
+  Shopify は React Native での開発をサポートする OSS を作っている。 FlashList は
+  React Native の FlatList の高速化を目的としたライブラリです。 React Native
+  Skia は React Native で Skia を使うためのライブラリです。
+</Notes>
+
+---
+
+<Header>Software Mansion</Header>
+
+- [React Native Gesture Handler]()
+- [React Native Reanimated]()
+- [React Native Screens]()
+
+<Notes>
+
+Software Mansion は React Native での開発をサポートする OSS を作っている。
+React Native Gesture Handler は React Native
+でのジェスチャーを扱うためのライブラリです。 React Native Reanimated は React
+Native でアニメーションを扱うためのライブラリです。 React Native Screens は
+React Native でスクリーン遷移を高速化するためのライブラリです。
+
+</Notes>
+
+---
+
+<Header>[Margelo](https://margelo.io/)</Header>
+
+- React Native Avengers
+- TurboModules 等の New Architecutre を利用した Module を作成している
+
+<Notes>
+  Margelo はアプリ開発のコンサルティングを行っている会社です。 React Native
+  Vision Camera や React Native Safe Area Context などの OSS
+  を作っている開発者が集まっており、React Native
+  本体にも数多くのContributionをしています。 React Native 界の Avengers
+  と呼ばれています。
+</Notes>
+
+---
+
+<Header>Intervase</Header>
+
+- Chain React カンファレンスを開催
+- React Native WebView の管理
+
+---
+
+<Header>参考</Header>
+
+- [Lean Core Issue](https://github.com/facebook/react-native/issues/23313)
+- [Complexity of Releasing React Native](https://www.youtube.com/watch?v=2WsBtNwO6Ng)
+- [How and why we pulled WebView out of React Native](https://www.youtube.com/watch?v=k2OB5sk_89c)
+- [My First PR towards React Native](https://github.com/facebook/react-native/issues/22990)
+
+- [Good First Issue Today](https://github.com/facebook/react-native/issues/34872)
+- [React Native Accessibility Issues](https://github.com/facebook/react-native/projects/15#card-54674486)
+
+<Notes></Notes>
+
+---
+
+THANK YOU

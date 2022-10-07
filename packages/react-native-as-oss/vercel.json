@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "project": "react-native-as-oss",
+  "builds": [{ "src": "dist/**", "use": "@vercel/static" }],
+  "routes": [{ "src": "/(.*)", "dest": "dist/$1" }]
+}
